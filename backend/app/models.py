@@ -2,7 +2,7 @@ from sqlalchemy.ext.declarative import declarative_base
 #ESTAS SON LAS TABLAS DE LA BASE DE DATOS
 from sqlalchemy import Column, Integer, String, Date, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
-from database import Base  # Asegúrate de tener esta importación correcta
+from .database import Base  # Asegúrate de tener esta importación correcta
 
 #ESTE ES SOLO UN EJEMPLO
 class User(Base):
