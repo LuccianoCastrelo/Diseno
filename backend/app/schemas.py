@@ -49,6 +49,7 @@ class RegistroHorasTrabajadasSchema(BaseModel):
     id_turno: int
     fecha: date
     horas_trabajadas: int
+    cantidad_turnos_trabajados: float
 
     class Config:
         orm_mode = True
