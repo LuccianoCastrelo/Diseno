@@ -1,0 +1,17 @@
+.sidebar {
+  width: 220px;
+}
+
+.list-group a:hover {
+  background-color: lightblue;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
