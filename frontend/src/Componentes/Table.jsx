@@ -2,7 +2,7 @@ import React from "react";
 
 const Table = () => (
   <table className="table caption-top bg-white rounded mt-2">
-    <caption className="text-white fs-4">Workers</caption>
+    <caption className="text-dark fs-4">Workers</caption>
     <thead>
       <tr>
         <th scope="col">#</th>

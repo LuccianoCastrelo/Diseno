@@ -14,7 +14,6 @@ export default function App() {
           <UserButton />
           <Routes>
             <Route path="/" element={<Home />} />
-            {/* Puedes agregar más rutas aquí */}
           </Routes>
         </SignedIn>
       </header>

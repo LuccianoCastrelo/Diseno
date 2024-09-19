@@ -7,11 +7,14 @@
   color: white;
 }
 
-@media (max-width: 768px) {
-  .sidebar {
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
+.sidebar-transition {
+  transition: all 0.3s ease;
+}
+
+.sidebar-transition {
+  transition: width 0.3s ease, margin-left 0.3s ease;
+}
+
+.main-content-wrapper {
+  transition: width 0.3s ease;
 }
