@@ -1,0 +1,20 @@
+.sidebar {
+  width: 220px;
+}
+
+.list-group a:hover {
+  background-color: lightblue;
+  color: white;
+}
+
+.sidebar-transition {
+  transition: all 0.3s ease;
+}
+
+.sidebar-transition {
+  transition: width 0.3s ease, margin-left 0.3s ease;
+}
+
+.main-content-wrapper {
+  transition: width 0.3s ease;
+}

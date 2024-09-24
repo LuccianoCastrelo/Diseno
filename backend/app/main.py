@@ -1,11 +1,21 @@
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
+from typing import List
 from . import crud, models, schemas, database
 
 models.Base.metadata.create_all(bind=database.engine)
 
 app = FastAPI()
 
+# Add the CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # Allow your frontend's origin
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
 @app.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(database.get_db)):
     db_user = crud.get_user_by_email(db, email=user.email)
@@ -42,6 +52,11 @@ def update_trabajador(id_trabajador:int,trabajador: schemas.TrabajadorSchema, db
         raise HTTPException(status_code=404, detail="Worker not found")
     updated_trabajador=crud.update_trabajador(db, id_trabajador,trabajador)
     return updated_trabajador
+
+@app.get("/trabajadores/", response_model=List[schemas.TrabajadorSchema])
+def read_trabajadores(db: Session = Depends(database.get_db)):
+    trabajadores = crud.get_all_trabajadores(db)
+    return trabajadores
 
 @app.delete("/trabajador/{id_trabajador}", response_model=schemas.TrabajadorSchema)
 def delete_trabajador(id_trabajador:int,trabajador: schemas.TrabajadorSchema, db:Session=Depends(database.get_db)):
