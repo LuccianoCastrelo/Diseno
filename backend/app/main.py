@@ -59,11 +59,12 @@ def read_trabajadores(db: Session = Depends(database.get_db)):
     return trabajadores
 
 @app.delete("/trabajador/{id_trabajador}", response_model=schemas.TrabajadorSchema)
-def delete_trabajador(id_trabajador:int,trabajador: schemas.TrabajadorSchema, db:Session=Depends(database.get_db)):
-    db_trabajador=crud.get_trabajador(db, id_trabajador=id_trabajador)
+def delete_trabajador(id_trabajador: int, db: Session = Depends(database.get_db)):
+    db_trabajador = crud.get_trabajador(db, id_trabajador=id_trabajador)
     if db_trabajador is None:
-        raise HTTPException(status_code=404, detail= "Worker not found")
-    crud.delete_trabajador(db,trabajador,)
+        raise HTTPException(status_code=404, detail="Worker not found")
+    
+    crud.delete_trabajador(db, id_trabajador)
     return db_trabajador
 
 @app.post("/admin/", response_model=schemas.AdministradorSchema)

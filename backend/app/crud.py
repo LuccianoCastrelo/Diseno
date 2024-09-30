@@ -37,3 +37,9 @@ def update_trabajador(db: Session, id_trabajador: int, trabajador_data: schemas.
         db.refresh(db_trabajador)
         return db_trabajador
     return None
+
+def delete_trabajador(db: Session, id_trabajador: int):
+    db_trabajador = db.query(models.Trabajador).filter(models.Trabajador.id_trabajador == id_trabajador).first()
+    if db_trabajador:
+        db.delete(db_trabajador)
+        db.commit()
