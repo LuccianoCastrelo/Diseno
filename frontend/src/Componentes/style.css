@@ -1,20 +1,110 @@
 .sidebar {
-  width: 220px;
+  position: fixed; /* Fija la barra lateral en la pantalla */
+  top: 0;   /* Posiciona la barra lateral en la parte superior */
+  left: 0;  /* Posiciona la barra lateral en la parte izquierda */
+  height: 100%; 
+  transition: width 0.3s ease;
 }
 
-.list-group a:hover {
-  background-color: lightblue;
-  color: white;
+.sidebar-open {
+  width: 200px; /* Ancho cuando la barra lateral está abierta */
 }
 
-.sidebar-transition {
-  transition: all 0.3s ease;
+.sidebar-closed {
+  width: 180px; /* Ancho cuando la barra lateral está cerrada */
+}
+
+.small-button {
+  padding: 0.2em 0.4em; /* Reduce padding */
+  font-size: 0.8em; /* Reduce font size */
+}
+
+.list-group a {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.75rem 1.25rem;
+  transition: background-color 0.3s ease;
+}
+
+.list-group a:hover,
+.list-group a.active {
+  background-color: lightblue; /* Color de fondo celeste */
+  color: white; /* Color del texto en blanco */
+}
+
+.list-group a.active {
+  background-color: #00bcd4; /* Color de fondo celeste más oscuro cuando está activo */
+  color: white; /* Color del texto en blanco */
 }
 
 .sidebar-transition {
   transition: width 0.3s ease, margin-left 0.3s ease;
 }
 
-.main-content-wrapper {
-  transition: width 0.3s ease;
+
+@media (max-width: 320px) {
+  .sidebar {
+    z-index: 1000; /* Asegura que la barra lateral esté por encima del contenido principal en dispositivos móviles */
+  }
+
+  .sidebar-open {
+    width: 50px; /* Ancho reducido en dispositivos móviles */
+  }
+
+  .sidebar-closed {
+    width: 50px; /* Ancho reducido en dispositivos móviles */
+  }
+
+  /* .sidebar .list-group-item span {
+    display: none; /* Oculta los nombres en dispositivos móviles */
+  /*} */
+}
+
+
+
+/* Ajusta el tamaño de los elementos dentro de MainContent */
+.main-content-wrapper .card {
+  font-size: 0.8rem; /* Reduce el tamaño de la fuente */
+  padding: 0.5rem; /* Reduce el padding */
+}
+
+.main-content-wrapper .table {
+  font-size: 0.8rem; /* Reduce el tamaño de la fuente */
+}
+
+.main-content-wrapper .container-fluid {
+  margin-left: 30px; /* Ajusta el margen izquierdo */
+  
+}
+
+.container-fluid {
+  /* Ajusta el tamaño y otros estilos según tus necesidades */
+  width: 75vw; /* Ancho completo de la ventana */
+  
+  background-color: #6c757d; /* Color de fondo secundario */
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+
+
+
+
+
+
+/* Usuario */
+
+.custom-user-button {
+  top: 10px; /* Ajusta la posición según tus necesidades */
+  right: 100px; /* Ajusta la posición según tus necesidades */
+  border-radius: 50%; /* Hacer el botón redondo */
+  overflow: hidden; /* Asegurar que el contenido no se desborde */
+}
+
+
+.cl-userButtonTrigger {
+  border-radius: 50%; /* Hacer el botón redondo */
+  overflow: hidden; /* Asegurar que el contenido no se desborde */
 }
