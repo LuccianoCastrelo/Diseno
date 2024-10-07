@@ -3,7 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import List
 from . import crud, models, schemas, database
-
+from datetime import datetime
+from .algorithm import *
 models.Base.metadata.create_all(bind=database.engine)
 
 app = FastAPI()
@@ -97,3 +98,42 @@ def delete_admin(id_administrador:int,admin: schemas.AdministradorSchema, db:Ses
         raise HTTPException(status_code=404, detail= "Worker not found")
     crud.delete_admin(db,admin,)
     return db_admin
+
+@app.post("/calcular_pagos/{id_trabajador}", response_model=schemas.TrabajadorSchema)
+def calcular_pagos(id_trabajador: int, db: Session = Depends(database.get_db)):
+    # Obtener el trabajador desde la base de datos
+    db_trabajador = crud.get_trabajador(db, id_trabajador=id_trabajador)
+    if db_trabajador is None:
+        raise HTTPException(status_code=404, detail="Trabajador no encontrado")
+    
+    # Obtener los registros de horas trabajadas del trabajador
+    registros_horas = crud.get_registros_horas(db, id_trabajador=id_trabajador)
+    
+    if not registros_horas:
+        raise HTTPException(status_code=404, detail="No hay registros de horas trabajadas para este trabajador.")
+    
+    # Preparar la información del trabajador y registros en el formato esperado por el algoritmo
+    trabajador_data = {
+        "nombre": db_trabajador.nombre,
+        "tipo": db_trabajador.tipo,  # Extraído desde la tabla Trabajador
+        "pago_por_turno": db_trabajador.pago_por_turno,  # Extraído desde la tabla Trabajador
+        "salario_base": db_trabajador.salario_base  # Solo para trabajadores permanentes
+    }
+    
+    registros_jornadas = []
+    for registro in registros_horas:
+        registros_jornadas.append({
+            "fecha": registro.fecha.strftime('%d-%m-%Y'),
+            "horas_trabajadas": registro.horas_trabajadas,
+            "es_festivo_o_domingo": False  # Puedes agregar lógica para determinar si es festivo o domingo
+        })
+    
+    # Calcular pagos usando el algoritmo
+    resultado = calcular_pago_trabajador(trabajador_data, registros_jornadas)
+    
+    return {
+        "nombre": db_trabajador.nombre,
+        "pago_total": resultado["pago_total"],
+        "pagos_semanales": resultado["pagos_semanales"],
+        "pagos_mensuales": resultado["pagos_mensuales"]
+    }

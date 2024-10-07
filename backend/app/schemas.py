@@ -25,14 +25,15 @@ class AdministradorSchema(BaseModel):
 
     class Config:
         orm_mode = True
-
 class TrabajadorSchema(BaseModel):
     id_trabajador: int
     nombre: str
+    tipo: str  # 'eventual' o 'permanente'
+    pago_por_turno: int
+    salario_base: int = None  # Puede ser None para trabajadores eventuales
 
     class Config:
         orm_mode = True
-
 class TurnoSchema(BaseModel):
     id_turno: int
     id_trabajador: int

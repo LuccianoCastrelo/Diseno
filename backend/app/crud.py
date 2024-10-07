@@ -43,3 +43,15 @@ def delete_trabajador(db: Session, id_trabajador: int):
     if db_trabajador:
         db.delete(db_trabajador)
         db.commit()
+
+def get_trabajador(db: Session, id_trabajador: int):
+    """
+    Obtener el trabajador y su información adicional, como tipo, pago por turno y salario base.
+    """
+    return db.query(models.Trabajador).filter(models.Trabajador.id_trabajador == id_trabajador).first()
+
+def get_registros_horas(db: Session, id_trabajador: int):
+    """
+    Obtener los registros de horas trabajadas de un trabajador específico.
+    """
+    return db.query(models.RegistroHorasTrabajadas).filter(models.RegistroHorasTrabajadas.id_trabajador == id_trabajador).all()
