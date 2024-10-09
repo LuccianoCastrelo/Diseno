@@ -100,7 +100,7 @@ def obtener_primer_dia_mes(fecha):
     return fecha.replace(day=1)
 
 # Ejemplo de uso
-
+"""
 trabajador_eventual = {
     'nombre': 'Juan Pérez',
     'tipo': 'eventual',
@@ -134,3 +134,4 @@ resultado_permanente = calcular_pago_trabajador(trabajador_permanente, registros
 print(f"Pago total trabajador permanente: {resultado_permanente['pago_total']}")
 print(f"Pagos semanales: {resultado_permanente['pagos_semanales']}")
 print(f"Pagos mensuales: {resultado_permanente['pagos_mensuales']}")
+"""
