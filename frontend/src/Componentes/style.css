@@ -52,6 +52,11 @@ html, body {
 
 
 @media (max-width: 320px) {
+  html, body {
+    overflow-y: auto; /* Evita el desbordamiento horizontal */
+    background-color: #6c757d; /* Establece el color de fondo a gris */
+  }
+
   .sidebar {
     z-index: 1000; /* Asegura que la barra lateral esté por encima del contenido principal en dispositivos móviles */
   }
@@ -83,6 +88,7 @@ html, body {
 
 .main-content-wrapper .container-fluid {
   margin-left: 30px; /* Ajusta el margen izquierdo */
+  overflow-y: hidden;
   
 }
 
