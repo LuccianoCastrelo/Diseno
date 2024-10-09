@@ -1,9 +1,17 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: hidden; /* Evita el desbordamiento horizontal */
+}
+
 .sidebar {
   position: fixed; /* Fija la barra lateral en la pantalla */
   top: 0;   /* Posiciona la barra lateral en la parte superior */
   left: 0;  /* Posiciona la barra lateral en la parte izquierda */
   height: 100%; 
   transition: width 0.3s ease;
+  overflow-y: auto;
 }
 
 .sidebar-open {
@@ -98,7 +106,7 @@
 
 .custom-user-button {
   top: 10px; /* Ajusta la posición según tus necesidades */
-  right: 100px; /* Ajusta la posición según tus necesidades */
+  right: 80px; /* Ajusta la posición según tus necesidades */
   border-radius: 50%; /* Hacer el botón redondo */
   overflow: hidden; /* Asegurar que el contenido no se desborde */
 }
