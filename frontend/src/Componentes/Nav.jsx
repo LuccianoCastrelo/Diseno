@@ -7,7 +7,7 @@ function Nav({ Toggle }) {
         <i className="bi bi-justify fs-4" />
       </button>
       <div className="collapse navbar-collapse" id="navbarContent">
-        <ul className="navbar-nav ms-auto">
+        <ul className="navbar-nav ms-auto ">
           <li className="nav-item dropdown">
             <a
               className="nav-link dropdown-toggle"

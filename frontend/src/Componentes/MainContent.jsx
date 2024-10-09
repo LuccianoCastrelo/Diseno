@@ -12,7 +12,7 @@ const MainContent = () => {
   ];
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid main-content-wrapper">
       <div className="row g-3 my-2">
         {stats.map((stat, index) => (
           <Card key={index} {...stat} />

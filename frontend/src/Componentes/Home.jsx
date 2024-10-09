@@ -31,14 +31,14 @@ function Home() {
       </div>
 
       {/* Button to show sidebar when collapsed */}
-      {!toggle && (
+      {/*!toggle && (
         <button
           className="btn btn-primary position-fixed top-0 start-0 mt-3 ms-3"
           onClick={Toggle}
         >
           <i className="bi bi-list"></i>
         </button>
-      )}
+      )*/}
     </div>
   );
 }
