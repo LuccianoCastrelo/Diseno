@@ -1,20 +1,16 @@
-from sqlalchemy.ext.declarative import declarative_base
-#ESTAS SON LAS TABLAS DE LA BASE DE DATOS
 from sqlalchemy import Column, Integer, String, Date, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
-from .database import Base  # Asegúrate de tener esta importación correcta
+from .database import Base
 
-#ESTE ES SOLO UN EJEMPLO
 class User(Base):
-    __tablename__ = "users"
+    __tablename__ = "users"  # Asegúrate de que esté bien definido con dos guiones bajos
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
     email = Column(String, unique=True, index=True)
 
-#Estos son los modelos de la base de datos
 class Administrador(Base):
-    __tablename__ = "administradores"  # Ajuste a plural para mantener consistencia
+    __tablename__ = "administradores"  # Ajuste correcto con __tablename__
     id_administrador = Column(Integer, primary_key=True, index=True)
     nombre = Column(String)
     correo = Column(String)
