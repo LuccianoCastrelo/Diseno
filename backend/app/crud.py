@@ -2,6 +2,7 @@
 from sqlalchemy.orm import Session
 from . import models, schemas
 
+# --------- CRUD para Users ---------
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
@@ -15,6 +16,12 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.refresh(db_user)
     return db_user
 
+# --------- CRUD para Trabajadores ---------
+def get_trabajador(db: Session, id_trabajador: int):
+    return db.query(models.Trabajador).filter(models.Trabajador.id_trabajador == id_trabajador).first()
+
+def get_all_trabajadores(db: Session):
+    return db.query(models.Trabajador).all()
 
 def create_trabajador(db: Session, trabajador: schemas.TrabajadorSchema):
     db_trabajador = models.Trabajador(nombre=trabajador.nombre)
@@ -23,25 +30,8 @@ def create_trabajador(db: Session, trabajador: schemas.TrabajadorSchema):
     db.refresh(db_trabajador)
     return db_trabajador
 
-def get_trabajador(db: Session, id_trabajador: int):
-    """
-    Fetch a Trabajador (worker) by id_trabajador from the database.
-    
-    Parameters:
-    db (Session): The SQLAlchemy session for querying the database.
-    id_trabajador (int): The ID of the worker to fetch.
-    
-    Returns:
-    Trabajador: The Trabajador instance if found, otherwise None.
-    """
-    return db.query(models.Trabajador).filter(models.Trabajador.id_trabajador == id_trabajador).first()
-
-
-def get_all_trabajadores(db: Session):
-    return db.query(models.Trabajador).all()
-
 def update_trabajador(db: Session, id_trabajador: int, trabajador_data: schemas.TrabajadorSchema):
-    db_trabajador = db.query(models.Trabajador).filter(models.Trabajador.id_trabajador == id_trabajador).first()
+    db_trabajador = get_trabajador(db, id_trabajador)
     if db_trabajador:
         db_trabajador.nombre = trabajador_data.nombre
         db.commit()
@@ -50,13 +40,14 @@ def update_trabajador(db: Session, id_trabajador: int, trabajador_data: schemas.
     return None
 
 def delete_trabajador(db: Session, id_trabajador: int):
-    db_trabajador = db.query(models.Trabajador).filter(models.Trabajador.id_trabajador == id_trabajador).first()
+    db_trabajador = get_trabajador(db, id_trabajador)
     if db_trabajador:
         db.delete(db_trabajador)
         db.commit()
         return db_trabajador
     return None
 
+# --------- CRUD para Administradores ---------
 def get_admin(db: Session, id_administrador: int):
     return db.query(models.Administrador).filter(models.Administrador.id_administrador == id_administrador).first()
 
@@ -68,7 +59,7 @@ def create_admin(db: Session, admin: schemas.AdministradorSchema):
     return db_admin
 
 def update_admin(db: Session, id_administrador: int, admin_data: schemas.AdministradorSchema):
-    db_admin = db.query(models.Administrador).filter(models.Administrador.id_administrador == id_administrador).first()
+    db_admin = get_admin(db, id_administrador)
     if db_admin:
         db_admin.nombre = admin_data.nombre
         db_admin.correo = admin_data.correo
@@ -78,13 +69,14 @@ def update_admin(db: Session, id_administrador: int, admin_data: schemas.Adminis
     return None
 
 def delete_admin(db: Session, id_administrador: int):
-    db_admin = db.query(models.Administrador).filter(models.Administrador.id_administrador == id_administrador).first()
+    db_admin = get_admin(db, id_administrador)
     if db_admin:
         db.delete(db_admin)
         db.commit()
         return db_admin
     return None
 
+# --------- CRUD para Turnos ---------
 def get_turno(db: Session, id_turno: int):
     return db.query(models.Turno).filter(models.Turno.id_turno == id_turno).first()
 
@@ -101,7 +93,7 @@ def create_turno(db: Session, turno: schemas.TurnoSchema):
     return db_turno
 
 def update_turno(db: Session, id_turno: int, turno_data: schemas.TurnoSchema):
-    db_turno = db.query(models.Turno).filter(models.Turno.id_turno == id_turno).first()
+    db_turno = get_turno(db, id_turno)
     if db_turno:
         db_turno.hora_inicio = turno_data.hora_inicio
         db_turno.hora_fin = turno_data.hora_fin
@@ -112,7 +104,7 @@ def update_turno(db: Session, id_turno: int, turno_data: schemas.TurnoSchema):
     return None
 
 def delete_turno(db: Session, id_turno: int):
-    db_turno = db.query(models.Turno).filter(models.Turno.id_turno == id_turno).first()
+    db_turno = get_turno(db, id_turno)
     if db_turno:
         db.delete(db_turno)
         db.commit()
@@ -136,7 +128,7 @@ def create_registro(db: Session, registro: schemas.RegistroHorasTrabajadasSchema
     return db_registro
 
 def update_registro(db: Session, id_registro: int, registro_data: schemas.RegistroHorasTrabajadasSchema):
-    db_registro = db.query(models.RegistroHorasTrabajadas).filter(models.RegistroHorasTrabajadas.id_registro == id_registro).first()
+    db_registro = get_registro(db, id_registro)
     if db_registro:
         db_registro.id_trabajador = registro_data.id_trabajador
         db_registro.id_turno = registro_data.id_turno
@@ -148,9 +140,13 @@ def update_registro(db: Session, id_registro: int, registro_data: schemas.Regist
     return None
 
 def delete_registro(db: Session, id_registro: int):
-    db_registro = db.query(models.RegistroHorasTrabajadas).filter(models.RegistroHorasTrabajadas.id_registro == id_registro).first()
+    db_registro = get_registro(db, id_registro)
     if db_registro:
         db.delete(db_registro)
         db.commit()
         return db_registro
     return None
+
+# --------- Métodos adicionales ---------
+def get_registros_horas(db: Session, id_trabajador: int):
+    return db.query(models.RegistroHorasTrabajadas).filter(models.RegistroHorasTrabajadas.id_trabajador == id_trabajador).all()
