@@ -52,3 +52,4 @@ Thumbs.db
 /frontend/node_modules/
 # Python
 /backend/venv/
+/backend/env/

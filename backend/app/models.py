@@ -2,26 +2,21 @@ from sqlalchemy import Column, Integer, String, Date, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from .database import Base
 
-class User(Base):
-    __tablename__ = "users"  # Asegúrate de que esté bien definido con dos guiones bajos
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, index=True)
-    email = Column(String, unique=True, index=True)
-
 class Administrador(Base):
     __tablename__ = "administradores"  # Ajuste correcto con __tablename__
     id_administrador = Column(Integer, primary_key=True, index=True)
     nombre = Column(String)
     correo = Column(String)
+
 class Trabajador(Base):
     __tablename__ = "trabajadores"
     id_trabajador = Column(Integer, primary_key=True, index=True)
     nombre = Column(String)
     tipo = Column(String)  # 'eventual' o 'permanente'
     pago_por_turno = Column(Integer)
-    salario_base = Column(Integer)  # Solo para trabajadores permanentes
-
+    salario_base = Column(Integer, nullable=True)  # Permitir que sea nulo para trabajadores eventuales
+    rut = Column(String, unique=True, index=True)  
+    
 class Turno(Base):
     __tablename__ = "turnos"
     id_turno = Column(Integer, primary_key=True, index=True)

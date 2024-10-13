@@ -4,11 +4,12 @@ import { Modal, Button } from "react-bootstrap";
 
 const Table = () => {
   const [workers, setWorkers] = useState([]);
-  const [editingWorker, setEditingWorker] = useState(null);
-  const [editedName, setEditedName] = useState("");
+  const [editingWorker, setEditingWorker] = useState({ nombre: "", tipo: "", pago_por_turno: "", salario_base: "", rut: "" });
+  const [newWorker, setNewWorker] = useState({ nombre: "", tipo: "", pago_por_turno: "", salario_base: "", rut: "" });
   const [showModal, setShowModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false); // New state for delete confirmation modal
-  const [workerToDelete, setWorkerToDelete] = useState(null); // New state for tracking worker to delete
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false); // Modal para agregar trabajador
+  const [workerToDelete, setWorkerToDelete] = useState(null);
 
   useEffect(() => {
     const fetchWorkers = async () => {
@@ -23,67 +24,96 @@ const Table = () => {
     fetchWorkers();
   }, []);
 
-  // Open modal and populate form with selected worker's info
+  // Abrir modal de edición
   const handleEdit = (worker) => {
     setEditingWorker(worker);
-    setEditedName(worker.nombre);
-    setShowModal(true);  // Open the modal
+    setShowModal(true);  // Abrir modal de edición
   };
 
-  // Update the worker's information
+  // Actualizar trabajador
   const handleUpdate = async () => {
     try {
-      await axios.put(`http://localhost:8000/trabajador/${editingWorker.id_trabajador}`, {
+      const payload = {
         id_trabajador: editingWorker.id_trabajador,
-        nombre: editedName,
-      });
-
-      // Update the workers list with the edited name
+        nombre: editingWorker.nombre,
+        tipo: editingWorker.tipo,
+        pago_por_turno: parseInt(editingWorker.pago_por_turno, 10),
+        rut: editingWorker.rut
+      };
+  
+      // Si es permanente, incluir salario_base
+      if (editingWorker.tipo === 'permanente') {
+        payload.salario_base = parseInt(editingWorker.salario_base, 10);
+      }
+  
+      await axios.put(`http://localhost:8000/trabajador/${editingWorker.id_trabajador}`, payload);
+  
       setWorkers(
         workers.map((worker) =>
-          worker.id_trabajador === editingWorker.id_trabajador
-            ? { ...worker, nombre: editedName }
-            : worker
+          worker.id_trabajador === editingWorker.id_trabajador ? editingWorker : worker
         )
       );
-
-      // Close the modal after the update
+  
       setShowModal(false);
-      setEditingWorker(null);
-      setEditedName("");
     } catch (error) {
       console.error("Error updating worker:", error);
     }
   };
+  
 
-  // Open the delete confirmation modal
+  // Confirmar eliminación
   const handleDeleteConfirmation = (worker) => {
-    setWorkerToDelete(worker); // Set the worker to delete
-    setShowDeleteModal(true); // Show the delete confirmation modal
+    setWorkerToDelete(worker);
+    setShowDeleteModal(true);
   };
 
-  // Delete a worker's record
+  // Eliminar trabajador
   const handleDelete = async () => {
     try {
       await axios.delete(`http://localhost:8000/trabajador/${workerToDelete.id_trabajador}`);
-      // Remove the worker from the state
       setWorkers(workers.filter((worker) => worker.id_trabajador !== workerToDelete.id_trabajador));
-      setShowDeleteModal(false); // Close the delete confirmation modal
-      setWorkerToDelete(null); // Clear the worker to delete
+      setShowDeleteModal(false);
+      setWorkerToDelete(null);
     } catch (error) {
       console.error("Error deleting worker:", error);
     }
   };
+  
+  const handleAddWorker = async () => {
+    try {
+      const payload = {
+        nombre: newWorker.nombre,
+        tipo: newWorker.tipo,
+        pago_por_turno: parseInt(newWorker.pago_por_turno, 10),
+        rut: newWorker.rut  // Añadir el rut al post
+      };
+  
+      // Si es permanente, incluir salario_base
+      if (newWorker.tipo === 'permanente') {
+        payload.salario_base = parseInt(newWorker.salario_base, 10);
+      }
+  
+      const response = await axios.post("http://localhost:8000/trabajadores/", payload);
+      setWorkers([...workers, response.data]);
+      setShowAddModal(false);
+      setNewWorker({ nombre: "", tipo: "", pago_por_turno: "", salario_base: "", rut: "" });
+    } catch (error) {
+      console.error("Error adding worker:", error);
+    }
+  };
+  
 
   return (
     <div>
+      <Button variant="success" onClick={() => setShowAddModal(true)}>Agregar Trabajador</Button> {/* Botón para agregar */}
+      
       <table className="table caption-top bg-white rounded mt-2">
         <caption className="text-dark fs-4">Workers</caption>
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
-            <th scope="col">Handle</th>
+            <th scope="col">RUT</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
@@ -92,67 +122,145 @@ const Table = () => {
             <tr key={worker.id_trabajador}>
               <th scope="row">{index + 1}</th>
               <td>{worker.nombre}</td>
-              <td>@{worker.nombre.toLowerCase()}</td>
+              <td>{worker.rut}</td>
               <td>
-                <button
-                  className="btn btn-primary me-2"
-                  onClick={() => handleEdit(worker)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => handleDeleteConfirmation(worker)}
-                >
-                  Delete
-                </button>
+                <button className="btn btn-primary me-2" onClick={() => handleEdit(worker)}>Edit</button>
+                <button className="btn btn-danger" onClick={() => handleDeleteConfirmation(worker)}>Delete</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      {/* Bootstrap Modal for Editing */}
+      {/* Modal para Editar */}
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Worker</Modal.Title>
+          <Modal.Title>Editar Trabajador</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="form-group">
-            <label>New Name</label>
+            <label>Nombre</label>
             <input
               type="text"
               className="form-control"
-              value={editedName}
-              onChange={(e) => setEditedName(e.target.value)}
+              value={editingWorker.nombre}
+              onChange={(e) => setEditingWorker({ ...editingWorker, nombre: e.target.value })}
             />
           </div>
+          <div className="form-group">
+            <label>RUT</label>
+            <input
+              type="text"
+              className="form-control"
+              value={editingWorker.rut}
+              onChange={(e) => setEditingWorker({ ...editingWorker, rut: e.target.value })}
+            />
+          </div>
+          <div className="form-group">
+            <label>Tipo</label>
+            <input
+              type="text"
+              className="form-control"
+              value={editingWorker.tipo}
+              onChange={(e) => setEditingWorker({ ...editingWorker, tipo: e.target.value })}
+            />
+          </div>
+          <div className="form-group">
+            <label>Pago por turno</label>
+            <input
+              type="number"
+              className="form-control"
+              value={editingWorker.pago_por_turno}
+              onChange={(e) => setEditingWorker({ ...editingWorker, pago_por_turno: e.target.value })}
+            />
+          </div>
+          {editingWorker.tipo === 'permanente' && (
+            <div className="form-group">
+              <label>Salario base</label>
+              <input
+                type="number"
+                className="form-control"
+                value={editingWorker.salario_base}
+                onChange={(e) => setEditingWorker({ ...editingWorker, salario_base: e.target.value })}
+              />
+            </div>
+          )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={handleUpdate}>
-            Save Changes
-          </Button>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>Cancelar</Button>
+          <Button variant="primary" onClick={handleUpdate}>Guardar Cambios</Button>
         </Modal.Footer>
       </Modal>
 
-      {/* Bootstrap Modal for Delete Confirmation */}
+      {/* Modal para Confirmar Eliminación */}
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Delete Worker</Modal.Title>
+          <Modal.Title>Eliminar Trabajador</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>¿Estás seguro de que quieres eliminar al trabajador: <strong>{workerToDelete?.nombre}</strong>?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>Cancelar</Button>
+          <Button variant="danger" onClick={handleDelete}>Eliminar</Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Modal para Agregar Trabajador */}
+      <Modal show={showAddModal} onHide={() => setShowAddModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Agregar Trabajador</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Are you sure you want to delete the worker: <strong>{workerToDelete?.nombre}</strong>?
+          <div className="form-group">
+            <label>Nombre</label>
+            <input
+              type="text"
+              className="form-control"
+              value={newWorker.nombre}
+              onChange={(e) => setNewWorker({ ...newWorker, nombre: e.target.value })}
+            />
+          </div>
+          <div className="form-group">
+            <label>RUT</label>
+            <input
+              type="text"
+              className="form-control"
+              value={newWorker.rut}
+              onChange={(e) => setNewWorker({ ...newWorker, rut: e.target.value })}
+            />
+          </div>
+          <div className="form-group">
+            <label>Tipo</label>
+            <input
+              type="text"
+              className="form-control"
+              value={newWorker.tipo}
+              onChange={(e) => setNewWorker({ ...newWorker, tipo: e.target.value })}
+            />
+          </div>
+          <div className="form-group">
+            <label>Pago por turno</label>
+            <input
+              type="number"
+              className="form-control"
+              value={newWorker.pago_por_turno}
+              onChange={(e) => setNewWorker({ ...newWorker, pago_por_turno: e.target.value })}
+            />
+          </div>
+          {newWorker.tipo === 'permanente' && (
+            <div className="form-group">
+              <label>Salario base</label>
+              <input
+                type="number"
+                className="form-control"
+                value={newWorker.salario_base}
+                onChange={(e) => setNewWorker({ ...newWorker, salario_base: e.target.value })}
+              />
+            </div>
+          )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
-            Cancel
-          </Button>
-          <Button variant="danger" onClick={handleDelete}>
-            Delete
-          </Button>
+          <Button variant="secondary" onClick={() => setShowAddModal(false)}>Cancelar</Button>
+          <Button variant="primary" onClick={handleAddWorker}>Agregar Trabajador</Button>
         </Modal.Footer>
       </Modal>
     </div>

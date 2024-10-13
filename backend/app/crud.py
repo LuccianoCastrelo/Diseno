@@ -2,20 +2,6 @@
 from sqlalchemy.orm import Session
 from . import models, schemas
 
-# --------- CRUD para Users ---------
-def get_user(db: Session, user_id: int):
-    return db.query(models.User).filter(models.User.id == user_id).first()
-
-def get_user_by_email(db: Session, email: str):
-    return db.query(models.User).filter(models.User.email == email).first()
-
-def create_user(db: Session, user: schemas.UserCreate):
-    db_user = models.User(name=user.name, email=user.email)
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    return db_user
-
 # --------- CRUD para Trabajadores ---------
 def get_trabajador(db: Session, id_trabajador: int):
     return db.query(models.Trabajador).filter(models.Trabajador.id_trabajador == id_trabajador).first()
@@ -23,12 +9,19 @@ def get_trabajador(db: Session, id_trabajador: int):
 def get_all_trabajadores(db: Session):
     return db.query(models.Trabajador).all()
 
-def create_trabajador(db: Session, trabajador: schemas.TrabajadorSchema):
-    db_trabajador = models.Trabajador(nombre=trabajador.nombre)
+def create_trabajador(db: Session, trabajador: schemas.TrabajadorSchemaReq):
+    db_trabajador = models.Trabajador(
+        nombre=trabajador.nombre,
+        tipo=trabajador.tipo,
+        pago_por_turno=trabajador.pago_por_turno,
+        salario_base=trabajador.salario_base,
+        rut=trabajador.rut  # Incluir el rut en la creación
+    )
     db.add(db_trabajador)
     db.commit()
     db.refresh(db_trabajador)
     return db_trabajador
+
 
 def update_trabajador(db: Session, id_trabajador: int, trabajador_data: schemas.TrabajadorSchema):
     db_trabajador = get_trabajador(db, id_trabajador)
@@ -46,6 +39,9 @@ def delete_trabajador(db: Session, id_trabajador: int):
         db.commit()
         return db_trabajador
     return None
+
+def get_trabajador_by_rut(db: Session, rut: str):
+    return db.query(models.Trabajador).filter(models.Trabajador.rut == rut).first()
 
 # --------- CRUD para Administradores ---------
 def get_admin(db: Session, id_administrador: int):
@@ -150,3 +146,7 @@ def delete_registro(db: Session, id_registro: int):
 # --------- Métodos adicionales ---------
 def get_registros_horas(db: Session, id_trabajador: int):
     return db.query(models.RegistroHorasTrabajadas).filter(models.RegistroHorasTrabajadas.id_trabajador == id_trabajador).all()
+
+# Función para crear un ID aleatorio
+def generate_random_id(length=6):
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
