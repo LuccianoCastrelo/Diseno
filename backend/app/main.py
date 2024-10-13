@@ -14,7 +14,7 @@ app = FastAPI()
 # Add the CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Allow your frontend's origin
+    allow_origins=["http://localhost:5173","http://localhost:8000"],  # Allow your frontend's origin
     allow_credentials=True,
     allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
     allow_headers=["*"],  # Allow all headers
@@ -64,6 +64,7 @@ def update_trabajador(id_trabajador: int, trabajador: schemas.TrabajadorSchema, 
 def read_trabajadores(db: Session = Depends(database.get_db)):
     return crud.get_all_trabajadores(db)
 
+"""
 @app.delete("/trabajador/{id_trabajador}", response_model=schemas.TrabajadorSchema)
 def delete_trabajador(id_trabajador:int,trabajador: schemas.TrabajadorSchema, db:Session=Depends(database.get_db)):
     db_trabajador=crud.delete_trabajador(db, id_trabajador=id_trabajador)
@@ -71,7 +72,15 @@ def delete_trabajador(id_trabajador:int,trabajador: schemas.TrabajadorSchema, db
         raise HTTPException(status_code=404, detail= "Worker not found")
     crud.delete_trabajador(db,trabajador,)
     return db_trabajador
-
+"""
+@app.delete("/trabajador/{id_trabajador}", response_model=schemas.TrabajadorSchema)
+def delete_trabajador(id_trabajador: int, db: Session = Depends(database.get_db)):
+    db_trabajador = crud.get_trabajador(db, id_trabajador=id_trabajador)
+    if db_trabajador is None:
+        raise HTTPException(status_code=404, detail="Worker not found")
+    
+    crud.delete_trabajador(db, id_trabajador)
+    return db_trabajador
 # Administradores
 @app.post("/admin/", response_model=schemas.AdministradorSchema) 
 def create_admin(admin: schemas.AdministradorSchema, db: Session = Depends(database.get_db)):
