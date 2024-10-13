@@ -6,7 +6,6 @@ from typing import List
 from . import crud, models, schemas, database
 from fastapi.middleware.cors import CORSMiddleware
 models.Base.metadata.create_all(bind=database.engine)
-
 app = FastAPI()
 
 # Orígenes permitidos (puedes agregar más si los necesitas)
@@ -19,23 +18,6 @@ app.add_middleware(
     allow_methods=["*"],  # Permite todos los métodos HTTP (GET, POST, PUT, etc.)
     allow_headers=["*"],   # Permite todos los encabezados
 )
-# Users
-@app.post("/users/", response_model=schemas.User)
-def create_user(user: schemas.UserCreate, db: Session = Depends(database.get_db)):
-    # Verificar si ya existe un usuario con el mismo email
-    db_user = crud.get_user_by_email(db, email=user.email)
-    if db_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
-    
-    # Crear el usuario si no existe
-    return crud.create_user(db=db, user=user)
-
-@app.get("/users/{user_id}", response_model=schemas.User)
-def read_user(user_id: int, db: Session = Depends(database.get_db)):
-    db_user = crud.get_user(db, user_id=user_id)
-    if db_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    return db_user
 """
 # Trabajadores
 @app.post("/trabajador/", response_model=schemas.TrabajadorSchema)
@@ -45,21 +27,19 @@ def create_trabajador(trabajador: schemas.TrabajadorSchema, db:Session= Depends(
         raise HTTPException(status_code=400, detail="ID already registered")
     return crud.create_trabajador(db=db, trabajador=trabajador)
 """
-# Ruta para crear un trabajador
-@app.post("/trabajadores/", response_model=schemas.TrabajadorSchemaReq)
-def create_trabajador(trabajadores: schemas.TrabajadorSchemaReq, db:Session= Depends(database.get_db)):
-    nuevo_trabajadores = schemas.TrabajadorSchema(trabajadores.nombre, 129339)
-    db_trabajadores=crud.create_trabajadores(db,nuevo_trabajadores)
-    if db_trabajador:
-        raise HTTPException(status_code=400, detail="ID already registered")
-    db_trabajador=crud.create_trabajadores(db=db, trabajador=trabajadores)
-    return db_trabajadores
-    # Aquí debes agregar el código para guardar el trabajador en la base de datos
-    #db.add(trabajador)
-    #db.commit()
-   # db.refresh(trabajador)
 
-    return trabajador
+@app.post("/trabajadores/", response_model=schemas.TrabajadorSchema)
+def create_trabajador(trabajador: schemas.TrabajadorSchemaReq, db: Session = Depends(database.get_db)):
+    # Verificar si un trabajador con el mismo rut ya existe
+    db_trabajador = crud.get_trabajador_by_rut(db, rut=trabajador.rut)
+    if db_trabajador:
+        raise HTTPException(status_code=400, detail="El trabajador con este RUT ya está registrado")
+    
+    # Crear el nuevo trabajador si no existe uno con el mismo rut
+    nuevo_trabajador = crud.create_trabajador(db=db, trabajador=trabajador)
+    return nuevo_trabajador
+
+
 @app.get("/trabajador/{id_trabajador}", response_model=schemas.TrabajadorSchema)
 def read_trabajador(id_trabajador: int, db: Session = Depends(database.get_db)):
     db_trabajador = crud.get_trabajador(db, id_trabajador=id_trabajador)
@@ -78,15 +58,6 @@ def update_trabajador(id_trabajador: int, trabajador: schemas.TrabajadorSchema, 
 def read_trabajadores(db: Session = Depends(database.get_db)):
     return crud.get_all_trabajadores(db)
 
-"""
-@app.delete("/trabajador/{id_trabajador}", response_model=schemas.TrabajadorSchema)
-def delete_trabajador(id_trabajador:int,trabajador: schemas.TrabajadorSchema, db:Session=Depends(database.get_db)):
-    db_trabajador=crud.delete_trabajador(db, id_trabajador=id_trabajador)
-    if db_trabajador is None:
-        raise HTTPException(status_code=404, detail= "Worker not found")
-    crud.delete_trabajador(db,trabajador,)
-    return db_trabajador
-"""
 @app.delete("/trabajador/{id_trabajador}", response_model=schemas.TrabajadorSchema)
 def delete_trabajador(id_trabajador: int, db: Session = Depends(database.get_db)):
     db_trabajador = crud.get_trabajador(db, id_trabajador=id_trabajador)

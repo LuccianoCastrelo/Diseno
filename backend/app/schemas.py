@@ -1,21 +1,6 @@
-
 from pydantic import BaseModel
+from typing import Optional
 from datetime import datetime, date
-#ESTOS SON EJEMPLOS
-class UserBase(BaseModel):
-    name: str
-    email: str
-
-class UserCreate(UserBase):
-    pass
-
-class User(UserBase):
-    id: int
-
-    class Config:
-        orm_mode = True
-
-
 #ESTOS SON DE LA BASE DE DATOS
 
 class AdministradorSchema(BaseModel):
@@ -25,29 +10,27 @@ class AdministradorSchema(BaseModel):
 
     class Config:
         orm_mode = True
-class TrabajadorSchema(BaseModel):
-    id_trabajador: int
+
+class TrabajadorSchemaReq(BaseModel):
     nombre: str
-    #tipo: str  # 'eventual' o 'permanente'
-    #pago_por_turno: int
-    #salario_base: int = None  # Puede ser None para trabajadores eventuales
+    tipo: str
+    pago_por_turno: int
+    salario_base: Optional[int] = None  # Hacer opcional para trabajadores eventuales    
+    rut: str  # Añadir el campo RUT
 
     class Config:
         orm_mode = True
-        
-class TrabajadorSchemaReq(BaseModel):
-    nombre: str
 
+class TrabajadorSchema(TrabajadorSchemaReq):
+    id_trabajador: int
 class TurnoSchema(BaseModel):
     id_turno: int
-    id_trabajador: int
     hora_inicio: datetime
     hora_fin: datetime
     duracion: int
 
     class Config:
         orm_mode = True
-
 class RegistroHorasTrabajadasSchema(BaseModel):
     id_registro: int
     id_trabajador: int
