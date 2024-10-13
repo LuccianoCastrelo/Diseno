@@ -150,3 +150,7 @@ def delete_registro(db: Session, id_registro: int):
 # --------- Métodos adicionales ---------
 def get_registros_horas(db: Session, id_trabajador: int):
     return db.query(models.RegistroHorasTrabajadas).filter(models.RegistroHorasTrabajadas.id_trabajador == id_trabajador).all()
+
+# Función para crear un ID aleatorio
+def generate_random_id(length=6):
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=length))

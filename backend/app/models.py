@@ -18,9 +18,9 @@ class Trabajador(Base):
     __tablename__ = "trabajadores"
     id_trabajador = Column(Integer, primary_key=True, index=True)
     nombre = Column(String)
-    tipo = Column(String)  # 'eventual' o 'permanente'
-    pago_por_turno = Column(Integer)
-    salario_base = Column(Integer)  # Solo para trabajadores permanentes
+    #tipo = Column(String)  # 'eventual' o 'permanente'
+    #pago_por_turno = Column(Integer)
+    #salario_base = Column(Integer)  # Solo para trabajadores permanentes
 
 class Turno(Base):
     __tablename__ = "turnos"

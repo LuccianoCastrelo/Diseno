@@ -9,17 +9,16 @@ models.Base.metadata.create_all(bind=database.engine)
 
 app = FastAPI()
 
-origins = ["*"]
+# Orígenes permitidos (puedes agregar más si los necesitas)
+origins = ["http://localhost:5173", "http://127.0.0.1:5173"]
 
-# Add the CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins = origins,
-    allow_credentials = True,
-    allow_methods = ["*"],
-    allow_headers = ["*"],
+    allow_origins=origins,  # Permite solicitudes desde estos orígenes
+    allow_credentials=False,
+    allow_methods=["*"],  # Permite todos los métodos HTTP (GET, POST, PUT, etc.)
+    allow_headers=["*"],   # Permite todos los encabezados
 )
-
 # Users
 @app.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(database.get_db)):
@@ -37,7 +36,7 @@ def read_user(user_id: int, db: Session = Depends(database.get_db)):
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
-
+"""
 # Trabajadores
 @app.post("/trabajador/", response_model=schemas.TrabajadorSchema)
 def create_trabajador(trabajador: schemas.TrabajadorSchema, db:Session= Depends(database.get_db)):
@@ -45,7 +44,22 @@ def create_trabajador(trabajador: schemas.TrabajadorSchema, db:Session= Depends(
     if db_trabajador:
         raise HTTPException(status_code=400, detail="ID already registered")
     return crud.create_trabajador(db=db, trabajador=trabajador)
+"""
+# Ruta para crear un trabajador
+@app.post("/trabajadores/", response_model=schemas.TrabajadorSchemaReq)
+def create_trabajador(trabajadores: schemas.TrabajadorSchemaReq, db:Session= Depends(database.get_db)):
+    nuevo_trabajadores = schemas.TrabajadorSchema(trabajadores.nombre, 129339)
+    db_trabajadores=crud.create_trabajadores(db,nuevo_trabajadores)
+    if db_trabajador:
+        raise HTTPException(status_code=400, detail="ID already registered")
+    db_trabajador=crud.create_trabajadores(db=db, trabajador=trabajadores)
+    return db_trabajadores
+    # Aquí debes agregar el código para guardar el trabajador en la base de datos
+    #db.add(trabajador)
+    #db.commit()
+   # db.refresh(trabajador)
 
+    return trabajador
 @app.get("/trabajador/{id_trabajador}", response_model=schemas.TrabajadorSchema)
 def read_trabajador(id_trabajador: int, db: Session = Depends(database.get_db)):
     db_trabajador = crud.get_trabajador(db, id_trabajador=id_trabajador)
