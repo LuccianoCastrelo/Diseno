@@ -34,6 +34,10 @@ class TrabajadorSchema(BaseModel):
 
     class Config:
         orm_mode = True
+        
+class TrabajadorSchemaReq(BaseModel):
+    nombre: str
+
 class TurnoSchema(BaseModel):
     id_turno: int
     id_trabajador: int
