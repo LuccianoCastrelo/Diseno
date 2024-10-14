@@ -6,6 +6,7 @@ import Nav from "./Nav";
 import MainContent from "./MainContent";
 import "./style.css"; // Custom CSS for transitions
 
+
 function Home() {
   const [toggle, setToggle] = useState(true); // Sidebar initially expanded
 
