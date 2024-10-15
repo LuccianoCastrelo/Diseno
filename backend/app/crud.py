@@ -64,6 +64,7 @@ def update_admin(db: Session, id_administrador: int, admin_data: schemas.Adminis
         return db_admin
     return None
 
+
 def delete_admin(db: Session, id_administrador: int):
     db_admin = get_admin(db, id_administrador)
     if db_admin:
@@ -113,15 +114,18 @@ def get_registro(db: Session, id_registro: int):
 
 def create_registro(db: Session, registro: schemas.RegistroHorasTrabajadasSchema):
     db_registro = models.RegistroHorasTrabajadas(
+        id_registro=registro.id_registro,
         id_trabajador=registro.id_trabajador,
         id_turno=registro.id_turno,
         fecha=registro.fecha,
-        horas_trabajadas=registro.horas_trabajadas
+        horas_trabajadas=registro.horas_trabajadas,
+        cantidad_turnos_trabajados=registro.cantidad_turnos_trabajados  
     )
     db.add(db_registro)
     db.commit()
     db.refresh(db_registro)
     return db_registro
+
 
 def update_registro(db: Session, id_registro: int, registro_data: schemas.RegistroHorasTrabajadasSchema):
     db_registro = get_registro(db, id_registro)
@@ -130,6 +134,7 @@ def update_registro(db: Session, id_registro: int, registro_data: schemas.Regist
         db_registro.id_turno = registro_data.id_turno
         db_registro.fecha = registro_data.fecha
         db_registro.horas_trabajadas = registro_data.horas_trabajadas
+        db_registro.cantidad_turnos_trabajados = registro_data.cantidad_turnos_trabajados
         db.commit()
         db.refresh(db_registro)
         return db_registro
@@ -141,6 +146,40 @@ def delete_registro(db: Session, id_registro: int):
         db.delete(db_registro)
         db.commit()
         return db_registro
+    return None
+
+def create_sueldo(db: Session, sueldo: schemas.SueldoSchema):
+    db_sueldo = models.Sueldo(id_trabajador=sueldo.id_trabajador, fecha=sueldo.fecha)
+    db.add(db_sueldo)
+    db.commit()
+    db.refresh(db_sueldo)
+    return db_sueldo
+
+# Obtener un sueldo por su ID
+def get_sueldo(db: Session, id_sueldo: int):
+    return db.query(models.Sueldo).filter(models.Sueldo.id_sueldo == id_sueldo).first()
+
+# Obtener todos los sueldos de un trabajador
+def get_sueldos_by_trabajador(db: Session, id_trabajador: int):
+    return db.query(models.Sueldo).filter(models.Sueldo.id_trabajador == id_trabajador).all()
+
+# Actualizar un sueldo existente
+def update_sueldo(db: Session, id_sueldo: int, sueldo_data: schemas.SueldoSchema):
+    db_sueldo = get_sueldo(db, id_sueldo=id_sueldo)
+    if db_sueldo:
+        db_sueldo.fecha = sueldo_data.fecha
+        db.commit()
+        db.refresh(db_sueldo)
+        return db_sueldo
+    return None
+
+# Eliminar un sueldo por su ID
+def delete_sueldo(db: Session, id_sueldo: int):
+    db_sueldo = get_sueldo(db, id_sueldo=id_sueldo)
+    if db_sueldo:
+        db.delete(db_sueldo)
+        db.commit()
+        return db_sueldo
     return None
 
 # --------- Métodos adicionales ---------

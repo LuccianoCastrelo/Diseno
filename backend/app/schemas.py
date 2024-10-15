@@ -1,6 +1,8 @@
+
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime, date
+
 #ESTOS SON DE LA BASE DE DATOS
 
 class AdministradorSchema(BaseModel):
@@ -9,7 +11,7 @@ class AdministradorSchema(BaseModel):
     correo: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class TrabajadorSchemaReq(BaseModel):
     nombre: str
@@ -19,18 +21,24 @@ class TrabajadorSchemaReq(BaseModel):
     rut: str  # Añadir el campo RUT
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class TrabajadorSchema(TrabajadorSchemaReq):
     id_trabajador: int
+
+    class Config:
+        from_attributes = True
+
 class TurnoSchema(BaseModel):
     id_turno: int
+    id_trabajador: int
     hora_inicio: datetime
     hora_fin: datetime
     duracion: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
 class RegistroHorasTrabajadasSchema(BaseModel):
     id_registro: int
     id_trabajador: int
@@ -40,7 +48,7 @@ class RegistroHorasTrabajadasSchema(BaseModel):
     cantidad_turnos_trabajados: float
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class MantenimientoSchema(BaseModel):
     id_mantenimiento: int
@@ -49,7 +57,7 @@ class MantenimientoSchema(BaseModel):
     tipo_mantenimiento: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class MaquinaSchema(BaseModel):
     id_maquina: int
@@ -57,4 +65,12 @@ class MaquinaSchema(BaseModel):
     uso_para_mantenimiento: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+class SueldoSchema(BaseModel):
+    id_sueldo: int
+    id_trabajador: int
+    fecha: date
+
+    class Config:
+        from_attributes = True

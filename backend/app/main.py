@@ -19,10 +19,10 @@ app.add_middleware(
     allow_headers=["*"],   # Permite todos los encabezados
 )
 """
-# Trabajadores
+#Trabajadores
 @app.post("/trabajador/", response_model=schemas.TrabajadorSchema)
 def create_trabajador(trabajador: schemas.TrabajadorSchema, db:Session= Depends(database.get_db)):
-    db_trabajador=crud.create_trabajador(db, id_trabajador=id_trabajador)
+    db_trabajador=crud.create_trabajador(db, id_trabajador=trabajador.id_trabajador)
     if db_trabajador:
         raise HTTPException(status_code=400, detail="ID already registered")
     return crud.create_trabajador(db=db, trabajador=trabajador)
@@ -63,15 +63,11 @@ def delete_trabajador(id_trabajador: int, db: Session = Depends(database.get_db)
     db_trabajador = crud.get_trabajador(db, id_trabajador=id_trabajador)
     if db_trabajador is None:
         raise HTTPException(status_code=404, detail="Worker not found")
-    
-    crud.delete_trabajador(db, id_trabajador)
+    crud.delete_trabajador(db, id_trabajador=id_trabajador)
     return db_trabajador
 # Administradores
 @app.post("/admin/", response_model=schemas.AdministradorSchema) 
 def create_admin(admin: schemas.AdministradorSchema, db: Session = Depends(database.get_db)):
-    db_admin = crud.get_admin_by_id(db, id_administrador=admin.id_administrador)
-    if db_admin:
-        raise HTTPException(status_code=400, detail="ID already registered")
     return crud.create_admin(db=db, admin=admin)
 
 @app.get("/admin/{id_administrador}", response_model=schemas.AdministradorSchema)
@@ -91,19 +87,15 @@ def update_admin(id_administrador: int, admin: schemas.AdministradorSchema, db: 
 @app.delete("/admin/{id_administrador}", response_model=schemas.AdministradorSchema)
 def delete_admin(id_administrador:int,admin: schemas.AdministradorSchema, db:Session=Depends(database.get_db)):
     db_admin=crud.delete_admin(db, id_administrador=id_administrador)
-    if admin is None:
+    if db_admin is None:
         raise HTTPException(status_code=404, detail= "Worker not found")
-    crud.delete_admin(db,admin,)
+    crud.delete_admin(db, id_administrador=id_administrador)
     return db_admin
 
 #crear turno
 @app.post("/turno/", response_model=schemas.TurnoSchema)
 def create_turno(turno: schemas.TurnoSchema, db:Session= Depends(database.get_db)):
-    db_turno=crud.create_turno(db, id_turno=id_turno)
-    if db_turno:
-        raise HTTPException(status_code=400, detail="ID already registered")
-    db_turno=crud.create_turno(db=db, turno=turno)
-    return db_turno
+    return crud.create_turno(db=db, turno=turno)
 
 #obtener turno
 @app.get("/turno/{id_turno}", response_model=schemas.TurnoSchema)
@@ -116,7 +108,7 @@ def read_turno(id_turno: int, db:Session=Depends(database.get_db)):
 #actualizar turno
 @app.put("/turno/{id_turno}",response_model=schemas.TurnoSchema)
 def update_turno(id_turno:int,turno: schemas.TurnoSchema, db:Session=Depends(database.get_db)):
-    db_turno=crud.update_turno(db, id_turno=id_turno)
+    db_turno=crud.update_turno(db, id_turno=id_turno, turno_data=turno)
     if db_turno is None:
         raise HTTPException(status_code=404, detail="turno not found")
     updated_turno=crud.update_turno(db, id_turno,turno)
@@ -128,18 +120,14 @@ def delete_turno(id_turno:int,turno: schemas.TurnoSchema, db:Session=Depends(dat
     db_turno=crud.delete_turno(db, id_turno=id_turno)
     if turno is None:
         raise HTTPException(status_code=404, detail= "Turno not found")
-    crud.delete_turno(db,turno,)
+    crud.delete_turno(db, id_turno=id_turno)
     return db_turno
 
 #crear registro de horas
 @app.post("/registrohoras/", response_model=schemas.RegistroHorasTrabajadasSchema)
 def create_registro(registro: schemas.RegistroHorasTrabajadasSchema, db:Session= Depends(database.get_db)):
-    db_registro=crud.create_registro(db, id_registro=id_registro)
-    if db_registro:
-        raise HTTPException(status_code=400, detail="Time log already registered")
-    db_registro=crud.create_registro(db=db, registro=registro)
-    return db_registro
- 
+    return(crud.create_registro(db=db, registro=registro))
+    
 #obtener registro de horas
 @app.get("/registro/{id_registro}", response_model=schemas.RegistroHorasTrabajadasSchema)
 def read_registro(id_registro: int, db:Session=Depends(database.get_db)):
@@ -152,7 +140,7 @@ def read_registro(id_registro: int, db:Session=Depends(database.get_db)):
 
 @app.put("/registro/{id_registro}",response_model=schemas.RegistroHorasTrabajadasSchema)
 def update_registro(id_registro:int,registro: schemas.RegistroHorasTrabajadasSchema, db:Session=Depends(database.get_db)):
-    db_registro=crud.update_registro(db, id_registro=id_registro)
+    db_registro=crud.update_registro(db, id_registro=id_registro, registro_data=registro)
     if db_registro is None:
         raise HTTPException(status_code=404, detail="Time log not found")
     updated_registro=crud.update_registro(db, id_registro,registro)
@@ -164,8 +152,39 @@ def delete_registro(id_registro:int,registro: schemas.RegistroHorasTrabajadasSch
     db_registro=crud.delete_registro(db, id_registro=id_registro)
     if registro is None:
         raise HTTPException(status_code=404, detail= "Time log not found")
-    crud.delete_registro(db,registro,)
+    crud.delete_registro(db, id_registro=id_registro)
     return db_registro
+
+#crear sueldos
+@app.post("/sueldos/", response_model=schemas.SueldoSchema)
+def create_sueldo(sueldo: schemas.SueldoSchema, db:Session= Depends(database.get_db)):
+    return crud.create_sueldo(db=db, sueldo=sueldo)
+
+#obtener sueldo
+@app.get("/sueldo/{id_sueldo}", response_model=schemas.SueldoSchema)
+def read_sueldo(id_sueldo: int, db:Session=Depends(database.get_db)):
+    db_sueldo=crud.get_sueldo(db, id_sueldo=id_sueldo)
+    if db_sueldo is None:
+        raise HTTPException(status_code=404, detail="Salary not found")
+    return db_sueldo
+
+#actualizar sueldo
+@app.put("/sueldo/{id_sueldo}",response_model=schemas.SueldoSchema)
+def update_sueldo(id_sueldo:int,sueldo: schemas.SueldoSchema, db:Session=Depends(database.get_db)):
+    db_sueldo=crud.update_sueldo(db, id_sueldo=id_sueldo, sueldo_data=sueldo)
+    if db_sueldo is None:
+        raise HTTPException(status_code=404, detail="Salary not found")
+    updated_sueldo=crud.update_sueldo(db, id_sueldo,sueldo)
+    return updated_sueldo
+
+#borrar sueldo
+@app.delete("/sueldo/{id_sueldo}", response_model=schemas.SueldoSchema)
+def delete_sueldo(id_sueldo:int, db:Session=Depends(database.get_db)):
+    db_sueldo=crud.delete_sueldo(db, id_sueldo=id_sueldo)
+    if db_sueldo is None:
+        raise HTTPException(status_code=404, detail= "Salary not found")
+    crud.delete_sueldo(db, id_sueldo=id_sueldo)
+    return db_sueldo
 
 # Calcular pagos
 @app.post("/calcular_pagos/{id_trabajador}", response_model=schemas.TrabajadorSchema)
