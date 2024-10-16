@@ -5,10 +5,13 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 
 import "./style.css"; // Custom CSS for transitions
 
-
 const Workers = () => {
   const [workers, setWorkers] = useState([]);
+  const [selectedWorker, setSelectedWorker] = useState(null);
+  const [registro, setRegistro] = useState({ fecha: "", horaInicio: "", horaFin: "" });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Fetch workers on component mount
   useEffect(() => {
     const fetchWorkers = async () => {
       try {
@@ -22,10 +25,54 @@ const Workers = () => {
     fetchWorkers();
   }, []);
 
+  // Open modal for adding/editing a time log
+  const openModal = (worker) => {
+    setSelectedWorker(worker);
+    setIsModalOpen(true);
+  };
+
+  // Close modal
+  const closeModal = () => {
+    setSelectedWorker(null);
+    setRegistro({ fecha: "", horaInicio: "", horaFin: "" });
+    setIsModalOpen(false);
+  };
+
+  // Handle input changes in the form
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setRegistro({ ...registro, [name]: value });
+  };
+
+  // Handle form submission to create or update a time log
+  const handleFormSubmit = async () => {
+    try {
+      const payload = {
+        id_trabajador: selectedWorker.id_trabajador,
+        fecha: registro.fecha,
+        horas_trabajadas: calcularHorasTrabajadas(registro.horaInicio, registro.horaFin),
+      };
+
+      await axios.post("http://localhost:8000/registrohoras/", payload);
+      closeModal();
+      alert("Registro agregado correctamente.");
+    } catch (error) {
+      console.error("Error al agregar el registro:", error);
+    }
+  };
+
+  // Calculate the hours worked based on start and end time
+  const calcularHorasTrabajadas = (horaInicio, horaFin) => {
+    const inicio = new Date(`1970-01-01T${horaInicio}:00`);
+    const fin = new Date(`1970-01-01T${horaFin}:00`);
+    const diff = (fin - inicio) / (1000 * 60 * 60); // Convert ms to hours
+    return diff > 0 ? diff : 24 + diff; // Handle overnight shifts
+  };
+
   return (
     <div className="container-fluid mt-4 vh-100 vw-100">
       <h1>Workers</h1>
-      <div className="workers-table" >
+      <div className="workers-table">
         <table className="table caption-top bg-white rounded mt-2">
           <caption className="text-dark fs-4">Workers</caption>
           <thead>
@@ -43,16 +90,82 @@ const Workers = () => {
                   <th scope="row">{index + 1}</th>
                   <td>{worker.nombre}</td>
                   <td>{worker.rut}</td>
+                  <td>
+                    <button
+                      className="btn btn-primary btn-sm me-2"
+                      onClick={() => openModal(worker)}
+                    >
+                      Agregar Registro
+                    </button>
+                    <button className="btn btn-warning btn-sm me-2">Editar</button>
+                    <button className="btn btn-danger btn-sm">Eliminar</button>
+                  </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="4" className="text-center">No workers found</td>
+                <td colSpan="4" className="text-center">
+                  No workers found
+                </td>
               </tr>
             )}
           </tbody>
         </table>
       </div>
+
+      {/* Modal for adding/editing time logs */}
+      {isModalOpen && (
+        <div className="modal show d-block">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Agregar Registro de Horas</h5>
+                <button type="button" className="btn-close" onClick={closeModal}></button>
+              </div>
+              <div className="modal-body">
+                <div className="mb-3">
+                  <label className="form-label">Fecha</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    name="fecha"
+                    value={registro.fecha}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Hora de Inicio</label>
+                  <input
+                    type="time"
+                    className="form-control"
+                    name="horaInicio"
+                    value={registro.horaInicio}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Hora de Fin</label>
+                  <input
+                    type="time"
+                    className="form-control"
+                    name="horaFin"
+                    value={registro.horaFin}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button className="btn btn-secondary" onClick={closeModal}>
+                  Cancelar
+                </button>
+                <button className="btn btn-primary" onClick={handleFormSubmit}>
+                  Guardar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

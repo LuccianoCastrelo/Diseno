@@ -1,6 +1,7 @@
 #crud.py
 from sqlalchemy.orm import Session
 from . import models, schemas
+from .algorithm import calcular_turnos
 
 # --------- CRUD para Trabajadores ---------
 def get_trabajador(db: Session, id_trabajador: int):
@@ -113,13 +114,14 @@ def get_registro(db: Session, id_registro: int):
     return db.query(models.RegistroHorasTrabajadas).filter(models.RegistroHorasTrabajadas.id_registro == id_registro).first()
 
 def create_registro(db: Session, registro: schemas.RegistroHorasTrabajadasSchema):
+    turnos, _ = calcular_turnos(registro.horas_trabajadas, 50000, False)  # Ejemplo de pago por turno
     db_registro = models.RegistroHorasTrabajadas(
         id_registro=registro.id_registro,
         id_trabajador=registro.id_trabajador,
         id_turno=registro.id_turno,
         fecha=registro.fecha,
         horas_trabajadas=registro.horas_trabajadas,
-        cantidad_turnos_trabajados=registro.cantidad_turnos_trabajados  
+        cantidad_turnos_trabajados=turnos  # Guardamos los turnos calculados
     )
     db.add(db_registro)
     db.commit()
