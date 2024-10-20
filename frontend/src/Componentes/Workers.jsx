@@ -25,7 +25,7 @@ const Workers = () => {
     fetchWorkers();
   }, []);
 
-  // Open modal for adding/editing a time log
+  // Open modal for adding a time log
   const openModal = (worker) => {
     setSelectedWorker(worker);
     setIsModalOpen(true);
@@ -44,29 +44,23 @@ const Workers = () => {
     setRegistro({ ...registro, [name]: value });
   };
 
-  // Handle form submission to create or update a time log
+  // Handle form submission to create a time log
   const handleFormSubmit = async () => {
     try {
-      const payload = {
-        id_trabajador: selectedWorker.id_trabajador,
-        fecha: registro.fecha,
-        horas_trabajadas: calcularHorasTrabajadas(registro.horaInicio, registro.horaFin),
-      };
+        const payload = {
+            id_trabajador: selectedWorker.id_trabajador,
+            fecha: registro.fecha,
+            hora_inicio: registro.horaInicio,  // Enviar hora de inicio
+            hora_fin: registro.horaFin         // Enviar hora de fin
+        };
 
-      await axios.post("http://localhost:8000/registrohoras/", payload);
-      closeModal();
-      alert("Registro agregado correctamente.");
+        // Enviar la petición al backend
+        await axios.post("http://localhost:8000/registrohoras/", payload);
+        closeModal();
+        alert("Registro agregado correctamente.");
     } catch (error) {
-      console.error("Error al agregar el registro:", error);
+        console.error("Error al agregar el registro:", error);
     }
-  };
-
-  // Calculate the hours worked based on start and end time
-  const calcularHorasTrabajadas = (horaInicio, horaFin) => {
-    const inicio = new Date(`1970-01-01T${horaInicio}:00`);
-    const fin = new Date(`1970-01-01T${horaFin}:00`);
-    const diff = (fin - inicio) / (1000 * 60 * 60); // Convert ms to hours
-    return diff > 0 ? diff : 24 + diff; // Handle overnight shifts
   };
 
   return (
@@ -97,8 +91,6 @@ const Workers = () => {
                     >
                       Agregar Registro
                     </button>
-                    <button className="btn btn-warning btn-sm me-2">Editar</button>
-                    <button className="btn btn-danger btn-sm">Eliminar</button>
                   </td>
                 </tr>
               ))
@@ -113,7 +105,7 @@ const Workers = () => {
         </table>
       </div>
 
-      {/* Modal for adding/editing time logs */}
+      {/* Modal for adding time logs */}
       {isModalOpen && (
         <div className="modal show d-block">
           <div className="modal-dialog">

@@ -1,7 +1,8 @@
 #crud.py
 from sqlalchemy.orm import Session
 from . import models, schemas
-from .algorithm import calcular_turnos
+from .algorithm import *
+from datetime import datetime
 
 # --------- CRUD para Trabajadores ---------
 def get_trabajador(db: Session, id_trabajador: int):
@@ -74,54 +75,34 @@ def delete_admin(db: Session, id_administrador: int):
         return db_admin
     return None
 
-# --------- CRUD para Turnos ---------
-def get_turno(db: Session, id_turno: int):
-    return db.query(models.Turno).filter(models.Turno.id_turno == id_turno).first()
-
-def create_turno(db: Session, turno: schemas.TurnoSchema):
-    db_turno = models.Turno(
-        id_trabajador=turno.id_trabajador,
-        hora_inicio=turno.hora_inicio,
-        hora_fin=turno.hora_fin,
-        duracion=turno.duracion
-    )
-    db.add(db_turno)
-    db.commit()
-    db.refresh(db_turno)
-    return db_turno
-
-def update_turno(db: Session, id_turno: int, turno_data: schemas.TurnoSchema):
-    db_turno = get_turno(db, id_turno)
-    if db_turno:
-        db_turno.hora_inicio = turno_data.hora_inicio
-        db_turno.hora_fin = turno_data.hora_fin
-        db_turno.duracion = turno_data.duracion
-        db.commit()
-        db.refresh(db_turno)
-        return db_turno
-    return None
-
-def delete_turno(db: Session, id_turno: int):
-    db_turno = get_turno(db, id_turno)
-    if db_turno:
-        db.delete(db_turno)
-        db.commit()
-        return db_turno
-    return None
-
 # --------- CRUD para Registro de Horas Trabajadas ---------
 def get_registro(db: Session, id_registro: int):
     return db.query(models.RegistroHorasTrabajadas).filter(models.RegistroHorasTrabajadas.id_registro == id_registro).first()
 
-def create_registro(db: Session, registro: schemas.RegistroHorasTrabajadasSchema):
-    turnos, _ = calcular_turnos(registro.horas_trabajadas, 50000, False)  # Ejemplo de pago por turno
+
+
+def create_registro(db: Session, registro: schemas.RegistroHorasTrabajadasCreateSchema):
+    # Calcular las horas trabajadas
+    formato_hora = "%H:%M:%S"
+    hora_inicio_dt = datetime.strptime(str(registro.hora_inicio), formato_hora)
+    hora_fin_dt = datetime.strptime(str(registro.hora_fin), formato_hora)
+    delta_horas = (hora_fin_dt - hora_inicio_dt).seconds / 3600  # Convertimos a horas
+
+    # Determinar si la fecha es domingo
+    es_domingo = registro.fecha.weekday() == 6  # Si el día de la semana es 6, es domingo
+
+    # Calcular turnos basados en las horas trabajadas
+    turnos = calcular_turnos(delta_horas)
+
+    # Crear el registro en la base de datos
     db_registro = models.RegistroHorasTrabajadas(
-        id_registro=registro.id_registro,
         id_trabajador=registro.id_trabajador,
-        id_turno=registro.id_turno,
         fecha=registro.fecha,
-        horas_trabajadas=registro.horas_trabajadas,
-        cantidad_turnos_trabajados=turnos  # Guardamos los turnos calculados
+        hora_inicio=registro.hora_inicio,
+        hora_fin=registro.hora_fin,
+        horas_trabajadas=delta_horas,
+        es_domingo=es_domingo,  # Guardamos si es domingo o no
+        cantidad_turnos_trabajados=turnos
     )
     db.add(db_registro)
     db.commit()

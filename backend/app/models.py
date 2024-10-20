@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, DateTime, ForeignKey, Float
+from sqlalchemy import Column, Integer, String, Date, DateTime,Time, ForeignKey, Float,Boolean
 from sqlalchemy.orm import relationship
 from .database import Base
 
@@ -18,33 +18,21 @@ class Trabajador(Base):
     rut = Column(String, unique=True, index=True)
     
     # Relaciones
-    turnos = relationship("Turno", back_populates="trabajador")
     registros = relationship("RegistroHorasTrabajadas", back_populates="trabajador")
     sueldos = relationship("Sueldo", back_populates="trabajador")   
-
-class Turno(Base):
-    __tablename__ = "turnos"
-    id_turno = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    id_trabajador = Column(Integer, ForeignKey("trabajadores.id_trabajador"))
-    hora_inicio = Column(DateTime)
-    hora_fin = Column(DateTime)
-    duracion = Column(Integer)
-
-    trabajador = relationship("Trabajador", back_populates="turnos")
-    registros = relationship("RegistroHorasTrabajadas", back_populates="turno")
 
 class RegistroHorasTrabajadas(Base):
     __tablename__ = "registro_horas_trabajadas"
     id_registro = Column(Integer, primary_key=True, index=True, autoincrement=True)
     id_trabajador = Column(Integer, ForeignKey("trabajadores.id_trabajador"))
-    id_turno = Column(Integer, ForeignKey("turnos.id_turno"))
     fecha = Column(Date)
-    horas_trabajadas = Column(Integer)
+    hora_inicio = Column(Time)  # Agregamos la hora de inicio
+    hora_fin = Column(Time)      # Agregamos la hora final
+    horas_trabajadas = Column(Integer)  # Este campo será calculado
     cantidad_turnos_trabajados = Column(Float)
+    es_domingo = Column(Boolean, default=False)  # Campo booleano para determinar si es domingo
 
     trabajador = relationship("Trabajador", back_populates="registros")
-    turno = relationship("Turno", back_populates="registros")
-
 class Mantenimiento(Base):
     __tablename__ = "mantenimientos"
     id_mantenimiento = Column(Integer, primary_key=True, index=True, autoincrement=True)
