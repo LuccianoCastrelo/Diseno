@@ -28,7 +28,7 @@ class RegistroHorasTrabajadas(Base):
     fecha = Column(Date)
     hora_inicio = Column(Time)  # Agregamos la hora de inicio
     hora_fin = Column(Time)      # Agregamos la hora final
-    horas_trabajadas = Column(Integer)  # Este campo será calculado
+    horas_trabajadas = Column(Float)  # Este campo será calculado
     cantidad_turnos_trabajados = Column(Float)
     es_domingo = Column(Boolean, default=False)  # Campo booleano para determinar si es domingo
 

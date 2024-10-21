@@ -41,7 +41,7 @@ class RegistroHorasTrabajadasSchema(BaseModel):
     fecha: date
     hora_inicio: time
     hora_fin: time
-    horas_trabajadas: int  # Ahora esto se calculará en el backend
+    horas_trabajadas: float  # Ahora esto se calculará en el backend
     cantidad_turnos_trabajados: float
     es_domingo: bool  # Nuevo campo que indica si la fecha es domingo
 
