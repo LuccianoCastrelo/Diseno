@@ -28,29 +28,27 @@ function Sidebar({ toggle, Toggle }) {
     }
   }, [isMobile]);
 
-
   return (
-    <div className={`sidebar bg-white vh-100 d-flex flex-column ${toggle ? "sidebar-open" : "sidebar-closed"}`}>
-      <div className="m-2 d-flex justify-content-between align-items-center">
-        <i className="bi bi-bootstrap-fill" />
-        <span className={`brand-name fs-4 ${toggle ? "" : "d-none d-md-inline"}`}>Maquinsa</span>
+    <div className={`sidebar ${toggle ? "sidebar-open" : "sidebar-closed"}`}>
+      <div className="sidebar-header d-flex justify-content-between align-items-center">
+        <i className="bi bi-bootstrap-fill brand-icon" />
+        <span className={`brand-name ${toggle ? "" : "d-none d-md-inline"}`}>Maquinsa</span>
         {toggle && (
-          <button className="btn btn-link d-md-none" onClick={Toggle}>
+          <button className="btn-close d-md-none" onClick={Toggle}>
             <i className="bi bi-x-lg" />
           </button>
         )}
       </div>
-      <hr className="text-dark" />
-      <div className="list-group list-group-flush me-3 fs-4">
+      <div className="list-group">
         {menuItems.map((item, index) => (
-          <Link key={index} to={item.path} className="list-group-item py-2 my-1 d-flex align-items-center">
-            <i className={`bi ${item.icon} fs-5 me-3`} />
+          <Link key={index} to={item.path} className="list-group-item">
+            <i className={`bi ${item.icon} me-3`} />
             <span className={`${toggle ? "" : "d-none d-md-inline"}`}>{item.label}</span>
           </Link>
         ))}
       </div>
       {!toggle && (
-        <button className="btn btn-secondary d-md-none mt-2 small-button" onClick={Toggle}>
+        <button className="btn-toggle d-md-none" onClick={Toggle}>
           <i className="bi bi-list" /> Show Menu
         </button>
       )}

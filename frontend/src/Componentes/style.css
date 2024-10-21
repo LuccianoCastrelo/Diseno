@@ -1,129 +1,94 @@
+/* Estilos globales */
 html, body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  overflow-y: hidden; /* Evita el desbordamiento horizontal */
+  font-family: 'Roboto', sans-serif;
+  background-color: #badbd6; /* Fondo global */
 }
 
+/* Estilos para la barra lateral */
 .sidebar {
-  position: fixed; /* Fija la barra lateral en la pantalla */
-  top: 0;   /* Posiciona la barra lateral en la parte superior */
-  left: 0;  /* Posiciona la barra lateral en la parte izquierda */
-  height: 100%; 
-  transition: width 0.3s ease;
-  overflow-y: auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh; /* Altura completa de la ventana */
+  background-color: #fef3e1; /* Fondo para la barra lateral */
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  transition: all 0.3s ease; /* Transición suave para apertura y cierre */
+  z-index: 1000;
+  width: 250px; /* Ancho inicial de la barra lateral */
 }
 
-.sidebar-open {
-  width: 200px; /* Ancho cuando la barra lateral está abierta */
+.sidebar.closed {
+  width: 70px; /* Ancho reducido cuando está cerrada */
 }
 
-.sidebar-closed {
-  width: 180px; /* Ancho cuando la barra lateral está cerrada */
-}
-
-.small-button {
-  padding: 0.2em 0.4em; /* Reduce padding */
-  font-size: 0.8em; /* Reduce font size */
-}
-
-.list-group a {
+/* Encabezado de la barra lateral */
+.sidebar-header {
+  padding: 1rem;
+  background-color: #badbd6; /* Color del encabezado de la barra lateral */
+  color: #234250; /* Color del texto */
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  padding: 0.75rem 1.25rem;
-  transition: background-color 0.3s ease;
+  justify-content: center; /* Centrar el logo y el nombre */
+  gap: 10px; /* Espacio entre el logo y el nombre */
 }
 
-.list-group a:hover,
-.list-group a.active {
-  background-color: lightblue; /* Color de fondo celeste */
-  color: white; /* Color del texto en blanco */
+.brand-icon {
+  width: 40px; /* Tamaño del logo */
+  height: 40px; /* Tamaño del logo */
+  border-radius: 50%; /* Hacer el logo circular */
+  object-fit: cover; /* Asegura que la imagen no se deforme */
 }
 
-.list-group a.active {
-  background-color: #00bcd4; /* Color de fondo celeste más oscuro cuando está activo */
-  color: white; /* Color del texto en blanco */
+.brand-name {
+  font-size: 1.25rem; /* Tamaño del texto */
+  font-weight: bold;
+  color: #234250; /* Color del texto */
 }
 
-.sidebar-transition {
-  transition: width 0.3s ease, margin-left 0.3s ease;
+/* Lista de ítems en la barra lateral */
+.list-group {
+  padding: 1rem 0;
 }
 
-
-@media (max-width: 320px) {
-  html, body {
-    overflow-y: auto; /* Evita el desbordamiento horizontal */
-    background-color: #6c757d; /* Establece el color de fondo a gris */
-  }
-
-  .sidebar {
-    z-index: 1000; /* Asegura que la barra lateral esté por encima del contenido principal en dispositivos móviles */
-  }
-
-  .sidebar-open {
-    width: 50px; /* Ancho reducido en dispositivos móviles */
-  }
-
-  .sidebar-closed {
-    width: 50px; /* Ancho reducido en dispositivos móviles */
-  }
-
-  /* .sidebar .list-group-item span {
-    display: none; /* Oculta los nombres en dispositivos móviles */
-  /*} */
-}
-
-
-
-/* Ajusta el tamaño de los elementos dentro de MainContent */
-.main-content-wrapper .card {
-  font-size: 0.8rem; /* Reduce el tamaño de la fuente */
-  padding: 0.5rem; /* Reduce el padding */
-}
-
-.main-content-wrapper .table {
-  font-size: 0.8rem; /* Reduce el tamaño de la fuente */
-}
-
-.main-content-wrapper .container-fluid {
-  margin-left: 30px; /* Ajusta el margen izquierdo */
-  overflow-y: hidden;
-  
-}
-
-.container-fluid {
-  /* Ajusta el tamaño y otros estilos según tus necesidades */
-  width: 75vw; /* Ancho completo de la ventana */
-  
-  background-color: #6c757d; /* Color de fondo secundario */
+.list-group-item {
+  padding: 0.75rem 1rem;
+  color: #333;
+  text-decoration: none;
   display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
+  align-items: center;
+  transition: background-color 0.2s ease;
 }
 
-
-
-
-
-
-
-/* Usuario */
-
-.custom-user-button {
-  top: 10px; /* Ajusta la posición según tus necesidades */
-  right: 80px; /* Ajusta la posición según tus necesidades */
-  border-radius: 50%; /* Hacer el botón redondo */
-  overflow: hidden; /* Asegurar que el contenido no se desborde */
+.list-group-item:hover {
+  background-color: #e1bee7; /* Fondo claro al pasar el ratón */
+  border-radius: 8px; /* Bordes suaves */
 }
 
-
-.cl-userButtonTrigger {
-  border-radius: 50%; /* Hacer el botón redondo */
-  overflow: hidden; /* Asegurar que el contenido no se desborde */
+/* Estilos para el contenido principal */
+.main-content-wrapper {
+  margin-left: 250px; /* Ajuste para acomodar la barra lateral abierta */
+  transition: margin-left 0.3s ease, width 0.3s ease;
+  padding: 20px;
+  box-sizing: border-box; /* Asegurar que el padding se incluya en el cálculo del ancho */
+  width: calc(100% - 250px); /* Ajuste del ancho para la barra lateral */
+  background-color: #badbd6; /* Fondo para el contenido principal */
+  color: #234250; /* Color del texto en el contenido principal */
 }
 
-/* Workers */
+.sidebar.closed + .main-content-wrapper {
+  margin-left: 70px; /* Ajuste del margen cuando la barra lateral está cerrada */
+  width: calc(100% - 70px); /* Ajuste del ancho según el tamaño reducido de la barra lateral */
+}
+
+/* Ajustes de la barra lateral para un fondo más consistente */
+.container-fluid {
+  background-color: #badbd6; /* Fondo secundario */
+}
+
+/* Workers - Estilos específicos */
 .modal {
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
@@ -140,10 +105,13 @@ html, body {
 .modal-content {
   border-radius: 8px;
 }
+
 /* Ajuste de la tabla para una mejor distribución del espacio */
 .workers-table {
   overflow-x: auto; /* Permitir desplazamiento horizontal si es necesario */
   max-width: 100%;  /* Asegura que no se exceda del contenedor */
+  background-color: #fef3e1; /* Fondo claro para la tabla */
+  color: #234250; /* Color del texto */
 }
 
 .table th,
@@ -177,6 +145,19 @@ html, body {
 
 /* Diseño responsive para pantallas pequeñas */
 @media (max-width: 768px) {
+  .main-content-wrapper {
+    margin-left: 70px; /* Ajuste del margen en pantallas pequeñas */
+    width: calc(100% - 70px); /* Ajuste del ancho del contenido principal */
+  }
+
+  .sidebar {
+    width: 70px; /* Ancho reducido en pantallas pequeñas */
+  }
+
+  .brand-name {
+    display: none; /* Ocultar el nombre de la marca en pantallas pequeñas */
+  }
+
   .table th:nth-child(3), 
   .table td:nth-child(3) {
     display: none; /* Ocultar RUT en pantallas pequeñas */
