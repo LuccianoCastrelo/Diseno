@@ -92,42 +92,11 @@ def delete_admin(id_administrador:int,admin: schemas.AdministradorSchema, db:Ses
     crud.delete_admin(db, id_administrador=id_administrador)
     return db_admin
 
-#crear turno
-@app.post("/turno/", response_model=schemas.TurnoSchema)
-def create_turno(turno: schemas.TurnoSchema, db:Session= Depends(database.get_db)):
-    return crud.create_turno(db=db, turno=turno)
-
-#obtener turno
-@app.get("/turno/{id_turno}", response_model=schemas.TurnoSchema)
-def read_turno(id_turno: int, db:Session=Depends(database.get_db)):
-    db_turno=crud.get_turno(db, id_turno=id_turno)
-    if db_turno is None:
-        raise HTTPException(status_code=404, detail="turno not found")
-    return db_turno
-
-#actualizar turno
-@app.put("/turno/{id_turno}",response_model=schemas.TurnoSchema)
-def update_turno(id_turno:int,turno: schemas.TurnoSchema, db:Session=Depends(database.get_db)):
-    db_turno=crud.update_turno(db, id_turno=id_turno, turno_data=turno)
-    if db_turno is None:
-        raise HTTPException(status_code=404, detail="turno not found")
-    updated_turno=crud.update_turno(db, id_turno,turno)
-    return updated_turno
-
-#borrar turno
-@app.delete("/turno/{id_turno}", response_model=schemas.TurnoSchema)
-def delete_turno(id_turno:int,turno: schemas.TurnoSchema, db:Session=Depends(database.get_db)):
-    db_turno=crud.delete_turno(db, id_turno=id_turno)
-    if turno is None:
-        raise HTTPException(status_code=404, detail= "Turno not found")
-    crud.delete_turno(db, id_turno=id_turno)
-    return db_turno
-
 #crear registro de horas
 @app.post("/registrohoras/", response_model=schemas.RegistroHorasTrabajadasSchema)
-def create_registro(registro: schemas.RegistroHorasTrabajadasSchema, db:Session= Depends(database.get_db)):
-    return(crud.create_registro(db=db, registro=registro))
-    
+def create_registro(registro: schemas.RegistroHorasTrabajadasCreateSchema, db: Session = Depends(database.get_db)):
+    return crud.create_registro(db=db, registro=registro)
+
 #obtener registro de horas
 @app.get("/registro/{id_registro}", response_model=schemas.RegistroHorasTrabajadasSchema)
 def read_registro(id_registro: int, db:Session=Depends(database.get_db)):

@@ -122,3 +122,72 @@ html, body {
   border-radius: 50%; /* Hacer el botón redondo */
   overflow: hidden; /* Asegurar que el contenido no se desborde */
 }
+
+/* Workers */
+.modal {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+}
+
+.modal-content {
+  border-radius: 8px;
+}
+/* Ajuste de la tabla para una mejor distribución del espacio */
+.workers-table {
+  overflow-x: auto; /* Permitir desplazamiento horizontal si es necesario */
+  max-width: 100%;  /* Asegura que no se exceda del contenedor */
+}
+
+.table th,
+.table td {
+  vertical-align: middle; /* Centrar verticalmente los contenidos */
+  word-break: break-word; /* Permitir corte de palabras largas */
+  text-align: center; /* Alineación centrada horizontalmente */
+  padding: 12px 8px; /* Espaciado entre texto y bordes */
+}
+
+/* Ajustar proporciones de las columnas */
+.table th:nth-child(2), 
+.table td:nth-child(2) {
+  width: 35%; /* Nombre del trabajador */
+}
+
+.table th:nth-child(3), 
+.table td:nth-child(3) {
+  width: 25%; /* RUT */
+}
+
+.table th:nth-child(4), 
+.table td:nth-child(4) {
+  width: 40%; /* Botones de acciones */
+}
+
+/* Estilo para botones en acciones */
+.table td .btn {
+  margin: 0 4px; /* Espaciado entre botones */
+}
+
+/* Diseño responsive para pantallas pequeñas */
+@media (max-width: 768px) {
+  .table th:nth-child(3), 
+  .table td:nth-child(3) {
+    display: none; /* Ocultar RUT en pantallas pequeñas */
+  }
+
+  .table th, .table td {
+    font-size: 0.85rem; /* Tamaño de fuente más pequeño */
+  }
+
+  .table td .btn {
+    margin: 2px 0; /* Espaciado más pequeño en móviles */
+    width: 100%; /* Botones apilados en móviles */
+  }
+}

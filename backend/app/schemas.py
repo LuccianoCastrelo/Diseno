@@ -1,7 +1,7 @@
 
 from pydantic import BaseModel
 from typing import Optional
-from datetime import datetime, date
+from datetime import datetime, date,time
 
 #ESTOS SON DE LA BASE DE DATOS
 
@@ -28,27 +28,25 @@ class TrabajadorSchema(TrabajadorSchemaReq):
 
     class Config:
         from_attributes = True
-
-class TurnoSchema(BaseModel):
-    id_turno: int
+# Schema para crear un registro (sin el cálculo de horas trabajadas)
+class RegistroHorasTrabajadasCreateSchema(BaseModel):
     id_trabajador: int
-    hora_inicio: datetime
-    hora_fin: datetime
-    duracion: int
-
-    class Config:
-        from_attributes = True
-
+    fecha: date
+    hora_inicio: time  # Agregamos la hora de inicio
+    hora_fin: time      # Agregamos la hora final
+# Schema para lectura, que incluye el cálculo de horas trabajadas
 class RegistroHorasTrabajadasSchema(BaseModel):
     id_registro: int
     id_trabajador: int
-    id_turno: int
     fecha: date
-    horas_trabajadas: int
+    hora_inicio: time
+    hora_fin: time
+    horas_trabajadas: int  # Ahora esto se calculará en el backend
     cantidad_turnos_trabajados: float
+    es_domingo: bool  # Nuevo campo que indica si la fecha es domingo
 
     class Config:
-        from_attributes = True
+        orm_mode = True
 
 class MantenimientoSchema(BaseModel):
     id_mantenimiento: int
