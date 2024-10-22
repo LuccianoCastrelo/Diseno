@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./style.css";
+import logo from "./logo.jpeg";
 
 const menuItems = [
   { icon: "bi-speedometer2", label: "Dashboard", path: "/dashboard" },
@@ -31,8 +32,7 @@ function Sidebar({ toggle, Toggle }) {
   return (
     <div className={`sidebar ${toggle ? "sidebar-open" : "sidebar-closed"}`}>
       <div className="sidebar-header d-flex justify-content-between align-items-center">
-        <i className="bi bi-bootstrap-fill brand-icon" />
-        <span className={`brand-name ${toggle ? "" : "d-none d-md-inline"}`}>Maquinsa</span>
+        <img src={logo} alt="Brand Logo" className="brand-icon" />
         {toggle && (
           <button className="btn-close d-md-none" onClick={Toggle}>
             <i className="bi bi-x-lg" />

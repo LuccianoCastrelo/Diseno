@@ -26,13 +26,13 @@ html, body {
 
 /* Encabezado de la barra lateral */
 .sidebar-header {
-  padding: 1rem;
+  padding: 2rem;
   background-color: #badbd6; /* Color del encabezado de la barra lateral */
   color: #234250; /* Color del texto */
   display: flex;
   align-items: center;
   justify-content: center; /* Centrar el logo y el nombre */
-  gap: 10px; /* Espacio entre el logo y el nombre */
+  gap: 0px; /* Espacio entre el logo y el nombre */
 }
 
 .brand-icon {
@@ -40,12 +40,6 @@ html, body {
   height: 40px; /* Tamaño del logo */
   border-radius: 50%; /* Hacer el logo circular */
   object-fit: cover; /* Asegura que la imagen no se deforme */
-}
-
-.brand-name {
-  font-size: 1.25rem; /* Tamaño del texto */
-  font-weight: bold;
-  color: #234250; /* Color del texto */
 }
 
 /* Lista de ítems en la barra lateral */
@@ -62,10 +56,24 @@ html, body {
   transition: background-color 0.2s ease;
 }
 
+.list-group-item i {
+  font-size: 2rem; /* Aumenta el tamaño de los íconos */
+  margin-right: 10px; /* Ajusta el espacio entre el ícono y el texto */
+}
+
 .list-group-item:hover {
-  background-color: #e1bee7; /* Fondo claro al pasar el ratón */
+  background-color: #badbd6; /* Fondo claro al pasar el ratón */
   border-radius: 8px; /* Bordes suaves */
 }
+
+
+.brand-icon {
+  width: 180px; /* Ajusta el tamaño del logo según sea necesario */
+  height: auto; /* Mantener la proporción de la imagen */
+  border-radius: 10px; /* Si deseas un logo con bordes redondeados */
+  object-fit: contain; /* Asegura que la imagen no se deforme */
+}
+
 
 /* Estilos para el contenido principal */
 .main-content-wrapper {
@@ -76,6 +84,7 @@ html, body {
   width: calc(100% - 250px); /* Ajuste del ancho para la barra lateral */
   background-color: #badbd6; /* Fondo para el contenido principal */
   color: #234250; /* Color del texto en el contenido principal */
+  
 }
 
 .sidebar.closed + .main-content-wrapper {
@@ -109,9 +118,10 @@ html, body {
 /* Ajuste de la tabla para una mejor distribución del espacio */
 .workers-table {
   overflow-x: auto; /* Permitir desplazamiento horizontal si es necesario */
-  max-width: 100%;  /* Asegura que no se exceda del contenedor */
+  max-width: 83%;  /* Asegura que no se exceda del contenedor */
   background-color: #fef3e1; /* Fondo claro para la tabla */
   color: #234250; /* Color del texto */
+  margin-left: auto; /* Mueve la tabla más a la izquierda */
 }
 
 .table th,
