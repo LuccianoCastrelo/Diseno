@@ -3,6 +3,7 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-reac
 import Home from "./Componentes/Home.jsx";
 import Workers from "./Componentes/Workers.jsx"; 
 import Sidebar from "./Componentes/Sidebar.jsx"; 
+import Dashboard from "./Componentes/Dashboard.jsx"; 
 import "./Componentes/style.css";
 
 export default function App() {
@@ -36,6 +37,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/workers" element={<Workers />} />
+              <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
           </SignedIn>
         </main>
