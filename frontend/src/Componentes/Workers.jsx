@@ -68,7 +68,7 @@ const Workers = () => {
       <h1>Workers</h1>
       <div className="workers-table">
         <table className="table caption-top bg-white rounded mt-2">
-          <caption className="text-dark fs-4">Workers</caption>
+          <caption className="text-dark fs-4"></caption>
           <thead>
             <tr>
               <th scope="col">#</th>

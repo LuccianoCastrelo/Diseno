@@ -5,6 +5,7 @@ html, body {
   overflow-x: hidden;
   font-family: 'Roboto', sans-serif;
   background-color: #badbd6; /* Fondo global */
+  
 }
 
 /* Estilos para la barra lateral */
@@ -84,6 +85,7 @@ html, body {
   width: calc(100% - 250px); /* Ajuste del ancho para la barra lateral */
   background-color: #badbd6; /* Fondo para el contenido principal */
   color: #234250; /* Color del texto en el contenido principal */
+  max-width: 800px;
   
 }
 
