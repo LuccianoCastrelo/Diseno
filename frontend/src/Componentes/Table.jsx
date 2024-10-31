@@ -1,6 +1,7 @@
   import React, { useEffect, useState } from "react";
   import axios from "axios";
   import { Modal, Button } from "react-bootstrap";
+  import "./style.css";
 
   const Table = () => {
     const [workers, setWorkers] = useState([]);
@@ -134,7 +135,7 @@
 
         {/* Modal para Editar */}
         <Modal show={showModal} onHide={() => setShowModal(false)}>
-          <Modal.Header closeButton>
+          <Modal.Header closeButton className="custom-modal-header">
             <Modal.Title>Editar Trabajador</Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -194,7 +195,7 @@
 
         {/* Modal para Confirmar Eliminación */}
         <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
-          <Modal.Header closeButton>
+          <Modal.Header closeButton className="custom-modal-header">
             <Modal.Title>Eliminar Trabajador</Modal.Title>
           </Modal.Header>
           <Modal.Body>¿Estás seguro de que quieres eliminar al trabajador: <strong>{workerToDelete?.nombre}</strong>?</Modal.Body>
@@ -206,7 +207,7 @@
 
         {/* Modal para Agregar Trabajador */}
         <Modal show={showAddModal} onHide={() => setShowAddModal(false)}>
-          <Modal.Header closeButton>
+          <Modal.Header closeButton className="custom-modal-header">
             <Modal.Title>Agregar Trabajador</Modal.Title>
           </Modal.Header>
           <Modal.Body>

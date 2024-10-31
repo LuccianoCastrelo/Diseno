@@ -110,7 +110,7 @@ const Workers = () => {
         <div className="modal show d-block">
           <div className="modal-dialog">
             <div className="modal-content">
-              <div className="modal-header">
+              <div className="custom-modal-header">
                 <h5 className="modal-title">Agregar Registro de Horas</h5>
                 <button type="button" className="btn-close" onClick={closeModal}></button>
               </div>

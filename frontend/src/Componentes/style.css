@@ -1,5 +1,4 @@
 /* Estilos para cubrir toda la pantalla con el contenedor de inicio de sesión */
-/* Estilos para cubrir toda la pantalla con el contenedor de inicio de sesión */
 .sign-in-container {
   display: flex;
   flex-direction: column; /* Alinea los elementos en columna (logo encima del botón) */
@@ -203,6 +202,22 @@ html, body {
   margin: 0 4px; /* Espaciado entre botones */
 }
 
+
+/*------------------------------------------------------------------------------------------------*/
+/* Estilos para la X de cierre en el encabezado del modal */
+.custom-modal-header .btn-close {
+  font-size: 1.5rem; /* Ajusta el tamaño de la X */
+  color: #22424c; /* Color inicial de la X */
+  opacity: 1; /* Asegúrate de que la X sea completamente visible */
+}
+
+/* Efecto al pasar el ratón sobre la X */
+.custom-modal-header .btn-close:hover {
+  transform: scale(1.2); /* Aumenta el tamaño al hacer hover */
+  transition: transform 0.3s ease, color 0.3s ease; /* Transición suave */
+}
+
+/*------------------------------------------------------------------------------------------------*/
 /* Diseño responsive para pantallas pequeñas */
 @media (max-width: 768px) {
   .main-content-wrapper {
