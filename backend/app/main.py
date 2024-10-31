@@ -1,5 +1,5 @@
 #main.py
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Body
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import List
@@ -65,6 +65,7 @@ def delete_trabajador(id_trabajador: int, db: Session = Depends(database.get_db)
         raise HTTPException(status_code=404, detail="Worker not found")
     crud.delete_trabajador(db, id_trabajador=id_trabajador)
     return db_trabajador
+
 # Administradores
 @app.post("/admin/", response_model=schemas.AdministradorSchema) 
 def create_admin(admin: schemas.AdministradorSchema, db: Session = Depends(database.get_db)):
@@ -155,34 +156,59 @@ def delete_sueldo(id_sueldo:int, db:Session=Depends(database.get_db)):
     crud.delete_sueldo(db, id_sueldo=id_sueldo)
     return db_sueldo
 
-# Calcular pagos
-@app.post("/calcular_pagos/{id_trabajador}", response_model=schemas.TrabajadorSchema)
-def calcular_pagos(id_trabajador: int, db: Session = Depends(database.get_db)):
-    db_trabajador = crud.get_trabajador(db, id_trabajador=id_trabajador)
-    if db_trabajador is None:
+
+#--------GET SUELDOS BY FECHAS-------------
+@app.get("/trabajadores/{id_trabajador}/calcular_sueldo_diario")
+def calcular_sueldo_diario(id_trabajador: int, fecha: str, db: Session = Depends(database.get_db)):
+    resultado = crud.obtener_sueldo_diario(db, id_trabajador, fecha)
+    if resultado is None:
         raise HTTPException(status_code=404, detail="Trabajador no encontrado")
-    
-    registros_horas = crud.get_registros_horas(db, id_trabajador=id_trabajador)
-    if not registros_horas:
-        raise HTTPException(status_code=404, detail="No hay registros de horas trabajadas para este trabajador.")
-    
-    trabajador_data = {
-        "nombre": db_trabajador.nombre,
-        "tipo": db_trabajador.tipo,
-        "pago_por_turno": db_trabajador.pago_por_turno,
-        "salario_base": db_trabajador.salario_base
-    }
-    
-    registros_jornadas = [
-        {"fecha": registro.fecha.strftime('%d-%m-%Y'), "horas_trabajadas": registro.horas_trabajadas, "es_festivo_o_domingo": False}
-        for registro in registros_horas
-    ]
-    
-    resultado = calcular_pago_trabajador(trabajador_data, registros_jornadas)
-    
-    return {
-        "nombre": db_trabajador.nombre,
-        "pago_total": resultado["pago_total"],
-        "pagos_semanales": resultado["pagos_semanales"],
-        "pagos_mensuales": resultado["pagos_mensuales"]
-    }
+    return resultado
+
+@app.get("/trabajadores/{id_trabajador}/calcular_sueldo_semanal")
+def calcular_sueldo_semanal(id_trabajador: int, fecha_inicio_semana: str, db: Session = Depends(database.get_db)):
+    print(fecha_inicio_semana)
+    resultado = crud.obtener_sueldo_semanal(db, id_trabajador, fecha_inicio_semana)
+    if "message" in resultado:
+        raise HTTPException(status_code=404, detail=resultado["message"])
+    return resultado
+
+@app.get("/trabajadores/{id_trabajador}/calcular_sueldo_mensual")
+def calcular_sueldo_mensual(id_trabajador: int, mes: str, db: Session = Depends(database.get_db)):
+    resultado = crud.obtener_sueldo_mensual(db, id_trabajador, mes)
+    if resultado is None:
+        raise HTTPException(status_code=404, detail="Trabajador no encontrado")
+    return resultado
+
+
+#----------GET REGISTROS BY FECHAS-------------------
+@app.get("/trabajadores/{trabajador_id}/registros_diarios", response_model=schemas.RegistroHorasTrabajadasListResponse)
+def get_daily_logs(trabajador_id: int, fecha: str, db: Session = Depends(database.get_db)):
+    try:
+        registros = crud.get_daily_logs(db, trabajador_id, fecha)
+        if not registros:
+            return {"registros": []}
+        return {"registros": registros}
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Formato de fecha inválido. Use AAAA-MM-DD.")
+
+@app.get("/trabajadores/{trabajador_id}/registros_semanales", response_model=schemas.RegistroHorasTrabajadasListResponse)
+def get_weekly_logs(trabajador_id: int, fecha_inicio_semana: str, db: Session = Depends(database.get_db)):
+    try:
+        registros = crud.get_weekly_logs(db, trabajador_id, fecha_inicio_semana)
+        if not registros:
+            return {"registros": []}
+        return {"registros": registros}
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Formato de fecha inválido. Use AAAA-MM-DD.")
+
+@app.get("/trabajadores/{trabajador_id}/registros_mensuales", response_model=schemas.RegistroHorasTrabajadasListResponse)
+def get_monthly_logs(trabajador_id: int, mes: str, db: Session = Depends(database.get_db)):
+    try:
+        registros = crud.get_monthly_logs(db, trabajador_id, mes)
+        if not registros:
+            return {"registros": []}
+        return {"registros": registros}
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Formato de mes inválido. Use MM.")
+
