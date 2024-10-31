@@ -1,3 +1,51 @@
+/* Estilos para cubrir toda la pantalla con el contenedor de inicio de sesión */
+/* Estilos para cubrir toda la pantalla con el contenedor de inicio de sesión */
+.sign-in-container {
+  display: flex;
+  flex-direction: column; /* Alinea los elementos en columna (logo encima del botón) */
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Ocupa toda la altura de la ventana */
+  width: 100vw; /* Ocupa toda la anchura de la ventana */
+  margin: 0; /* Elimina márgenes */
+  padding: 0; /* Elimina padding */
+  background: #b1d8d5; /* Color de fondo sólido */
+  overflow: hidden; /* Asegura que no haya scroll */
+}
+
+/* Estilos para el logo de la empresa */
+.company-logo {
+  width: 400px; /* Ajusta según el tamaño deseado */
+  margin-bottom: 2rem; /* Espaciado hacia el botón de Sign In */
+  border-radius: 15px; /* Bordes ligeramente redondeados */
+  animation: fadeIn 1.5s ease-in-out; /* Animación para que aparezca suavemente */
+}
+
+
+/* Estilos para el botón de inicio de sesión */
+.sign-in-button {
+  background-color: #fef3e1; /* Color del botón */
+  color: #22424c; /* Color del texto */
+  border: none;
+  padding: 1rem 2rem; /* Espaciado interno */
+  font-size: 1.5rem; /* Tamaño de fuente */
+  font-weight: bold; /* Texto en negrita */
+  border-radius: 50px; /* Bordes redondeados */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Sombra */
+  transition: all 0.3s ease-in-out; /* Transición suave */
+  cursor: pointer;
+}
+
+/* Efecto al pasar el mouse */
+.sign-in-button:hover {
+  background-color: #f7c8c0; /* Un poco más oscuro al hacer hover */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Mayor sombra */
+  transform: translateY(-5px); /* Levanta el botón ligeramente */
+}
+
+
+/*-------------------------------------------------------------------------------*/
+
 /* Estilos globales */
 html, body {
   margin: 0;
