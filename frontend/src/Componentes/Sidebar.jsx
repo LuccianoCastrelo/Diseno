@@ -23,11 +23,12 @@ function Sidebar({ toggle, Toggle }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Ocultar el sidebar si se cambia a la vista móvil y el sidebar está abierto
   useEffect(() => {
     if (isMobile && toggle) {
-      Toggle(); // Close the sidebar if switching to mobile view
+      Toggle(); // Cerrar la barra lateral si se cambia a vista móvil
     }
-  }, [isMobile]);
+  }, [isMobile, toggle, Toggle]);
 
   return (
     <div className={`sidebar ${toggle ? "sidebar-open" : "sidebar-closed"}`}>
@@ -47,11 +48,6 @@ function Sidebar({ toggle, Toggle }) {
           </Link>
         ))}
       </div>
-      {!toggle && (
-        <button className="btn-toggle d-md-none" onClick={Toggle}>
-          <i className="bi bi-list" /> Show Menu
-        </button>
-      )}
     </div>
   );
 }

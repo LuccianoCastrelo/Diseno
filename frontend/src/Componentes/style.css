@@ -132,7 +132,7 @@ html, body {
   width: calc(100% - 250px); /* Ajuste del ancho para la barra lateral */
   background-color: #badbd6; /* Fondo para el contenido principal */
   color: #234250; /* Color del texto en el contenido principal */
-  max-width: 800px;
+  max-width: 1000px;
   
 }
 
@@ -218,11 +218,17 @@ html, body {
 }
 
 /*------------------------------------------------------------------------------------------------*/
+
+
 /* Diseño responsive para pantallas pequeñas */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .main-content-wrapper {
     margin-left: 70px; /* Ajuste del margen en pantallas pequeñas */
     width: calc(100% - 70px); /* Ajuste del ancho del contenido principal */
+  }
+  
+  .navbar-toggler {
+    display: none !important;
   }
 
   .sidebar {
@@ -245,5 +251,59 @@ html, body {
   .table td .btn {
     margin: 2px 0; /* Espaciado más pequeño en móviles */
     width: 100%; /* Botones apilados en móviles */
+  }
+
+  /* Encabezado de la barra lateral (incluyendo el logo) */
+  .sidebar-header {
+    padding: 1rem;
+    background-color: #badbd6; /* Color del encabezado de la barra lateral */
+    color: #234250; /* Color del texto */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centrar el logo y el nombre */
+    gap: 0px; /* Espacio entre el logo y el nombre */
+  }
+
+  /* Estilo del logo de la empresa */
+  .brand-icon {
+    width: 45px; /* Ajusta el tamaño del logo según sea necesario */
+    height: 45px; /* Mantener proporción de la imagen */
+    border-radius: 10px; /* Bordes redondeados */
+    object-fit: cover; /* Asegura que la imagen no se deforme */
+  }
+}
+
+/* Diseño específico para tablets (entre 768px y 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .sidebar {
+    width: 125px; /* Ajustar la barra lateral a un tamaño medio */
+    position: fixed; /* Hacer que la barra lateral esté siempre fija en el lado izquierdo */
+    top: 0;
+    left: 0;
+    height: 100vh; /* Ocupa toda la altura de la ventana */
+  }
+
+  .main-content-wrapper {
+    margin-left: 0px; /* Ajuste para acomodar la barra lateral abierta */
+    transition: margin-left 0.3s ease, width 0.3s ease;
+    padding: 0px;
+    box-sizing: border-box; /* Asegurar que el padding se incluya en el cálculo del ancho */
+    width: calc(100% - 125px); /* Ajuste del ancho para la barra lateral */
+    background-color: #badbd6; /* Fondo para el contenido principal */
+    color: #234250; /* Color del texto en el contenido principal */
+    max-width: 600px;
+    
+  }
+
+  .table th, .table td {
+    font-size: 0.9rem; /* Aumentar un poco el tamaño de la fuente para tablets */
+  }
+
+  /* Estilo del logo de la empresa */
+  .brand-icon {
+    width: 70px; /* Ajusta el tamaño del logo según sea necesario */
+    height: 70px; /* Mantener proporción de la imagen */
+    border-radius: 10px; /* Bordes redondeados */
+    object-fit: cover; /* Asegura que la imagen no se deforme */
   }
 }
