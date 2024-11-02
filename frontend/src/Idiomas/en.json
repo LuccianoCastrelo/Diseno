@@ -14,7 +14,10 @@
     "workers": "Workers",
     "hours": "Hours",
     "factures": "Invoices",
-    "clients": "Clients"
+    "clients": "Clients",
+    "shifts": "Shifts",
+    "permanentWorkers": "Permanent Workers",
+    "eventualWorkers": "Eventual Workers"
   },
   "buttons": {
     "signIn": "Sign In",
@@ -56,10 +59,30 @@
 
   "workers": {
     "title": "Workers",
-    "list": "Workers List",
-    "name": "Name",
-    "rut": "RUT",
+    "caption": "Workers RUT and calculated salaries",
+    "rut": "Worker's RUT",
     "actions": "Actions",
-    "noWorkersFound": "No workers found"
+    "lastCalculatedSalary": "Last Calculated Salary",
+    "calculateSalary": "Calculate Salary",
+    "notCalculated": "Not calculated",
+    "noWorkersFound": "No workers found",
+    "selectSalaryType": "Select Salary Type",
+    "salaryType": "Select the Salary Type",
+    "selectType": "Select a type",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "selectDate": "Select a Date",
+    "selectMonth": "Select the Month",
+    "chooseDate": "Choose a date",
+    "chooseMonth": "Choose a month",
+    "calculate": "Calculate"
+  },
+  "errors": {
+    "fetchWorkers": "Error fetching workers",
+    "fetchHourLogs": "Error fetching hour logs",
+    "calculateSalary": "Error calculating salary",
+    "noRecordsForPeriod": "No records for the selected period.",
+    "selectSalaryTypeDate": "Select the salary type and date."
   }
 }
