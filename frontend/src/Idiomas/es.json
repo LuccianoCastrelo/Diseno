@@ -87,5 +87,6 @@
     "calculateSalary": "Error al calcular el sueldo",
     "noRecordsForPeriod": "No existen registros en el periodo seleccionado.",
     "selectSalaryTypeDate": "Selecciona el tipo de sueldo y la fecha."
-  }
+  },
+  "loading": "Cargando Contenido..." 
 }

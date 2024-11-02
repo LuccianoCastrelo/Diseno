@@ -84,5 +84,6 @@
     "calculateSalary": "Error calculating salary",
     "noRecordsForPeriod": "No records for the selected period.",
     "selectSalaryTypeDate": "Select the salary type and date."
-  }
+  },
+  "loading": "Loading Content..."
 }
