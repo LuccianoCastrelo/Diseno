@@ -265,3 +265,18 @@ def get_monthly_logs(db: Session, trabajador_id: int, mes: str) -> list[Registro
         RegistroHorasTrabajadas.fecha <= fecha_fin_mes
     ).all()
     return registros
+
+def get_total_trabajadores(db: Session):
+    return db.query(models.Trabajador).count()
+
+def get_total_horas_trabajadas(db: Session):
+    return db.query(func.sum(models.RegistroHorasTrabajadas.horas_trabajadas)).scalar()
+
+def get_total_turnos(db: Session):
+    return db.query(func.sum(models.RegistroHorasTrabajadas.cantidad_turnos_trabajados)).scalar()
+
+def get_total_permanent_workers(db: Session):
+    return db.query(models.Trabajador).filter(models.Trabajador.tipo == "permanente").count()
+
+def get_total_eventual_workers(db: Session):
+    return db.query(models.Trabajador).filter(models.Trabajador.tipo == "eventual").count()
