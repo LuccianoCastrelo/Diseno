@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
+import Nav from "./Nav";
 import MainContent from "./MainContent";
 import "./style.css";
 
@@ -17,6 +18,7 @@ function Home() {
 
       {/* Main Content */}
       <div className={`main-content-wrapper flex-grow-1 ${toggle ? "" : "sidebar-closed"}`}>
+        <Nav Toggle={Toggle} />
         <MainContent />
       </div>
     </div>

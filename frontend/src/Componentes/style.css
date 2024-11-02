@@ -264,6 +264,7 @@ html, body {
   .main-content-wrapper {
     margin-left: 70px; /* Ajuste del margen en pantallas pequeñas */
     width: calc(100% - 70px); /* Ajuste del ancho del contenido principal */
+    padding-top: 320px;
   }
 
   .navbar-toggler {
