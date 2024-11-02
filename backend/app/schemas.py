@@ -1,6 +1,6 @@
 
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional,List
 from datetime import datetime, date,time
 
 #ESTOS SON DE LA BASE DE DATOS
@@ -47,6 +47,9 @@ class RegistroHorasTrabajadasSchema(BaseModel):
 
     class Config:
         orm_mode = True
+# Esquema para devolver listas de registros
+class RegistroHorasTrabajadasListResponse(BaseModel):
+    registros: List[RegistroHorasTrabajadasSchema]
 
 class MantenimientoSchema(BaseModel):
     id_mantenimiento: int
@@ -72,3 +75,8 @@ class SueldoSchema(BaseModel):
 
     class Config:
         from_attributes = True
+class RegistroIds(BaseModel):
+    ids: List[int]
+class SueldoMensualResponse(BaseModel):
+    sueldo_mensual: int
+

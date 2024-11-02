@@ -2,7 +2,11 @@
 from sqlalchemy.orm import Session
 from . import models, schemas
 from .algorithm import *
-from datetime import datetime
+from datetime import datetime,timedelta
+import random
+from typing import List
+from .models import *
+from sqlalchemy import extract,func,Date,cast
 
 # --------- CRUD para Trabajadores ---------
 def get_trabajador(db: Session, id_trabajador: int):
@@ -78,8 +82,6 @@ def delete_admin(db: Session, id_administrador: int):
 # --------- CRUD para Registro de Horas Trabajadas ---------
 def get_registro(db: Session, id_registro: int):
     return db.query(models.RegistroHorasTrabajadas).filter(models.RegistroHorasTrabajadas.id_registro == id_registro).first()
-
-
 
 def create_registro(db: Session, registro: schemas.RegistroHorasTrabajadasCreateSchema):
     # Calcular las horas trabajadas
@@ -165,10 +167,101 @@ def delete_sueldo(db: Session, id_sueldo: int):
         return db_sueldo
     return None
 
-# --------- Métodos adicionales ---------
-def get_registros_horas(db: Session, id_trabajador: int):
-    return db.query(models.RegistroHorasTrabajadas).filter(models.RegistroHorasTrabajadas.id_trabajador == id_trabajador).all()
+#----------------GET SUELDOS BY FECHAS-----------------
+def obtener_sueldo_mensual(db: Session, id_trabajador: int, mes: str):
+    trabajador = db.query(Trabajador).filter(Trabajador.id_trabajador == id_trabajador).first()
+    if not trabajador:
+        return None
 
-# Función para crear un ID aleatorio
-def generate_random_id(length=6):
-    return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+    # Filtrar registros de jornada por trabajador y mes especificado
+    registros_jornadas = db.query(RegistroHorasTrabajadas).filter(
+        RegistroHorasTrabajadas.id_trabajador == id_trabajador,
+        extract('month', RegistroHorasTrabajadas.fecha) == int(mes)
+    ).all()
+
+    total_turnos, sueldo_mensual = calcular_sueldo_mensual(trabajador, registros_jornadas)
+    return {"total_turnos": total_turnos, "sueldo_mensual": sueldo_mensual}
+
+def obtener_sueldo_diario(db: Session, id_trabajador: int, fecha: str):
+    trabajador = db.query(Trabajador).filter(Trabajador.id_trabajador == id_trabajador).first()
+    if not trabajador:
+        return None
+
+    registros_jornada = db.query(RegistroHorasTrabajadas).filter(
+        RegistroHorasTrabajadas.id_trabajador == id_trabajador,
+        RegistroHorasTrabajadas.fecha == fecha
+    ).all()
+
+    _, sueldo_diario = calcular_pago_por_jornada(trabajador, registros_jornada[0].horas_trabajadas, registros_jornada[0].es_domingo)
+    return {"sueldo_diario": sueldo_diario}
+
+def obtener_sueldo_semanal(db: Session, id_trabajador: int, fecha_inicio_semana: str):
+    trabajador = db.query(Trabajador).filter(Trabajador.id_trabajador == id_trabajador).first()
+    if not trabajador:
+        return {"message": "Trabajador no encontrado"}
+    
+    # Convertir la fecha proporcionada a un objeto datetime
+    fecha_inicio = datetime.strptime(fecha_inicio_semana, "%Y-%m-%d")
+    # Asegurar que fecha_inicio sea el lunes de esa semana
+    inicio_semana = fecha_inicio - timedelta(days=fecha_inicio.weekday())  # Ajustar al lunes de la semana
+    
+    # Generar todas las fechas de la semana (de lunes a domingo)
+    dias_semana = [inicio_semana + timedelta(days=i) for i in range(7)]
+    print("Inicio de la semana (lunes):", inicio_semana)
+    print("Días calculados para la semana:", [dia.strftime("%Y-%m-%d") for dia in dias_semana])
+    
+    # Obtener los registros de horas trabajadas de cada día de la semana
+    registros_semanales = db.query(RegistroHorasTrabajadas).filter(
+        RegistroHorasTrabajadas.id_trabajador == id_trabajador,
+        RegistroHorasTrabajadas.fecha.in_([dia.date() for dia in dias_semana])
+    ).all()
+    
+    # Si no hay registros, devolver un mensaje
+    if not registros_semanales:
+        return {"message": "No hay registros en la semana seleccionada."}
+
+    # Convertir los registros de la semana en un formato compatible con calcular_sueldo_semanal
+    registros_jornadas_semanales = [
+        {
+            "horas_trabajadas": registro.horas_trabajadas,
+            "es_festivo_o_domingo": registro.es_domingo
+        }
+        for registro in registros_semanales
+    ]
+    
+    # Calcular el sueldo semanal utilizando calcular_sueldo_semanal
+    total_turnos, sueldo_semanal = calcular_sueldo_semanal(trabajador, registros_jornadas_semanales)
+    
+    return {"sueldo_semanal": sueldo_semanal}
+
+#--------------------GET REGISTROS BY FECHA---------------------
+def get_daily_logs(db: Session, trabajador_id: int, fecha: str) -> list[RegistroHorasTrabajadas]:
+    fecha_obj = datetime.strptime(fecha, "%Y-%m-%d").date()
+    registros = db.query(RegistroHorasTrabajadas).filter(
+        RegistroHorasTrabajadas.id_trabajador == trabajador_id,
+        RegistroHorasTrabajadas.fecha == fecha_obj  # Sin `cast`, compara directamente
+    ).all()
+    print(f"Fecha buscada: {fecha_obj}")
+    print("Registros encontrados:", registros)
+    return registros
+
+
+def get_weekly_logs(db: Session, trabajador_id: int, fecha_inicio_semana: str) -> list[RegistroHorasTrabajadas]:
+    fecha_obj = datetime.strptime(fecha_inicio_semana, "%Y-%m-%d")
+    fecha_fin_semana = fecha_obj + timedelta(days=6)
+    registros = db.query(RegistroHorasTrabajadas).filter(
+        RegistroHorasTrabajadas.id_trabajador == trabajador_id,
+        RegistroHorasTrabajadas.fecha >= fecha_obj,
+        RegistroHorasTrabajadas.fecha <= fecha_fin_semana
+    ).all()
+    return registros
+
+def get_monthly_logs(db: Session, trabajador_id: int, mes: str) -> list[RegistroHorasTrabajadas]:
+    fecha_inicio_mes = datetime.strptime(mes, "%m").replace(year=datetime.now().year, day=1)
+    fecha_fin_mes = (fecha_inicio_mes.replace(day=28) + timedelta(days=4)).replace(day=1) - timedelta(days=1)
+    registros = db.query(RegistroHorasTrabajadas).filter(
+        RegistroHorasTrabajadas.id_trabajador == trabajador_id,
+        RegistroHorasTrabajadas.fecha >= fecha_inicio_mes,
+        RegistroHorasTrabajadas.fecha <= fecha_fin_mes
+    ).all()
+    return registros
