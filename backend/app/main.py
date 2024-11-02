@@ -212,3 +212,32 @@ def get_monthly_logs(trabajador_id: int, mes: str, db: Session = Depends(databas
     except ValueError:
         raise HTTPException(status_code=400, detail="Formato de mes inválido. Use MM.")
 
+#---------------METRICS---------------------------
+@app.get("/metrics/total_trabajadores")
+def get_total_trabajadores(db: Session = Depends(database.get_db)):
+    total_trabajadores = crud.get_total_trabajadores(db)
+    return {"total_trabajadores": total_trabajadores}
+
+@app.get("/metrics/total_horas_trabajadas")
+def get_total_horas_trabajadas(db: Session = Depends(database.get_db)):
+    total_horas_trabajadas = crud.get_total_horas_trabajadas(db)
+    print(total_horas_trabajadas)
+    return {"total_horas_trabajadas": total_horas_trabajadas}
+
+@app.get("/metrics/total_turnos")
+def get_total_turnos(db: Session = Depends(database.get_db)):
+    total_turnos = crud.get_total_turnos(db)
+    print(total_turnos)
+    return {"total_turnos": total_turnos}
+
+@app.get("/metrics/total_permanent_workers")
+def get_total_permanent_workers(db: Session = Depends(database.get_db)):
+    total_permanent_workers = crud.get_total_permanent_workers(db)
+    print(total_permanent_workers)
+    return {"total_permanent_workers": total_permanent_workers}
+
+@app.get("/metrics/total_eventual_workers")
+def get_total_eventual_workers(db: Session = Depends(database.get_db)):
+    total_eventual_workers = crud.get_total_eventual_workers(db)
+    print(total_eventual_workers)
+    return {"total_eventual_workers": total_eventual_workers}
