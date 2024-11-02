@@ -37,7 +37,7 @@
 
 /* Efecto al pasar el mouse */
 .sign-in-button:hover {
-  background-color: #f7c8c0; /* Un poco más oscuro al hacer hover */
+  background-color: #badbd6; /* Un poco más oscuro al hacer hover */
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Mayor sombra */
   transform: translateY(-5px); /* Levanta el botón ligeramente */
 }
@@ -52,8 +52,9 @@ html, body {
   overflow-x: hidden;
   font-family: 'Roboto', sans-serif;
   background-color: #badbd6; /* Fondo global */
-  
+  height: 100%;  
 }
+
 
 /* Estilos para la barra lateral */
 .sidebar {
@@ -132,8 +133,8 @@ html, body {
   width: calc(100% - 250px); /* Ajuste del ancho para la barra lateral */
   background-color: #badbd6; /* Fondo para el contenido principal */
   color: #234250; /* Color del texto en el contenido principal */
-  max-width: 1000px;
-  
+  height: 100%;
+  width: 1250px;
 }
 
 .sidebar.closed + .main-content-wrapper {
@@ -144,6 +145,7 @@ html, body {
 /* Ajustes de la barra lateral para un fondo más consistente */
 .container-fluid {
   background-color: #badbd6; /* Fondo secundario */
+  height: 100%;
 }
 
 /* Workers - Estilos específicos */
@@ -218,7 +220,44 @@ html, body {
 }
 
 /*------------------------------------------------------------------------------------------------*/
+/* Botón de usuario flotante */
+.floating-user-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
 
+/* Estilo para los botones de selección de idioma - flotantes en la parte inferior derecha */
+.language-switcher {
+  position: fixed; /* Posición fija para que los botones no se muevan con el contenido */
+  bottom: 20px; /* Ajuste desde la parte inferior de la pantalla */
+  right: 20px; /* Ajuste desde la parte izquierda de la pantalla */
+  z-index: 1000; /* Asegura que los botones estén por encima de otros elementos */
+  display: flex;
+  gap: 7px; /* Espacio entre los botones */
+}
+
+.language-button {
+  background-color: #fef3e1; /* Color del botón */
+  color: #22424c; /* Color del texto */
+  border: none;
+  padding: 0.5rem 1rem; /* Espaciado interno */
+  font-size: 1rem; /* Tamaño de fuente */
+  font-weight: bold; /* Texto en negrita */
+  border-radius: 20px; /* Bordes redondeados */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Sombra */
+  transition: all 0.3s ease-in-out; /* Transición suave */
+  cursor: pointer;
+}
+
+.language-button:hover {
+  background-color: #f7c8c0; /* Un poco más oscuro al hacer hover */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Mayor sombra */
+  transform: translateY(-3px); /* Levanta el botón ligeramente */
+}
+
+/*------------------------------------------------------------------------------------------------*/
 
 /* Diseño responsive para pantallas pequeñas */
 @media (max-width: 767px) {
@@ -226,7 +265,7 @@ html, body {
     margin-left: 70px; /* Ajuste del margen en pantallas pequeñas */
     width: calc(100% - 70px); /* Ajuste del ancho del contenido principal */
   }
-  
+
   .navbar-toggler {
     display: none !important;
   }
@@ -237,6 +276,11 @@ html, body {
 
   .brand-name {
     display: none; /* Ocultar el nombre de la marca en pantallas pequeñas */
+  }
+
+  .workers-table {
+    max-width: 75%;
+    padding: 15px; /* Reducir el padding para ahorrar espacio en móviles */
   }
 
   .table th:nth-child(3), 

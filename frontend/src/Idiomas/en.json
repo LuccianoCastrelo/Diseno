@@ -1,0 +1,65 @@
+{
+  "menu": {
+    "dashboard": "Dashboard",
+    "home": "Home",
+    "workers": "Workers",
+    "clients": "Clients",
+    "machines": "Machines"
+  },
+  "language": {
+    "english": "English",
+    "spanish": "Spanish"
+  },
+  "stats": {
+    "workers": "Workers",
+    "hours": "Hours",
+    "factures": "Invoices",
+    "clients": "Clients"
+  },
+  "buttons": {
+    "signIn": "Sign In",
+    "addWorker": "Add Worker",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "saveChanges": "Save Changes",
+    "addLog": "Add Log",
+    "save": "Save"
+  },
+  "table": {
+    "workers": "Workers",
+    "name": "Name",
+    "rut": "RUT",
+    "actions": "Actions"
+  },
+  "modals": {
+    "editWorker": "Edit Worker",
+    "deleteWorker": "Delete Worker",
+    "deleteConfirmation": "Are you sure you want to delete the worker: {{workerName}}?",
+    "addWorker": "Add Worker",
+    "addLogTitle": "Add Time Log"
+  },
+  "form": {
+    "name": "Name",
+    "rut": "RUT",
+    "type": "Type",
+    "paymentPerShift": "Payment per Shift",
+    "baseSalary": "Base Salary",
+    "date": "Date",
+    "startTime": "Start Time",
+    "endTime": "End Time"
+  },
+  "messages": {
+    "logAdded": "Time log added successfully.",
+    "errorAddingLog": "Error adding time log:"
+  },
+
+  "workers": {
+    "title": "Workers",
+    "list": "Workers List",
+    "name": "Name",
+    "rut": "RUT",
+    "actions": "Actions",
+    "noWorkersFound": "No workers found"
+  }
+}

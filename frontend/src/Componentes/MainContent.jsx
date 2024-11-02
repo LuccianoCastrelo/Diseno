@@ -1,14 +1,16 @@
-// MainContent.jsx
 import React from "react";
 import Card from "./Card";
 import Table from "./Table";
+import { useTranslation } from 'react-i18next'; // Importar el hook de traducción
 
 const MainContent = () => {
+  const { t } = useTranslation(); // Usar el hook de traducción
+  
   const stats = [
-    { value: "230", label: "Workers", icon: "bi-cart-plus" },
-    { value: "150", label: "Hours", icon: "bi-clock" },
-    { value: "$1.5M", label: "Factures", icon: "bi-currency-collar" },
-    { value: "5", label: "Clients", icon: "bi-people" },
+    { value: "230", label: t("stats.workers"), icon: "bi-cart-plus" },
+    { value: "150", label: t("stats.hours"), icon: "bi-clock" },
+    { value: "$1.5M", label: t("stats.factures"), icon: "bi-currency-collar" },
+    { value: "5", label: t("stats.clients"), icon: "bi-people" },
   ];
 
   return (

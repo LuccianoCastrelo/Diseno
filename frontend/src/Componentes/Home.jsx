@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
-import Nav from "./Nav";
 import MainContent from "./MainContent";
 import "./style.css";
 
@@ -9,26 +8,15 @@ function Home() {
 
   const Toggle = () => setToggle(!toggle);
 
-  useEffect(() => {
-    const handleResize = () => {
-      // Abrir barra lateral automáticamente en pantallas grandes, cerrar en pantallas pequeñas
-      setToggle(window.innerWidth > 768);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   return (
-    <div className="home-container d-flex vh-100">
+    <div className="home-container d-flex">
       {/* Sidebar */}
       <div className={`sidebar ${toggle ? "" : "closed"}`}>
         <Sidebar toggle={toggle} Toggle={Toggle} />
       </div>
 
       {/* Main Content */}
-      <div className={`main-content-wrapper flex-grow-1 ${toggle ? "" : "closed"}`}>
-        <Nav Toggle={Toggle} />
+      <div className={`main-content-wrapper flex-grow-1 ${toggle ? "" : "sidebar-closed"}`}>
         <MainContent />
       </div>
     </div>

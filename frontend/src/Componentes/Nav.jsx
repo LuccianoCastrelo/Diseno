@@ -9,14 +9,6 @@ function Nav({ Toggle }) {
       <div className="collapse navbar-collapse" id="navbarContent">
         <ul className="navbar-nav ms-auto ">
           <li className="nav-item dropdown">
-            <a
-              className="nav-link dropdown-toggle"
-              href="#"
-              id="navbarDropdown"
-              data-bs-toggle="dropdown"
-            >
-              Maquinsa
-            </a>
             <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
               <li>
                 <a className="dropdown-item" href="#">

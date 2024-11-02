@@ -1,0 +1,68 @@
+{
+  "menu": {
+    "dashboard": "Panel",
+    "home": "Inicio",
+    "workers": "Trabajadores",
+    "clients": "Clientes",
+    "machines": "Máquinas"
+  },
+  "language": {
+    "english": "Inglés",
+    "spanish": "Español"
+  },
+  "stats": {
+    "workers": "Trabajadores",
+    "hours": "Horas",
+    "factures": "Facturas",
+    "clients": "Clientes"
+  },
+  "buttons": {
+    "signIn": "Iniciar Sesión",
+    "addWorker": "Agregar Trabajador",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "cancel": "Cancelar",
+    "saveChanges": "Guardar Cambios",
+    "addLog": "Agregar Registro",
+    "save": "Guardar",
+    "addRecord": "Agregar Registro",
+    "addTimeLog": "Agregar Registro de Horas"
+  },
+  "table": {
+    "workers": "Trabajadores",
+    "name": "Nombre",
+    "rut": "RUT",
+    "actions": "Acciones"
+  },
+  "modals": {
+    "editWorker": "Editar Trabajador",
+    "deleteWorker": "Eliminar Trabajador",
+    "deleteConfirmation": "¿Estás seguro de que quieres eliminar al trabajador: {{workerName}}?",
+    "addWorker": "Agregar Trabajador",
+    "addLogTitle": "Agregar Registro de Horas"
+  },
+  "form": {
+    "name": "Nombre",
+    "rut": "RUT",
+    "type": "Tipo",
+    "paymentPerShift": "Pago por Turno",
+    "baseSalary": "Salario Base",
+    "date": "Fecha",
+    "startTime": "Hora de Inicio",
+    "endTime": "Hora de Fin"
+  },
+  "messages": {
+    "logAdded": "Registro agregado correctamente.",
+    "errorAddingLog": "Error al agregar el registro:",
+    "errorFetchingWorkers": "Error al obtener trabajadores:",
+    "noWorkersFound": "No se encontraron trabajadores"
+  },
+  "workers": {
+    "title": "Trabajadores",
+    "list": "Lista de Trabajadores",
+    "name": "Nombre",
+    "rut": "RUT",
+    "actions": "Acciones",
+    "noWorkersFound": "No se encontraron trabajadores"
+  }
+}
