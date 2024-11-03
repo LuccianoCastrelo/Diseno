@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import en from './idiomas/en.json';
-import es from './idiomas/es.json';
+import en from './Idiomas/en.json';
+import es from './Idiomas/es.json';
 
 // Configuración inicial de i18n
 i18n
