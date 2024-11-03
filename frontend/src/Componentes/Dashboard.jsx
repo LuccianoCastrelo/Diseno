@@ -115,7 +115,7 @@ const Dashboard = () => {
 
     return (
         <div className="container-fluid mt-4 vh-100 vw-100">
-            <h1>{t("workers.title")}</h1>
+            <h1>{t("workers.title2")}</h1>
             <div className="workers-table">
                 <table className="table caption-top bg-white rounded mt-2">
                     <caption className="text-dark fs-4">{t("workers.caption")}</caption>

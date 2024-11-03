@@ -62,6 +62,7 @@
   },
   "workers": {
     "title": "Trabajadores",
+    "title2": "Salario",
     "caption": "RUT de los trabajadores y sueldos calculados",
     "rut": "RUT del Trabajador",
     "actions": "Acciones",
@@ -79,7 +80,9 @@
     "selectMonth": "Selecciona el Mes",
     "chooseDate": "Elige una fecha",
     "chooseMonth": "Elige un mes",
-    "calculate": "Calcular"
+    "calculate": "Calcular",
+    "list": "Lista",
+    "name": "Nombre"
   },
   "errors": {
     "fetchWorkers": "Error al obtener los trabajadores",
