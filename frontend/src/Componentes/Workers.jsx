@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { useTranslation } from 'react-i18next'; // Importar el hook de traducción
 
 import "./style.css"; // Custom CSS for transitions
 
 const Workers = () => {
+  const { t } = useTranslation(); // Hook para traducción
+
   const [workers, setWorkers] = useState([]);
   const [selectedWorker, setSelectedWorker] = useState(null);
   const [registro, setRegistro] = useState({ fecha: "", horaInicio: "", horaFin: "" });
@@ -57,24 +60,24 @@ const Workers = () => {
         // Enviar la petición al backend
         await axios.post("http://localhost:8000/registrohoras/", payload);
         closeModal();
-        alert("Registro agregado correctamente.");
+        alert(t("messages.logAdded"));
     } catch (error) {
-        console.error("Error al agregar el registro:", error);
+        console.error(t("messages.errorAddingLog"), error);
     }
   };
 
   return (
     <div className="container-fluid mt-4 vh-100 vw-100">
-      <h1>Workers</h1>
+      <h1>{t("workers.title")}</h1>
       <div className="workers-table">
         <table className="table caption-top bg-white rounded mt-2">
-          <caption className="text-dark fs-4">Workers</caption>
+          <caption className="text-dark fs-4">{t("workers.list")}</caption>
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">Rut</th>
-              <th scope="col">Actions</th>
+              <th scope="col">{t("workers.name")}</th>
+              <th scope="col">{t("workers.rut")}</th>
+              <th scope="col">{t("workers.actions")}</th>
             </tr>
           </thead>
           <tbody>
@@ -89,7 +92,7 @@ const Workers = () => {
                       className="btn btn-primary btn-sm me-2"
                       onClick={() => openModal(worker)}
                     >
-                      Agregar Registro
+                      {t("buttons.addLog")}
                     </button>
                   </td>
                 </tr>
@@ -97,7 +100,7 @@ const Workers = () => {
             ) : (
               <tr>
                 <td colSpan="4" className="text-center">
-                  No workers found
+                  {t("workers.noWorkersFound")}
                 </td>
               </tr>
             )}
@@ -110,13 +113,13 @@ const Workers = () => {
         <div className="modal show d-block">
           <div className="modal-dialog">
             <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Agregar Registro de Horas</h5>
+              <div className="custom-modal-header">
+                <h5 className="modal-title">{t("modals.addLogTitle")}</h5>
                 <button type="button" className="btn-close" onClick={closeModal}></button>
               </div>
               <div className="modal-body">
                 <div className="mb-3">
-                  <label className="form-label">Fecha</label>
+                  <label className="form-label">{t("form.date")}</label>
                   <input
                     type="date"
                     className="form-control"
@@ -126,7 +129,7 @@ const Workers = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Hora de Inicio</label>
+                  <label className="form-label">{t("form.startTime")}</label>
                   <input
                     type="time"
                     className="form-control"
@@ -136,7 +139,7 @@ const Workers = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Hora de Fin</label>
+                  <label className="form-label">{t("form.endTime")}</label>
                   <input
                     type="time"
                     className="form-control"
@@ -148,10 +151,10 @@ const Workers = () => {
               </div>
               <div className="modal-footer">
                 <button className="btn btn-secondary" onClick={closeModal}>
-                  Cancelar
+                  {t("buttons.cancel")}
                 </button>
                 <button className="btn btn-primary" onClick={handleFormSubmit}>
-                  Guardar
+                  {t("buttons.save")}
                 </button>
               </div>
             </div>

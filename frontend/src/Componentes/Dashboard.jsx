@@ -3,8 +3,10 @@ import axios from "axios";
 import { Modal, Button, Form, Alert } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useTranslation } from 'react-i18next'; // Importar el hook de traducción
 
 const Dashboard = () => {
+    const { t } = useTranslation(); // Usar el hook de traducción
     const [workers, setWorkers] = useState([]);
     const [calculatedSalaries, setCalculatedSalaries] = useState({}); // Guarda el último sueldo calculado para cada trabajador
     const [showModal, setShowModal] = useState(false);
@@ -21,11 +23,11 @@ const Dashboard = () => {
                 const response = await axios.get("http://localhost:8000/trabajadores/");
                 setWorkers(response.data);
             } catch (error) {
-                console.error("Error fetching workers:", error);
+                console.error(t("errors.fetchWorkers"), error);
             }
         };
         fetchWorkers();
-    }, []);
+    }, [t]);
 
     // Open modal and set selected worker
     const openModal = (worker) => {
@@ -39,31 +41,31 @@ const Dashboard = () => {
 
     // Fetch hour logs based on the selected date and salary type
     const fetchHourLogs = async () => {
-      if (!selectedWorker || !selectedDate || !salaryType) return;
-  
-      let endpoint = "";
-      let params = {};
-  
-      if (salaryType === "diario") {
-          endpoint = `/trabajadores/${selectedWorker.id_trabajador}/registros_diarios`;
-          params = { fecha: selectedDate.toISOString().split("T")[0] };
-      } else if (salaryType === "semanal") {
-          endpoint = `/trabajadores/${selectedWorker.id_trabajador}/registros_semanales`;
-          params = { fecha_inicio_semana: selectedDate.toISOString().split("T")[0] };
-      } else if (salaryType === "mensual") {
-          const selectedMonth = selectedDate.toLocaleDateString("en-CA", { month: "2-digit" });
-          endpoint = `/trabajadores/${selectedWorker.id_trabajador}/registros_mensuales`;
-          params = { mes: selectedMonth };
-      }
-  
-      try {
-          const response = await axios.get(`http://localhost:8000${endpoint}`, { params });
-          setHourLogs(response.data.registros || []); // Actualizar para acceder a `registros`
-      } catch (error) {
-          console.error("Error fetching hour logs:", error);
-          setHourLogs([]); // Clear hour logs if there's an error
-      }
-  };
+        if (!selectedWorker || !selectedDate || !salaryType) return;
+
+        let endpoint = "";
+        let params = {};
+
+        if (salaryType === "diario") {
+            endpoint = `/trabajadores/${selectedWorker.id_trabajador}/registros_diarios`;
+            params = { fecha: selectedDate.toISOString().split("T")[0] };
+        } else if (salaryType === "semanal") {
+            endpoint = `/trabajadores/${selectedWorker.id_trabajador}/registros_semanales`;
+            params = { fecha_inicio_semana: selectedDate.toISOString().split("T")[0] };
+        } else if (salaryType === "mensual") {
+            const selectedMonth = selectedDate.toLocaleDateString("en-CA", { month: "2-digit" });
+            endpoint = `/trabajadores/${selectedWorker.id_trabajador}/registros_mensuales`;
+            params = { mes: selectedMonth };
+        }
+
+        try {
+            const response = await axios.get(`http://localhost:8000${endpoint}`, { params });
+            setHourLogs(response.data.registros || []); // Actualizar para acceder a `registros`
+        } catch (error) {
+            console.error(t("errors.fetchHourLogs"), error);
+            setHourLogs([]); // Clear hour logs if there's an error
+        }
+    };
 
     // Run fetchHourLogs when date or salary type changes
     useEffect(() => {
@@ -75,7 +77,7 @@ const Dashboard = () => {
     // Handle calculate salary request
     const handleCalculateSalary = async () => {
         if (!salaryType || !selectedDate) {
-            alert("Selecciona el tipo de sueldo y la fecha.");
+            alert(t("errors.selectSalaryTypeDate"));
             return;
         }
 
@@ -97,32 +99,32 @@ const Dashboard = () => {
         try {
             const response = await axios.get(`http://localhost:8000${endpoint}`, { params });
             if (response.data.message) {
-                setErrorMessage(response.data.message); // Muestra el mensaje si no hay registros
+                setErrorMessage(response.data.message);
             } else {
                 setCalculatedSalaries(prevState => ({
                     ...prevState,
                     [selectedWorker.id_trabajador]: response.data[`${salaryType === 'diario' ? 'sueldo_diario' : salaryType === 'semanal' ? 'sueldo_semanal' : 'sueldo_mensual'}`]
                 }));
-                setShowModal(false); // Cierra el modal al completar el cálculo
+                setShowModal(false); // Close the modal after calculating the salary
             }
         } catch (error) {
-            console.error("Error calculating salary:", error);
-            setErrorMessage("No existen registros en el periodo seleccionado.");
+            console.error(t("errors.calculateSalary"), error);
+            setErrorMessage(t("errors.noRecordsForPeriod"));
         }
     };
 
     return (
         <div className="container-fluid mt-4 vh-100 vw-100">
-            <h1>Trabajadores</h1>
+            <h1>{t("workers.title")}</h1>
             <div className="workers-table">
                 <table className="table caption-top bg-white rounded mt-2">
-                    <caption className="text-dark fs-4">RUT de los trabajadores y sueldos calculados</caption>
+                    <caption className="text-dark fs-4">{t("workers.caption")}</caption>
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">RUT del Trabajador</th>
-                            <th scope="col">Acciones</th>
-                            <th scope="col">Último Sueldo Calculado</th>
+                            <th scope="col">{t("workers.rut")}</th>
+                            <th scope="col">{t("workers.actions")}</th>
+                            <th scope="col">{t("workers.lastCalculatedSalary")}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -136,20 +138,20 @@ const Dashboard = () => {
                                             className="btn btn-primary"
                                             onClick={() => openModal(worker)}
                                         >
-                                            Calcular Sueldo
+                                            {t("workers.calculateSalary")}
                                         </button>
                                     </td>
                                     <td>
                                         {calculatedSalaries[worker.id_trabajador] !== undefined
                                             ? `$${calculatedSalaries[worker.id_trabajador]}`
-                                            : "No calculado"}
+                                            : t("workers.notCalculated")}
                                     </td>
                                 </tr>
                             ))
                         ) : (
                             <tr>
                                 <td colSpan="4" className="text-center">
-                                    No workers found
+                                    {t("workers.noWorkersFound")}
                                 </td>
                             </tr>
                         )}
@@ -160,75 +162,56 @@ const Dashboard = () => {
             {/* Modal for selecting the salary type and period */}
             <Modal show={showModal} onHide={() => setShowModal(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Seleccionar Tipo de Sueldo</Modal.Title>
+                    <Modal.Title>{t("workers.selectSalaryType")}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {errorMessage && <Alert variant="warning">{errorMessage}</Alert>}
                     <Form>
                         <Form.Group controlId="formSalaryType">
-                            <Form.Label>Selecciona el Tipo de Sueldo</Form.Label>
+                            <Form.Label>{t("workers.salaryType")}</Form.Label>
                             <Form.Control
                                 as="select"
                                 value={salaryType}
                                 onChange={(e) => setSalaryType(e.target.value)}
                             >
-                                <option value="">Selecciona un tipo</option>
-                                <option value="diario">Diario</option>
-                                <option value="semanal">Semanal</option>
-                                <option value="mensual">Mensual</option>
+                                <option value="">{t("workers.selectType")}</option>
+                                <option value="diario">{t("workers.daily")}</option>
+                                <option value="semanal">{t("workers.weekly")}</option>
+                                <option value="mensual">{t("workers.monthly")}</option>
                             </Form.Control>
                         </Form.Group>
                         {salaryType === "diario" || salaryType === "semanal" ? (
                             <Form.Group controlId="formDate" className="mt-3">
-                                <Form.Label>Selecciona una Fecha</Form.Label>
+                                <Form.Label>{t("workers.selectDate")}</Form.Label>
                                 <DatePicker
                                     selected={selectedDate}
                                     onChange={(date) => setSelectedDate(date)}
                                     dateFormat="yyyy-MM-dd"
                                     className="form-control"
-                                    placeholderText="Elige una fecha"
+                                    placeholderText={t("workers.chooseDate")}
                                 />
                             </Form.Group>
                         ) : salaryType === "mensual" ? (
                             <Form.Group controlId="formMonth" className="mt-3">
-                                <Form.Label>Selecciona el Mes</Form.Label>
+                                <Form.Label>{t("workers.selectMonth")}</Form.Label>
                                 <DatePicker
                                     selected={selectedDate}
                                     onChange={(date) => setSelectedDate(date)}
                                     dateFormat="MM/yyyy"
                                     showMonthYearPicker
                                     className="form-control"
-                                    placeholderText="Elige un mes"
+                                    placeholderText={t("workers.chooseMonth")}
                                 />
                             </Form.Group>
                         ) : null}
                     </Form>
-
-                    {/* Display Hour Logs */}
-                    {hourLogs.length > 0 ? (
-                      <div className="mt-3">
-                          <h5>Registros de Horas</h5>
-                          <ul className="list-group">
-                              {hourLogs.map((log, index) => (
-                                  <li key={index} className="list-group-item">
-                                      <div>{`Fecha: ${log.fecha}`}</div>
-                                      <div>{`Horas trabajadas: ${log.horas_trabajadas}`}</div>
-                                      <div>{`Turnos asociados: ${log.cantidad_turnos_trabajados}`}</div>
-                                      {log.es_domingo && <div className="text-danger">* Día domingo</div>}
-                                  </li>
-                              ))}
-                          </ul>
-                      </div>
-                  ) : (
-                      <p className="mt-3">No hay registros para el período seleccionado.</p>
-                  )}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowModal(false)}>
-                        Cancelar
+                        {t("buttons.cancel")}
                     </Button>
                     <Button variant="primary" onClick={handleCalculateSalary} disabled={!salaryType || !selectedDate}>
-                        Calcular
+                        {t("workers.calculate")}
                     </Button>
                 </Modal.Footer>
             </Modal>

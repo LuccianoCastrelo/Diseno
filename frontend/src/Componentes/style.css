@@ -1,129 +1,154 @@
+/* Estilos para cubrir toda la pantalla con el contenedor de inicio de sesión */
+.sign-in-container {
+  display: flex;
+  flex-direction: column; /* Alinea los elementos en columna (logo encima del botón) */
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Ocupa toda la altura de la ventana */
+  width: 100vw; /* Ocupa toda la anchura de la ventana */
+  margin: 0; /* Elimina márgenes */
+  padding: 0; /* Elimina padding */
+  background: #b1d8d5; /* Color de fondo sólido */
+  overflow: hidden; /* Asegura que no haya scroll */
+}
+
+/* Estilos para el logo de la empresa */
+.company-logo {
+  width: 400px; /* Ajusta según el tamaño deseado */
+  margin-bottom: 2rem; /* Espaciado hacia el botón de Sign In */
+  border-radius: 15px; /* Bordes ligeramente redondeados */
+  animation: fadeIn 1.5s ease-in-out; /* Animación para que aparezca suavemente */
+}
+
+
+/* Estilos para el botón de inicio de sesión */
+.sign-in-button {
+  background-color: #fef3e1; /* Color del botón */
+  color: #22424c; /* Color del texto */
+  border: none;
+  padding: 1rem 2rem; /* Espaciado interno */
+  font-size: 1.5rem; /* Tamaño de fuente */
+  font-weight: bold; /* Texto en negrita */
+  border-radius: 50px; /* Bordes redondeados */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Sombra */
+  transition: all 0.3s ease-in-out; /* Transición suave */
+  cursor: pointer;
+}
+
+/* Efecto al pasar el mouse */
+.sign-in-button:hover {
+  background-color: #badbd6; /* Un poco más oscuro al hacer hover */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Mayor sombra */
+  transform: translateY(-5px); /* Levanta el botón ligeramente */
+}
+
+
+/*-------------------------------------------------------------------------------*/
+
+/* Estilos globales */
 html, body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  overflow-y: hidden; /* Evita el desbordamiento horizontal */
+  font-family: 'Roboto', sans-serif;
+  background-color: #badbd6; /* Fondo global */
+  height: 100%;  
 }
 
+
+/* Estilos para la barra lateral */
 .sidebar {
-  position: fixed; /* Fija la barra lateral en la pantalla */
-  top: 0;   /* Posiciona la barra lateral en la parte superior */
-  left: 0;  /* Posiciona la barra lateral en la parte izquierda */
-  height: 100%; 
-  transition: width 0.3s ease;
-  overflow-y: auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh; /* Altura completa de la ventana */
+  background-color: #fef3e1; /* Fondo para la barra lateral */
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  transition: all 0.3s ease; /* Transición suave para apertura y cierre */
+  z-index: 1000;
+  width: 250px; /* Ancho inicial de la barra lateral */
 }
 
-.sidebar-open {
-  width: 200px; /* Ancho cuando la barra lateral está abierta */
+.sidebar.closed {
+  width: 70px; /* Ancho reducido cuando está cerrada */
 }
 
-.sidebar-closed {
-  width: 180px; /* Ancho cuando la barra lateral está cerrada */
-}
-
-.small-button {
-  padding: 0.2em 0.4em; /* Reduce padding */
-  font-size: 0.8em; /* Reduce font size */
-}
-
-.list-group a {
+/* Encabezado de la barra lateral */
+.sidebar-header {
+  padding: 2rem;
+  background-color: #badbd6; /* Color del encabezado de la barra lateral */
+  color: #234250; /* Color del texto */
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  padding: 0.75rem 1.25rem;
-  transition: background-color 0.3s ease;
+  justify-content: center; /* Centrar el logo y el nombre */
+  gap: 0px; /* Espacio entre el logo y el nombre */
 }
 
-.list-group a:hover,
-.list-group a.active {
-  background-color: lightblue; /* Color de fondo celeste */
-  color: white; /* Color del texto en blanco */
+.brand-icon {
+  width: 40px; /* Tamaño del logo */
+  height: 40px; /* Tamaño del logo */
+  border-radius: 50%; /* Hacer el logo circular */
+  object-fit: cover; /* Asegura que la imagen no se deforme */
 }
 
-.list-group a.active {
-  background-color: #00bcd4; /* Color de fondo celeste más oscuro cuando está activo */
-  color: white; /* Color del texto en blanco */
+/* Lista de ítems en la barra lateral */
+.list-group {
+  padding: 1rem 0;
 }
 
-.sidebar-transition {
-  transition: width 0.3s ease, margin-left 0.3s ease;
-}
-
-
-@media (max-width: 320px) {
-  html, body {
-    overflow-y: auto; /* Evita el desbordamiento horizontal */
-    background-color: #6c757d; /* Establece el color de fondo a gris */
-  }
-
-  .sidebar {
-    z-index: 1000; /* Asegura que la barra lateral esté por encima del contenido principal en dispositivos móviles */
-  }
-
-  .sidebar-open {
-    width: 50px; /* Ancho reducido en dispositivos móviles */
-  }
-
-  .sidebar-closed {
-    width: 50px; /* Ancho reducido en dispositivos móviles */
-  }
-
-  /* .sidebar .list-group-item span {
-    display: none; /* Oculta los nombres en dispositivos móviles */
-  /*} */
-}
-
-
-
-/* Ajusta el tamaño de los elementos dentro de MainContent */
-.main-content-wrapper .card {
-  font-size: 0.8rem; /* Reduce el tamaño de la fuente */
-  padding: 0.5rem; /* Reduce el padding */
-}
-
-.main-content-wrapper .table {
-  font-size: 0.8rem; /* Reduce el tamaño de la fuente */
-}
-
-.main-content-wrapper .container-fluid {
-  margin-left: 30px; /* Ajusta el margen izquierdo */
-  overflow-y: hidden;
-  
-}
-
-.container-fluid {
-  /* Ajusta el tamaño y otros estilos según tus necesidades */
-  width: 75vw; /* Ancho completo de la ventana */
-  
-  background-color: #6c757d; /* Color de fondo secundario */
+.list-group-item {
+  padding: 0.75rem 1rem;
+  color: #333;
+  text-decoration: none;
   display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
+.list-group-item i {
+  font-size: 2rem; /* Aumenta el tamaño de los íconos */
+  margin-right: 10px; /* Ajusta el espacio entre el ícono y el texto */
+}
+
+.list-group-item:hover {
+  background-color: #badbd6; /* Fondo claro al pasar el ratón */
+  border-radius: 8px; /* Bordes suaves */
 }
 
 
-
-
-
-
-
-/* Usuario */
-
-.custom-user-button {
-  top: 10px; /* Ajusta la posición según tus necesidades */
-  right: 80px; /* Ajusta la posición según tus necesidades */
-  border-radius: 50%; /* Hacer el botón redondo */
-  overflow: hidden; /* Asegurar que el contenido no se desborde */
+.brand-icon {
+  width: 180px; /* Ajusta el tamaño del logo según sea necesario */
+  height: auto; /* Mantener la proporción de la imagen */
+  border-radius: 10px; /* Si deseas un logo con bordes redondeados */
+  object-fit: contain; /* Asegura que la imagen no se deforme */
 }
 
 
-.cl-userButtonTrigger {
-  border-radius: 50%; /* Hacer el botón redondo */
-  overflow: hidden; /* Asegurar que el contenido no se desborde */
+/* Estilos para el contenido principal */
+.main-content-wrapper {
+  margin-left: 250px; /* Ajuste para acomodar la barra lateral abierta */
+  transition: margin-left 0.3s ease, width 0.3s ease;
+  padding: 20px;
+  box-sizing: border-box; /* Asegurar que el padding se incluya en el cálculo del ancho */
+  width: calc(100% - 250px); /* Ajuste del ancho para la barra lateral */
+  background-color: #badbd6; /* Fondo para el contenido principal */
+  color: #234250; /* Color del texto en el contenido principal */
+  height: 100%;
+  width: 1250px;
 }
 
-/* Workers */
+.sidebar.closed + .main-content-wrapper {
+  margin-left: 70px; /* Ajuste del margen cuando la barra lateral está cerrada */
+  width: calc(100% - 70px); /* Ajuste del ancho según el tamaño reducido de la barra lateral */
+}
+
+/* Ajustes de la barra lateral para un fondo más consistente */
+.container-fluid {
+  background-color: #badbd6; /* Fondo secundario */
+  height: 100%;
+}
+
+/* Workers - Estilos específicos */
 .modal {
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
@@ -140,10 +165,14 @@ html, body {
 .modal-content {
   border-radius: 8px;
 }
+
 /* Ajuste de la tabla para una mejor distribución del espacio */
 .workers-table {
   overflow-x: auto; /* Permitir desplazamiento horizontal si es necesario */
-  max-width: 100%;  /* Asegura que no se exceda del contenedor */
+  max-width: 83%;  /* Asegura que no se exceda del contenedor */
+  background-color: #fef3e1; /* Fondo claro para la tabla */
+  color: #234250; /* Color del texto */
+  margin-left: auto; /* Mueve la tabla más a la izquierda */
 }
 
 .table th,
@@ -175,8 +204,86 @@ html, body {
   margin: 0 4px; /* Espaciado entre botones */
 }
 
+
+/*------------------------------------------------------------------------------------------------*/
+/* Estilos para la X de cierre en el encabezado del modal */
+.custom-modal-header .btn-close {
+  font-size: 1.5rem; /* Ajusta el tamaño de la X */
+  color: #22424c; /* Color inicial de la X */
+  opacity: 1; /* Asegúrate de que la X sea completamente visible */
+}
+
+/* Efecto al pasar el ratón sobre la X */
+.custom-modal-header .btn-close:hover {
+  transform: scale(1.2); /* Aumenta el tamaño al hacer hover */
+  transition: transform 0.3s ease, color 0.3s ease; /* Transición suave */
+}
+
+/*------------------------------------------------------------------------------------------------*/
+/* Botón de usuario flotante */
+.floating-user-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+/* Estilo para los botones de selección de idioma - flotantes en la parte inferior derecha */
+.language-switcher {
+  position: fixed; /* Posición fija para que los botones no se muevan con el contenido */
+  bottom: 20px; /* Ajuste desde la parte inferior de la pantalla */
+  right: 20px; /* Ajuste desde la parte izquierda de la pantalla */
+  z-index: 1000; /* Asegura que los botones estén por encima de otros elementos */
+  display: flex;
+  gap: 7px; /* Espacio entre los botones */
+}
+
+.language-button {
+  background-color: #fef3e1; /* Color del botón */
+  color: #22424c; /* Color del texto */
+  border: none;
+  padding: 0.5rem 1rem; /* Espaciado interno */
+  font-size: 1rem; /* Tamaño de fuente */
+  font-weight: bold; /* Texto en negrita */
+  border-radius: 20px; /* Bordes redondeados */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Sombra */
+  transition: all 0.3s ease-in-out; /* Transición suave */
+  cursor: pointer;
+}
+
+.language-button:hover {
+  background-color: #f7c8c0; /* Un poco más oscuro al hacer hover */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Mayor sombra */
+  transform: translateY(-3px); /* Levanta el botón ligeramente */
+}
+
+/*------------------------------------------------------------------------------------------------*/
+
 /* Diseño responsive para pantallas pequeñas */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
+  .main-content-wrapper {
+    margin-left: 70px; /* Ajuste del margen en pantallas pequeñas */
+    width: calc(100% - 70px); /* Ajuste del ancho del contenido principal */
+    padding-top: 320px;
+  }
+
+  .navbar-toggler {
+    display: none !important;
+  }
+
+  .sidebar {
+    width: 70px; /* Ancho reducido en pantallas pequeñas */
+  }
+
+  .brand-name {
+    display: none; /* Ocultar el nombre de la marca en pantallas pequeñas */
+  }
+
+  .workers-table {
+    max-width: 75%;
+    padding: 15px; /* Reducir el padding para ahorrar espacio en móviles */
+  }
+
   .table th:nth-child(3), 
   .table td:nth-child(3) {
     display: none; /* Ocultar RUT en pantallas pequeñas */
@@ -189,5 +296,59 @@ html, body {
   .table td .btn {
     margin: 2px 0; /* Espaciado más pequeño en móviles */
     width: 100%; /* Botones apilados en móviles */
+  }
+
+  /* Encabezado de la barra lateral (incluyendo el logo) */
+  .sidebar-header {
+    padding: 1rem;
+    background-color: #badbd6; /* Color del encabezado de la barra lateral */
+    color: #234250; /* Color del texto */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centrar el logo y el nombre */
+    gap: 0px; /* Espacio entre el logo y el nombre */
+  }
+
+  /* Estilo del logo de la empresa */
+  .brand-icon {
+    width: 45px; /* Ajusta el tamaño del logo según sea necesario */
+    height: 45px; /* Mantener proporción de la imagen */
+    border-radius: 10px; /* Bordes redondeados */
+    object-fit: cover; /* Asegura que la imagen no se deforme */
+  }
+}
+
+/* Diseño específico para tablets (entre 768px y 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .sidebar {
+    width: 125px; /* Ajustar la barra lateral a un tamaño medio */
+    position: fixed; /* Hacer que la barra lateral esté siempre fija en el lado izquierdo */
+    top: 0;
+    left: 0;
+    height: 100vh; /* Ocupa toda la altura de la ventana */
+  }
+
+  .main-content-wrapper {
+    margin-left: 0px; /* Ajuste para acomodar la barra lateral abierta */
+    transition: margin-left 0.3s ease, width 0.3s ease;
+    padding: 0px;
+    box-sizing: border-box; /* Asegurar que el padding se incluya en el cálculo del ancho */
+    width: calc(100% - 125px); /* Ajuste del ancho para la barra lateral */
+    background-color: #badbd6; /* Fondo para el contenido principal */
+    color: #234250; /* Color del texto en el contenido principal */
+    max-width: 600px;
+    
+  }
+
+  .table th, .table td {
+    font-size: 0.9rem; /* Aumentar un poco el tamaño de la fuente para tablets */
+  }
+
+  /* Estilo del logo de la empresa */
+  .brand-icon {
+    width: 70px; /* Ajusta el tamaño del logo según sea necesario */
+    height: 70px; /* Mantener proporción de la imagen */
+    border-radius: 10px; /* Bordes redondeados */
+    object-fit: cover; /* Asegura que la imagen no se deforme */
   }
 }

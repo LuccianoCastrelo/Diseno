@@ -1,0 +1,92 @@
+{
+  "menu": {
+    "dashboard": "Panel",
+    "home": "Inicio",
+    "workers": "Trabajadores",
+    "clients": "Clientes",
+    "machines": "Máquinas"
+  },
+  "language": {
+    "english": "Inglés",
+    "spanish": "Español"
+  },
+  "stats": {
+    "workers": "Trabajadores",
+    "hours": "Horas",
+    "factures": "Facturas",
+    "clients": "Clientes",
+    "shifts": "Turnos",
+    "permanentWorkers": "Trabajadores Permanentes",
+    "eventualWorkers": "Trabajadores Eventuales"
+  },
+  "buttons": {
+    "signIn": "Iniciar Sesión",
+    "addWorker": "Agregar Trabajador",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "cancel": "Cancelar",
+    "saveChanges": "Guardar Cambios",
+    "addLog": "Agregar Registro",
+    "save": "Guardar",
+    "addRecord": "Agregar Registro",
+    "addTimeLog": "Agregar Registro de Horas"
+  },
+  "table": {
+    "workers": "Trabajadores",
+    "name": "Nombre",
+    "rut": "RUT",
+    "actions": "Acciones"
+  },
+  "modals": {
+    "editWorker": "Editar Trabajador",
+    "deleteWorker": "Eliminar Trabajador",
+    "deleteConfirmation": "¿Estás seguro de que quieres eliminar al trabajador: {{workerName}}?",
+    "addWorker": "Agregar Trabajador",
+    "addLogTitle": "Agregar Registro de Horas"
+  },
+  "form": {
+    "name": "Nombre",
+    "rut": "RUT",
+    "type": "Tipo",
+    "paymentPerShift": "Pago por Turno",
+    "baseSalary": "Salario Base",
+    "date": "Fecha",
+    "startTime": "Hora de Inicio",
+    "endTime": "Hora de Fin"
+  },
+  "messages": {
+    "logAdded": "Registro agregado correctamente.",
+    "errorAddingLog": "Error al agregar el registro:",
+    "errorFetchingWorkers": "Error al obtener trabajadores:",
+    "noWorkersFound": "No se encontraron trabajadores"
+  },
+  "workers": {
+    "title": "Trabajadores",
+    "caption": "RUT de los trabajadores y sueldos calculados",
+    "rut": "RUT del Trabajador",
+    "actions": "Acciones",
+    "lastCalculatedSalary": "Último Sueldo Calculado",
+    "calculateSalary": "Calcular Sueldo",
+    "notCalculated": "No calculado",
+    "noWorkersFound": "No se encontraron trabajadores",
+    "selectSalaryType": "Seleccionar Tipo de Sueldo",
+    "salaryType": "Selecciona el Tipo de Sueldo",
+    "selectType": "Selecciona un tipo",
+    "daily": "Diario",
+    "weekly": "Semanal",
+    "monthly": "Mensual",
+    "selectDate": "Selecciona una Fecha",
+    "selectMonth": "Selecciona el Mes",
+    "chooseDate": "Elige una fecha",
+    "chooseMonth": "Elige un mes",
+    "calculate": "Calcular"
+  },
+  "errors": {
+    "fetchWorkers": "Error al obtener los trabajadores",
+    "fetchHourLogs": "Error al obtener los registros de horas",
+    "calculateSalary": "Error al calcular el sueldo",
+    "noRecordsForPeriod": "No existen registros en el periodo seleccionado.",
+    "selectSalaryTypeDate": "Selecciona el tipo de sueldo y la fecha."
+  },
+  "loading": "Cargando Contenido..." 
+}
