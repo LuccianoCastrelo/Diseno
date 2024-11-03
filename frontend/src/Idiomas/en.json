@@ -59,6 +59,7 @@
 
   "workers": {
     "title": "Workers",
+    "title2": "Salary",
     "caption": "Workers RUT and calculated salaries",
     "rut": "Worker's RUT",
     "actions": "Actions",
@@ -76,7 +77,9 @@
     "selectMonth": "Select the Month",
     "chooseDate": "Choose a date",
     "chooseMonth": "Choose a month",
-    "calculate": "Calculate"
+    "calculate": "Calculate",
+    "list": "List",
+    "name": "Name"
   },
   "errors": {
     "fetchWorkers": "Error fetching workers",
