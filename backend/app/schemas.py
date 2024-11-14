@@ -60,13 +60,14 @@ class MantenimientoSchema(BaseModel):
     class Config:
         from_attributes = True
 
-class MaquinaSchema(BaseModel):
-    id_maquina: int
+class MaquinaBaseSchema(BaseModel):
     descripcion_maquina: str
     uso_para_mantenimiento: str
 
     class Config:
         from_attributes = True
+class MaquinaSchema(MaquinaBaseSchema):
+    id_maquina: int
 
 class SueldoSchema(BaseModel):
     id_sueldo: int
