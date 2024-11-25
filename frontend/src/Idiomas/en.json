@@ -17,7 +17,10 @@
     "clients": "Clients",
     "shifts": "Shifts",
     "permanentWorkers": "Permanent Workers",
-    "eventualWorkers": "Eventual Workers"
+    "eventualWorkers": "Eventual Workers",
+    "totalMachines": "Total Machines",
+    "operationalMachines": "Operational Machines",
+    "nonOperationalMachines": "Non-Operational Machines"
   },
   "buttons": {
     "signIn": "Sign In",
@@ -27,20 +30,29 @@
     "cancel": "Cancel",
     "saveChanges": "Save Changes",
     "addLog": "Add Log",
-    "save": "Save"
+    "save": "Save",
+    "addRecord": "Add Record",
+    "addTimeLog": "Add Time Log",
+    "addMachine": "Add Machine"
   },
   "table": {
     "workers": "Workers",
     "name": "Name",
     "rut": "RUT",
-    "actions": "Actions"
+    "actions": "Actions",
+    "machines": "Machines",
+    "description": "Description",
+    "usage": "Usage"
   },
   "modals": {
     "editWorker": "Edit Worker",
     "deleteWorker": "Delete Worker",
     "deleteConfirmation": "Are you sure you want to delete the worker: {{workerName}}?",
     "addWorker": "Add Worker",
-    "addLogTitle": "Add Time Log"
+    "editMachine": "Edit Machine",
+    "addMachine": "Add Machine",
+    "addLogTitle": "Add Time Log and Machine"
+
   },
   "form": {
     "name": "Name",
@@ -50,13 +62,23 @@
     "baseSalary": "Base Salary",
     "date": "Date",
     "startTime": "Start Time",
-    "endTime": "End Time"
+    "endTime": "End Time",
+    "description": "Description",
+    "usage": "Usage",
+    "machine": "Machine",
+    "selectMachine": "Select a machine"
+
   },
   "messages": {
     "logAdded": "Time log added successfully.",
-    "errorAddingLog": "Error adding time log:"
-  },
+    "errorAddingLog": "Error adding time log:",
+    "errorFetchingMachines": "Error fetching machines:",
+    "machineAdded": "Machine added successfully.",
+    "machineUpdated": "Machine updated successfully.",
+    "machineDeleted": "Machine deleted successfully.",
+    "machineNotFound": "Machine not found."
 
+  },
   "workers": {
     "title": "Workers",
     "title2": "Salary",

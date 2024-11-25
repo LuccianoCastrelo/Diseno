@@ -96,6 +96,15 @@ def delete_admin(id_administrador:int,admin: schemas.AdministradorSchema, db:Ses
 #crear registro de horas
 @app.post("/registrohoras/", response_model=schemas.RegistroHorasTrabajadasSchema)
 def create_registro(registro: schemas.RegistroHorasTrabajadasCreateSchema, db: Session = Depends(database.get_db)):
+    """
+    Crea un registro de horas trabajadas, asociado opcionalmente a una máquina.
+    """
+    # Validar que la máquina existe, si se proporciona un id_maquina
+    if registro.id_maquina is not None:
+        db_machine = db.query(models.Maquina).filter(models.Maquina.id_maquina == registro.id_maquina).first()
+        if not db_machine:
+            raise HTTPException(status_code=404, detail="Machine not found")
+
     return crud.create_registro(db=db, registro=registro)
 
 #obtener registro de horas
@@ -241,3 +250,49 @@ def get_total_eventual_workers(db: Session = Depends(database.get_db)):
     total_eventual_workers = crud.get_total_eventual_workers(db)
     print(total_eventual_workers)
     return {"total_eventual_workers": total_eventual_workers}
+
+# --------- Rutas para Máquinas ---------
+@app.post("/machines/", response_model=schemas.MaquinaSchema)
+def create_machine(machine: schemas.MaquinaCreateSchema, db: Session = Depends(database.get_db)):
+    return crud.create_machine(db=db, machine=machine)
+
+@app.get("/machines/{id_maquina}", response_model=schemas.MaquinaSchema)
+def read_machine(id_maquina: int, db: Session = Depends(database.get_db)):
+    db_machine = crud.get_machine(db, id_maquina)
+    if db_machine is None:
+        raise HTTPException(status_code=404, detail="Machine not found")
+    return db_machine
+
+@app.get("/machines/", response_model=List[schemas.MaquinaSchema])
+def read_machines(db: Session = Depends(database.get_db)):
+    return crud.get_all_machines(db)
+
+@app.put("/machines/{id_maquina}", response_model=schemas.MaquinaSchema)
+def update_machine(id_maquina: int, machine: schemas.MaquinaCreateSchema, db: Session = Depends(database.get_db)):
+    db_machine = crud.update_machine(db, id_maquina, machine_data=machine)
+    if db_machine is None:
+        raise HTTPException(status_code=404, detail="Machine not found")
+    return db_machine
+
+@app.delete("/machines/{id_maquina}", response_model=schemas.MaquinaSchema)
+def delete_machine(id_maquina: int, db: Session = Depends(database.get_db)):
+    db_machine = crud.delete_machine(db, id_maquina)
+    if db_machine is None:
+        raise HTTPException(status_code=404, detail="Machine not found")
+    return db_machine
+
+# --------- Rutas para Métricas de Máquinas ---------
+@app.get("/metrics/total_machines")
+def get_total_machines(db: Session = Depends(database.get_db)):
+    total_machines = crud.get_total_machines(db)
+    return {"total_machines": total_machines}
+
+@app.get("/metrics/operational_machines")
+def get_operational_machines(db: Session = Depends(database.get_db)):
+    operational_machines = crud.get_operational_machines(db)
+    return {"operational_machines": operational_machines}
+
+@app.get("/metrics/non_operational_machines")
+def get_non_operational_machines(db: Session = Depends(database.get_db)):
+    non_operational_machines = crud.get_non_operational_machines(db)
+    return {"non_operational_machines": non_operational_machines}

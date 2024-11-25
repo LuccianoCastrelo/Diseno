@@ -23,16 +23,20 @@ class Trabajador(Base):
 
 class RegistroHorasTrabajadas(Base):
     __tablename__ = "registro_horas_trabajadas"
+
     id_registro = Column(Integer, primary_key=True, index=True, autoincrement=True)
     id_trabajador = Column(Integer, ForeignKey("trabajadores.id_trabajador"))
     fecha = Column(Date)
-    hora_inicio = Column(Time)  # Agregamos la hora de inicio
-    hora_fin = Column(Time)      # Agregamos la hora final
-    horas_trabajadas = Column(Float)  # Este campo será calculado
+    hora_inicio = Column(Time)
+    hora_fin = Column(Time)
+    horas_trabajadas = Column(Float)
     cantidad_turnos_trabajados = Column(Float)
-    es_domingo = Column(Boolean, default=False)  # Campo booleano para determinar si es domingo
+    es_domingo = Column(Boolean, default=False)
+    id_maquina = Column(Integer, ForeignKey("maquinas.id_maquina"), nullable=True)  # Relación opcional con máquinas
 
     trabajador = relationship("Trabajador", back_populates="registros")
+    maquina = relationship("Maquina")  # Relación con la tabla de máquinas
+
 class Mantenimiento(Base):
     __tablename__ = "mantenimientos"
     id_mantenimiento = Column(Integer, primary_key=True, index=True, autoincrement=True)

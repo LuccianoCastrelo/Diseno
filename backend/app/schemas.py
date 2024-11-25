@@ -28,22 +28,24 @@ class TrabajadorSchema(TrabajadorSchemaReq):
 
     class Config:
         from_attributes = True
-# Schema para crear un registro (sin el cálculo de horas trabajadas)
 class RegistroHorasTrabajadasCreateSchema(BaseModel):
     id_trabajador: int
     fecha: date
-    hora_inicio: time  # Agregamos la hora de inicio
-    hora_fin: time      # Agregamos la hora final
-# Schema para lectura, que incluye el cálculo de horas trabajadas
+    hora_inicio: time
+    hora_fin: time
+    id_maquina: Optional[int] = None  # Campo opcional para asociar una máquina
+
+# Esquema para la lectura de registros (actualizado)
 class RegistroHorasTrabajadasSchema(BaseModel):
     id_registro: int
     id_trabajador: int
     fecha: date
     hora_inicio: time
     hora_fin: time
-    horas_trabajadas: float  # Ahora esto se calculará en el backend
+    horas_trabajadas: float
     cantidad_turnos_trabajados: float
-    es_domingo: bool  # Nuevo campo que indica si la fecha es domingo
+    es_domingo: bool
+    id_maquina: Optional[int] = None  # Incluir máquina en el esquema de salida
 
     class Config:
         orm_mode = True
@@ -67,6 +69,17 @@ class MaquinaSchema(BaseModel):
 
     class Config:
         from_attributes = True
+        
+class MaquinaCreateSchema(BaseModel):
+    descripcion_maquina: str
+    uso_para_mantenimiento: str
+
+class MaquinaSchema(MaquinaCreateSchema):
+    id_maquina: int
+
+    class Config:
+        from_attributes = True
+
 
 class SueldoSchema(BaseModel):
     id_sueldo: int

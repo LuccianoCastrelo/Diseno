@@ -84,6 +84,9 @@ def get_registro(db: Session, id_registro: int):
     return db.query(models.RegistroHorasTrabajadas).filter(models.RegistroHorasTrabajadas.id_registro == id_registro).first()
 
 def create_registro(db: Session, registro: schemas.RegistroHorasTrabajadasCreateSchema):
+    """
+    Crea un nuevo registro de horas trabajadas en la base de datos.
+    """
     # Calcular las horas trabajadas
     formato_hora = "%H:%M:%S"
     hora_inicio_dt = datetime.strptime(str(registro.hora_inicio), formato_hora)
@@ -91,7 +94,7 @@ def create_registro(db: Session, registro: schemas.RegistroHorasTrabajadasCreate
     delta_horas = (hora_fin_dt - hora_inicio_dt).seconds / 3600  # Convertimos a horas
 
     # Determinar si la fecha es domingo
-    es_domingo = registro.fecha.weekday() == 6  # Si el día de la semana es 6, es domingo
+    es_domingo = registro.fecha.weekday() == 6
 
     # Calcular turnos basados en las horas trabajadas
     turnos = calcular_turnos(delta_horas)
@@ -103,13 +106,15 @@ def create_registro(db: Session, registro: schemas.RegistroHorasTrabajadasCreate
         hora_inicio=registro.hora_inicio,
         hora_fin=registro.hora_fin,
         horas_trabajadas=delta_horas,
-        es_domingo=es_domingo,  # Guardamos si es domingo o no
-        cantidad_turnos_trabajados=turnos
+        cantidad_turnos_trabajados=turnos,
+        es_domingo=es_domingo,
+        id_maquina=registro.id_maquina  # Asociar la máquina si se proporciona
     )
     db.add(db_registro)
     db.commit()
     db.refresh(db_registro)
     return db_registro
+
 
 
 def update_registro(db: Session, id_registro: int, registro_data: schemas.RegistroHorasTrabajadasSchema):
@@ -280,3 +285,50 @@ def get_total_permanent_workers(db: Session):
 
 def get_total_eventual_workers(db: Session):
     return db.query(models.Trabajador).filter(models.Trabajador.tipo == "eventual").count()
+
+
+# --------- CRUD para Máquinas ---------
+def get_machine(db: Session, id_maquina: int):
+    return db.query(models.Maquina).filter(models.Maquina.id_maquina == id_maquina).first()
+
+def get_all_machines(db: Session):
+    return db.query(models.Maquina).all()
+
+def create_machine(db: Session, machine: schemas.MaquinaSchema):
+    db_machine = models.Maquina(
+        descripcion_maquina=machine.descripcion_maquina,
+        uso_para_mantenimiento=machine.uso_para_mantenimiento
+    )
+    db.add(db_machine)
+    db.commit()
+    db.refresh(db_machine)
+    return db_machine
+
+def update_machine(db: Session, id_maquina: int, machine_data: schemas.MaquinaSchema):
+    db_machine = get_machine(db, id_maquina)
+    if db_machine:
+        db_machine.descripcion_maquina = machine_data.descripcion_maquina
+        db_machine.uso_para_mantenimiento = machine_data.uso_para_mantenimiento
+        db.commit()
+        db.refresh(db_machine)
+        return db_machine
+    return None
+
+def delete_machine(db: Session, id_maquina: int):
+    db_machine = get_machine(db, id_maquina)
+    if db_machine:
+        db.delete(db_machine)
+        db.commit()
+        return db_machine
+    return None
+
+# --------- Métricas para Máquinas ---------
+def get_total_machines(db: Session):
+    return db.query(models.Maquina).count()
+
+def get_operational_machines(db: Session):
+    # Supongamos que `uso_para_mantenimiento` indica el estado de la máquina ('operativa' o 'no operativa')
+    return db.query(models.Maquina).filter(models.Maquina.uso_para_mantenimiento == "operativa").count()
+
+def get_non_operational_machines(db: Session):
+    return db.query(models.Maquina).filter(models.Maquina.uso_para_mantenimiento != "operativa").count()
