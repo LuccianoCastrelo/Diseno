@@ -34,18 +34,20 @@ class RegistroHorasTrabajadasCreateSchema(BaseModel):
     hora_inicio: time
     hora_fin: time
     id_maquina: Optional[int] = None  # Campo opcional para asociar una máquina
+    id_cliente: int  # Campo obligatorio para asociar un cliente
 
 # Esquema para la lectura de registros (actualizado)
 class RegistroHorasTrabajadasSchema(BaseModel):
     id_registro: int
     id_trabajador: int
+    id_cliente: int 
     fecha: date
     hora_inicio: time
     hora_fin: time
     horas_trabajadas: float
     cantidad_turnos_trabajados: float
     es_domingo: bool
-    id_maquina: Optional[int] = None  # Incluir máquina en el esquema de salida
+    id_maquina: Optional[int] = None
 
     class Config:
         orm_mode = True
@@ -65,14 +67,26 @@ class MantenimientoSchema(BaseModel):
 class MaquinaSchema(BaseModel):
     id_maquina: int
     descripcion_maquina: str
-    uso_para_mantenimiento: str
+    consumo_promedio: Optional[float] = None
+    costo_mantenimiento: Optional[float] = None
+    fecha_instalacion: Optional[date] = None
+    ultima_fecha_mantenimiento: Optional[date] = None
+    tipo_maquina: Optional[str] = None
+    tiempo_entre_mantencion: Optional[int] = None  # Intervalo en días
 
     class Config:
-        from_attributes = True
+        from_attributes = True  # Para usar objetos SQLAlchemy directamente
+
         
+# Esquema para la creación de una máquina
 class MaquinaCreateSchema(BaseModel):
     descripcion_maquina: str
-    uso_para_mantenimiento: str
+    consumo_promedio: Optional[float] = None
+    costo_mantenimiento: Optional[float] = None
+    fecha_instalacion: Optional[date] = None
+    ultima_fecha_mantenimiento: Optional[date] = None
+    tipo_maquina: Optional[str] = None
+    tiempo_entre_mantencion: Optional[int] = None  # Intervalo en días
 
 class MaquinaSchema(MaquinaCreateSchema):
     id_maquina: int
@@ -93,3 +107,12 @@ class RegistroIds(BaseModel):
 class SueldoMensualResponse(BaseModel):
     sueldo_mensual: int
 
+class ClienteSchema(BaseModel):
+    id_cliente: int
+    nombre_empresa: str
+    direccion: Optional[str] = None
+    telefono: Optional[str] = None
+    email: Optional[str] = None
+
+    class Config:
+        orm_mode = True

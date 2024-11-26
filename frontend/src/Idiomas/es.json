@@ -19,8 +19,7 @@
     "permanentWorkers": "Trabajadores Permanentes",
     "eventualWorkers": "Trabajadores Eventuales",
     "totalMachines": "Total de Máquinas",
-    "operationalMachines": "Máquinas Operativas",
-    "nonOperationalMachines": "Máquinas No Operativas"
+    "totalFuelConsumed": "Combustible total consumido"
   },
   "buttons": {
     "signIn": "Iniciar Sesión",
@@ -42,7 +41,11 @@
     "actions": "Acciones",
     "machines": "Máquinas",
     "description": "Descripción",
-    "usage": "Uso"
+    "usage": "Uso",
+    "fuelConsumed": "Combustible Consumido",
+    "nextMaintenanceDate": "Próxima Fecha de Mantenimiento",
+    "type":"Tipo",
+    "installationDate":"Fecha de Instalación"
   },
   "modals": {
     "editWorker": "Editar Trabajador",
@@ -66,7 +69,12 @@
     "description": "Descripción",
     "usage": "Uso",
     "machine": "Máquina",
-    "selectMachine": "Selecciona una máquina"
+    "selectMachine": "Selecciona una máquina",
+    "averageConsumption": "Consumo Promedio",
+    "maintenanceCost": "Costo de Mantenimiento",
+    "installationDate": "Fecha de Instalación",
+    "lastMaintenance": "Última Fecha de Mantenimiento",
+    "maintenanceInterval": "Intervalo de Mantenimiento (en días)"
 
   },
   "messages": {
@@ -77,7 +85,10 @@
     "machineAdded": "Máquina agregada correctamente.",
     "machineUpdated": "Máquina actualizada correctamente.",
     "machineDeleted": "Máquina eliminada correctamente.",
-    "machineNotFound": "Máquina no encontrada."
+    "machineNotFound": "Máquina no encontrada.",
+    "noData": "Sin datos disponibles.",
+    "invalidData": "Datos inválidos. Por favor, verifica los campos.",
+    "fetchingError": "Error al cargar los datos."
 
   },
   "workers": {

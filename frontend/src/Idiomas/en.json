@@ -19,8 +19,7 @@
     "permanentWorkers": "Permanent Workers",
     "eventualWorkers": "Eventual Workers",
     "totalMachines": "Total Machines",
-    "operationalMachines": "Operational Machines",
-    "nonOperationalMachines": "Non-Operational Machines"
+    "totalFuelConsumed": "Total Calculado Fuel"
   },
   "buttons": {
     "signIn": "Sign In",
@@ -42,7 +41,11 @@
     "actions": "Actions",
     "machines": "Machines",
     "description": "Description",
-    "usage": "Usage"
+    "usage": "Usage",
+    "fuelConsumed": "Fuel Consumed",
+    "nextMaintenanceDate": "Next Maintenance Date",
+    "type":"Type",
+    "installationDate":"Installation Date"
   },
   "modals": {
     "editWorker": "Edit Worker",
@@ -66,7 +69,12 @@
     "description": "Description",
     "usage": "Usage",
     "machine": "Machine",
-    "selectMachine": "Select a machine"
+    "selectMachine": "Select a machine",
+    "averageConsumption": "Average Consumption",
+    "maintenanceCost": "Maintenance Cost",
+    "installationDate": "Installation Date",
+    "lastMaintenance": "Last Maintenance Date",
+    "maintenanceInterval": "Maintenance Interval (in days)"
 
   },
   "messages": {
@@ -76,7 +84,10 @@
     "machineAdded": "Machine added successfully.",
     "machineUpdated": "Machine updated successfully.",
     "machineDeleted": "Machine deleted successfully.",
-    "machineNotFound": "Machine not found."
+    "machineNotFound": "Machine not found.",
+    "noData": "No data available.",
+    "invalidData": "Invalid data. Please check the fields.",
+    "fetchingError": "Error fetching data."
 
   },
   "workers": {

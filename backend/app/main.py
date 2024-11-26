@@ -254,7 +254,17 @@ def get_total_eventual_workers(db: Session = Depends(database.get_db)):
 # --------- Rutas para Máquinas ---------
 @app.post("/machines/", response_model=schemas.MaquinaSchema)
 def create_machine(machine: schemas.MaquinaCreateSchema, db: Session = Depends(database.get_db)):
+    # Validar si ya existe una máquina con la misma descripción
+    existing_machine = db.query(models.Maquina).filter(models.Maquina.descripcion_maquina == machine.descripcion_maquina).first()
+    if existing_machine:
+        raise HTTPException(
+            status_code=400, 
+            detail="Una máquina con esta descripción ya existe"
+        )
+    
+    # Crear la máquina utilizando la función del CRUD
     return crud.create_machine(db=db, machine=machine)
+
 
 @app.get("/machines/{id_maquina}", response_model=schemas.MaquinaSchema)
 def read_machine(id_maquina: int, db: Session = Depends(database.get_db)):
@@ -264,8 +274,9 @@ def read_machine(id_maquina: int, db: Session = Depends(database.get_db)):
     return db_machine
 
 @app.get("/machines/", response_model=List[schemas.MaquinaSchema])
-def read_machines(db: Session = Depends(database.get_db)):
-    return crud.get_all_machines(db)
+def read_machines(skip: int = 0, limit: int = 10, db: Session = Depends(database.get_db)):
+    return crud.get_all_machines(db, skip=skip, limit=limit)
+
 
 @app.put("/machines/{id_maquina}", response_model=schemas.MaquinaSchema)
 def update_machine(id_maquina: int, machine: schemas.MaquinaCreateSchema, db: Session = Depends(database.get_db)):
@@ -287,12 +298,42 @@ def get_total_machines(db: Session = Depends(database.get_db)):
     total_machines = crud.get_total_machines(db)
     return {"total_machines": total_machines}
 
-@app.get("/metrics/operational_machines")
-def get_operational_machines(db: Session = Depends(database.get_db)):
-    operational_machines = crud.get_operational_machines(db)
-    return {"operational_machines": operational_machines}
+@app.get("/metrics/total_fuel_consumed")
+def get_total_fuel_consumed(db: Session = Depends(database.get_db)):
+    """
+    Devuelve el combustible total consumido por todas las máquinas.
+    """
+    total_fuel = crud.get_total_fuel_consumed(db)
+    return {"total_fuel_consumed": total_fuel}
 
-@app.get("/metrics/non_operational_machines")
-def get_non_operational_machines(db: Session = Depends(database.get_db)):
-    non_operational_machines = crud.get_non_operational_machines(db)
-    return {"non_operational_machines": non_operational_machines}
+
+@app.get("/metrics/fuel_consumed_per_machine")
+def get_fuel_consumed_per_machine(db: Session = Depends(database.get_db)):
+    """
+    Devuelve el combustible consumido por cada máquina.
+    """
+    fuel_data = crud.get_fuel_consumed_per_machine(db)
+    return {"machines_fuel_consumption": fuel_data}
+
+@app.get("/machines/{id_maquina}/next_maintenance_date")
+def get_next_maintenance_date(id_maquina: int, db: Session = Depends(database.get_db)):
+    """
+    Devuelve la próxima fecha de mantención de una máquina específica.
+    """
+    result = crud.calculate_next_maintenance_date(db, id_maquina)
+    if not result:
+        raise HTTPException(
+            status_code=404, 
+            detail="No se pudo calcular la próxima fecha de mantención. Verifica la información de la máquina."
+        )
+    return result
+
+@app.get("/machines/next_maintenance_dates")
+def get_all_next_maintenance_dates(db: Session = Depends(database.get_db)):
+    machines = db.query(models.Maquina).all()
+    results = []
+    for maquina in machines:
+        result = crud.calculate_next_maintenance_date(db, maquina.id_maquina)
+        if result:
+            results.append(result)
+    return {"next_maintenance_dates": results}
