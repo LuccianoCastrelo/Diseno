@@ -19,7 +19,7 @@
     "permanentWorkers": "Permanent Workers",
     "eventualWorkers": "Eventual Workers",
     "totalMachines": "Total Machines",
-    "totalFuelConsumed": "Total Calculado Fuel"
+    "totalFuelConsumed": "Total Fuel Consumed"
   },
   "buttons": {
     "signIn": "Sign In",
@@ -32,7 +32,8 @@
     "save": "Save",
     "addRecord": "Add Record",
     "addTimeLog": "Add Time Log",
-    "addMachine": "Add Machine"
+    "addMachine": "Add Machine",
+    "addClient": "Add Client"
   },
   "table": {
     "workers": "Workers",
@@ -44,8 +45,15 @@
     "usage": "Usage",
     "fuelConsumed": "Fuel Consumed",
     "nextMaintenanceDate": "Next Maintenance Date",
-    "type":"Type",
-    "installationDate":"Installation Date"
+    "type": "Type",
+    "installationDate": "Installation Date",
+    "clients": "Clients",
+    "companyName": "Company Name",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "hoursWorked": "Hours Worked",
+    "turnsWorked": "Turns Worked"
   },
   "modals": {
     "editWorker": "Edit Worker",
@@ -54,8 +62,11 @@
     "addWorker": "Add Worker",
     "editMachine": "Edit Machine",
     "addMachine": "Add Machine",
-    "addLogTitle": "Add Time Log and Machine"
-
+    "addLogTitle": "Add Time Log and Machine",
+    "editClient": "Edit Client",
+    "deleteClient": "Delete Client",
+    "deleteClientConfirmation": "Are you sure you want to delete the client: {{clientName}}?",
+    "addClient": "Add Client"
   },
   "form": {
     "name": "Name",
@@ -74,8 +85,12 @@
     "maintenanceCost": "Maintenance Cost",
     "installationDate": "Installation Date",
     "lastMaintenance": "Last Maintenance Date",
-    "maintenanceInterval": "Maintenance Interval (in days)"
-
+    "maintenanceInterval": "Maintenance Interval (in days)",
+    "companyName": "Company Name",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "selectCompany": "Select a company"
   },
   "messages": {
     "logAdded": "Time log added successfully.",
@@ -87,8 +102,11 @@
     "machineNotFound": "Machine not found.",
     "noData": "No data available.",
     "invalidData": "Invalid data. Please check the fields.",
-    "fetchingError": "Error fetching data."
-
+    "fetchingError": "Error fetching data.",
+    "clientAdded": "Client added successfully.",
+    "clientUpdated": "Client updated successfully.",
+    "clientDeleted": "Client deleted successfully.",
+    "clientNotFound": "Client not found."
   },
   "workers": {
     "title": "Workers",
@@ -119,7 +137,10 @@
     "fetchHourLogs": "Error fetching hour logs",
     "calculateSalary": "Error calculating salary",
     "noRecordsForPeriod": "No records for the selected period.",
-    "selectSalaryTypeDate": "Select the salary type and date."
+    "selectSalaryTypeDate": "Select the salary type and date.",
+    "fetchClients": "Error fetching clients",
+    "deleteClientError": "Error deleting client",
+    "editClientError": "Error editing client"
   },
   "loading": "Loading Content..."
 }

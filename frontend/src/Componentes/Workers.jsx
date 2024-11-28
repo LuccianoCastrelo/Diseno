@@ -11,9 +11,9 @@ const Workers = () => {
 
   const [workers, setWorkers] = useState([]);
   const [machines, setMachines] = useState([]);
-  const [companies, setCompanies] = useState([]); // Estado para las empresas
+  const [companies, setCompanies] = useState([]);
   const [selectedWorker, setSelectedWorker] = useState(null);
-  const [registro, setRegistro] = useState({ fecha: "", horaInicio: "", horaFin: "", idMaquina: "", idEmpresa: "" });
+  const [registro, setRegistro] = useState({ fecha: "", horaInicio: "", horaFin: "", idMaquina: "", id_cliente: "" });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Fetch workers, machines, and companies on component mount
@@ -38,7 +38,7 @@ const Workers = () => {
 
     const fetchCompanies = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/empresas/");
+        const response = await axios.get("http://localhost:8000/clientes/");
         setCompanies(response.data);
       } catch (error) {
         console.error("Error fetching companies:", error);
@@ -59,7 +59,7 @@ const Workers = () => {
   // Close modal
   const closeModal = () => {
     setSelectedWorker(null);
-    setRegistro({ fecha: "", horaInicio: "", horaFin: "", idMaquina: "", idEmpresa: "" });
+    setRegistro({ fecha: "", horaInicio: "", horaFin: "", idMaquina: "", id_cliente: "" });
     setIsModalOpen(false);
   };
 
@@ -71,6 +71,11 @@ const Workers = () => {
 
   // Handle form submission to create a time log
   const handleFormSubmit = async () => {
+    if (!registro.fecha || !registro.horaInicio || !registro.horaFin || !registro.idMaquina || !registro.id_cliente) {
+      alert(t("messages.fillAllFields"));
+      return;
+    }
+
     try {
       const payload = {
         id_trabajador: selectedWorker.id_trabajador,
@@ -78,7 +83,7 @@ const Workers = () => {
         hora_inicio: registro.horaInicio,
         hora_fin: registro.horaFin,
         id_maquina: parseInt(registro.idMaquina, 10),
-        id_empresa: parseInt(registro.idEmpresa, 10), // Asociar la empresa seleccionada
+        id_cliente: parseInt(registro.id_cliente, 10),
       };
 
       await axios.post("http://localhost:8000/registrohoras/", payload);
@@ -191,13 +196,13 @@ const Workers = () => {
                   <label className="form-label">{t("form.company")}</label>
                   <select
                     className="form-control"
-                    name="idEmpresa"
-                    value={registro.idEmpresa}
+                    name="id_cliente"
+                    value={registro.id_cliente}
                     onChange={handleInputChange}
                   >
                     <option value="">{t("form.selectCompany")}</option>
                     {companies.map((company) => (
-                      <option key={company.id_empresa} value={company.id_empresa}>
+                      <option key={company.id_cliente} value={company.id_cliente}>
                         {company.nombre_empresa}
                       </option>
                     ))}

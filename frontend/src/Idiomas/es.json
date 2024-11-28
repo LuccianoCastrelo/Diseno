@@ -19,7 +19,7 @@
     "permanentWorkers": "Trabajadores Permanentes",
     "eventualWorkers": "Trabajadores Eventuales",
     "totalMachines": "Total de Máquinas",
-    "totalFuelConsumed": "Combustible total consumido"
+    "totalFuelConsumed": "Combustible Total Consumido"
   },
   "buttons": {
     "signIn": "Iniciar Sesión",
@@ -32,7 +32,8 @@
     "save": "Guardar",
     "addRecord": "Agregar Registro",
     "addTimeLog": "Agregar Registro de Horas",
-    "addMachine": "Agregar Máquina"
+    "addMachine": "Agregar Máquina",
+    "addClient": "Agregar Cliente"
   },
   "table": {
     "workers": "Trabajadores",
@@ -44,8 +45,15 @@
     "usage": "Uso",
     "fuelConsumed": "Combustible Consumido",
     "nextMaintenanceDate": "Próxima Fecha de Mantenimiento",
-    "type":"Tipo",
-    "installationDate":"Fecha de Instalación"
+    "type": "Tipo",
+    "installationDate": "Fecha de Instalación",
+    "clients": "Clientes",
+    "companyName": "Nombre de la Empresa",
+    "address": "Dirección",
+    "phone": "Teléfono",
+    "email": "Correo Electrónico",
+    "hoursWorked": "Horas Trabajadas",
+    "turnsWorked": "Turnos Trabajados"
   },
   "modals": {
     "editWorker": "Editar Trabajador",
@@ -54,8 +62,11 @@
     "addWorker": "Agregar Trabajador",
     "editMachine": "Editar Máquina",
     "addMachine": "Agregar Máquina",
-    "addLogTitle": "Agregar Registro de Horas y Máquina"
-
+    "addLogTitle": "Agregar Registro de Horas y Máquina",
+    "editClient": "Editar Cliente",
+    "deleteClient": "Eliminar Cliente",
+    "deleteClientConfirmation": "¿Estás seguro de que quieres eliminar al cliente: {{clientName}}?",
+    "addClient": "Agregar Cliente"
   },
   "form": {
     "name": "Nombre",
@@ -74,8 +85,12 @@
     "maintenanceCost": "Costo de Mantenimiento",
     "installationDate": "Fecha de Instalación",
     "lastMaintenance": "Última Fecha de Mantenimiento",
-    "maintenanceInterval": "Intervalo de Mantenimiento (en días)"
-
+    "maintenanceInterval": "Intervalo de Mantenimiento (en días)",
+    "companyName": "Nombre de la Empresa",
+    "address": "Dirección",
+    "phone": "Teléfono",
+    "email": "Correo Electrónico",
+    "selectCompany": "Selecciona una empresa"
   },
   "messages": {
     "logAdded": "Registro agregado correctamente.",
@@ -88,8 +103,11 @@
     "machineNotFound": "Máquina no encontrada.",
     "noData": "Sin datos disponibles.",
     "invalidData": "Datos inválidos. Por favor, verifica los campos.",
-    "fetchingError": "Error al cargar los datos."
-
+    "fetchingError": "Error al cargar los datos.",
+    "clientAdded": "Cliente agregado correctamente.",
+    "clientUpdated": "Cliente actualizado correctamente.",
+    "clientDeleted": "Cliente eliminado correctamente.",
+    "clientNotFound": "Cliente no encontrado."
   },
   "workers": {
     "title": "Trabajadores",
@@ -120,7 +138,10 @@
     "fetchHourLogs": "Error al obtener los registros de horas",
     "calculateSalary": "Error al calcular el sueldo",
     "noRecordsForPeriod": "No existen registros en el periodo seleccionado.",
-    "selectSalaryTypeDate": "Selecciona el tipo de sueldo y la fecha."
+    "selectSalaryTypeDate": "Selecciona el tipo de sueldo y la fecha.",
+    "fetchClients": "Error al obtener los clientes",
+    "deleteClientError": "Error al eliminar el cliente",
+    "editClientError": "Error al editar el cliente"
   },
   "loading": "Cargando Contenido..."
 }

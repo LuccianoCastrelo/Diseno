@@ -208,6 +208,74 @@ def delete_maquina(db: Session, id_maquina: int):
 def get_maquina(db: Session, id_maquina: int):
     return db.query(models.Maquina).filter(models.Maquina.id_maquina == id_maquina).first()
 
+
+# Crear cliente
+def create_cliente(db: Session, cliente: schemas.ClienteCreateSchema):
+    db_cliente = models.Cliente(
+        nombre_empresa=cliente.nombre_empresa,
+        direccion=cliente.direccion,
+        telefono=cliente.telefono,
+        email=cliente.email
+    )
+    db.add(db_cliente)
+    db.commit()
+    db.refresh(db_cliente)
+    return db_cliente
+
+def get_all_clients(db: Session):
+    """
+    Devuelve todos los clientes registrados en la base de datos.
+
+    Args:
+        db (Session): Sesión de la base de datos.
+
+    Returns:
+        List[models.Cliente]: Lista de todos los clientes.
+    """
+    return db.query(models.Cliente).all()
+
+
+# Obtener cliente por nombre de empresa
+def get_cliente(db: Session, nombre_empresa: str):
+    return db.query(models.Cliente).filter(models.Cliente.nombre_empresa == nombre_empresa).first()
+
+# Actualizar cliente
+def update_cliente(db: Session, id_cliente: int, cliente: schemas.ClienteSchema):
+    db_cliente = db.query(models.Cliente).filter(models.Cliente.id_cliente == id_cliente).first()
+    if db_cliente:
+        db_cliente.nombre_empresa = cliente.nombre_empresa
+        db_cliente.direccion = cliente.direccion
+        db_cliente.telefono = cliente.telefono
+        db_cliente.email = cliente.email
+        db.commit()
+        db.refresh(db_cliente)
+        return db_cliente
+    return None
+
+# Borrar cliente
+def delete_cliente(db: Session, id_cliente: int):
+    db_cliente = db.query(models.Cliente).filter(models.Cliente.id_cliente == id_cliente).first()
+    if db_cliente:
+        db.delete(db_cliente)
+        db.commit()
+        return db_cliente
+    return None
+
+
+def get_clients_hours_and_turns(db: Session):
+    results = (
+        db.query(
+            models.Cliente.id_cliente,
+            func.sum(models.RegistroHorasTrabajadas.horas_trabajadas).label("total_hours"),
+            func.sum(models.RegistroHorasTrabajadas.cantidad_turnos_trabajados).label("total_turns"),
+        )
+        .join(models.RegistroHorasTrabajadas, models.Cliente.id_cliente == models.RegistroHorasTrabajadas.id_cliente)
+        .group_by(models.Cliente.id_cliente)
+        .all()
+    )
+
+    # Formatea los resultados en un diccionario para fácil acceso
+    return {result.id_cliente: {"total_hours": result.total_hours or 0, "total_turns": result.total_turns or 0} for result in results}
 #----------------GET SUELDOS BY FECHAS-----------------
 def obtener_sueldo_mensual(db: Session, id_trabajador: int, mes: str):
     trabajador = db.query(Trabajador).filter(Trabajador.id_trabajador == id_trabajador).first()
