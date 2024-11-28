@@ -175,6 +175,39 @@ def delete_sueldo(db: Session, id_sueldo: int):
         return db_sueldo
     return None
 
+def create_maquina(db: Session, maquina: schemas.MaquinaSchema):
+    db_maquina = models.Maquina(
+        descripcion_maquina=maquina.descripcion_maquina,
+        uso_para_mantenimiento=maquina.uso_para_mantenimiento,
+    )
+    db.add(db_maquina)
+    db.commit()
+    db.refresh(db_maquina)
+    return db_maquina
+
+# crud.py
+def update_maquina(db: Session, id_maquina: int, maquina: schemas.MaquinaBaseSchema):
+    db_maquina = db.query(models.Maquina).filter(models.Maquina.id_maquina == id_maquina).first()
+    if db_maquina:
+        db_maquina.descripcion_maquina = maquina.descripcion_maquina
+        db_maquina.uso_para_mantenimiento = maquina.uso_para_mantenimiento
+        db.commit()
+        db.refresh(db_maquina)
+        return db_maquina
+    return None
+
+def delete_maquina(db: Session, id_maquina: int):
+    db_maquina = get_maquina(db, id_maquina=id_maquina)
+    if db_maquina:
+        db.delete(db_maquina)
+        db.commit()
+        return db_maquina
+    return None
+
+
+def get_maquina(db: Session, id_maquina: int):
+    return db.query(models.Maquina).filter(models.Maquina.id_maquina == id_maquina).first()
+
 #----------------GET SUELDOS BY FECHAS-----------------
 def obtener_sueldo_mensual(db: Session, id_trabajador: int, mes: str):
     trabajador = db.query(Trabajador).filter(Trabajador.id_trabajador == id_trabajador).first()

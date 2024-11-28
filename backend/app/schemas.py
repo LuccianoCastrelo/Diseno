@@ -64,8 +64,7 @@ class MantenimientoSchema(BaseModel):
     class Config:
         from_attributes = True
 
-class MaquinaSchema(BaseModel):
-    id_maquina: int
+class MaquinaBaseSchema(BaseModel):
     descripcion_maquina: str
     consumo_promedio: Optional[float] = None
     costo_mantenimiento: Optional[float] = None
@@ -93,6 +92,8 @@ class MaquinaSchema(MaquinaCreateSchema):
 
     class Config:
         from_attributes = True
+class MaquinaSchema(MaquinaBaseSchema):
+    id_maquina: int
 
 
 class SueldoSchema(BaseModel):

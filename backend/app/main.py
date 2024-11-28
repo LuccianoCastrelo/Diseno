@@ -165,6 +165,39 @@ def delete_sueldo(id_sueldo:int, db:Session=Depends(database.get_db)):
     crud.delete_sueldo(db, id_sueldo=id_sueldo)
     return db_sueldo
 
+#crear maquina
+@app.post("/maquinas/", response_model=schemas.MaquinaSchema)
+def create_maquina(maquina: schemas.MaquinaSchema, db:Session= Depends(database.get_db)):
+    return crud.create_maquina(db=db, maquina=maquina)
+
+
+#obtener maquina 
+@app.get("/maquina/{id_maquina}", response_model=schemas.MaquinaSchema)
+def read_maquina(id_maquina: int, db: Session = Depends(database.get_db)):
+    db_maquina = crud.get_maquina(db, id_maquina=id_maquina)
+    if db_maquina is None:
+        raise HTTPException(status_code=404, detail="Machine not found")
+    return db_maquina
+
+#actualizar maquina
+@app.put("/maquina/{id_maquina}", response_model=schemas.MaquinaSchema)
+def update_maquina(id_maquina: int, maquina: schemas.MaquinaSchema, db:Session=Depends(database.get_db)):
+    db_maquina = crud.update_maquina(db=db, id_maquina=id_maquina, maquina=maquina)
+    if db_maquina is None:
+        raise HTTPException(status_code=404, detail="Machine not found")
+    return db_maquina
+
+#borrar maquina
+@app.delete("/maquina/{id_maquina}", response_model=schemas.MaquinaSchema)
+def delete_maquina(id_maquina: int, db: Session = Depends(database.get_db)):
+    db_maquina = crud.delete_maquina(db=db, id_maquina=id_maquina)
+    if db_maquina is None:
+        raise HTTPException(status_code=404, detail="Machine not found")
+    crud.delete_maquina(db, id_maquina=id_maquina)
+    return db_maquina
+
+
+    
 
 #--------GET SUELDOS BY FECHAS-------------
 @app.get("/trabajadores/{id_trabajador}/calcular_sueldo_diario")
