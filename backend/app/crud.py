@@ -488,3 +488,5 @@ def calculate_next_maintenance_date(db: Session, id_maquina: int):
     next_maintenance_date = maquina.ultima_fecha_mantenimiento + timedelta(days=maquina.tiempo_entre_mantencion)
     return {"id_maquina": maquina.id_maquina, "descripcion_maquina": maquina.descripcion_maquina, "proxima_fecha_mantenimiento": next_maintenance_date}
 
+def get_registros_horas_trabajadas(db: Session):
+    return db.query(models.RegistroHorasTrabajadas).all()

@@ -423,3 +423,8 @@ def get_all_next_maintenance_dates(db: Session = Depends(database.get_db)):
         if result:
             results.append(result)
     return {"next_maintenance_dates": results}
+
+#Esto de acá lo agrego para ver pork creo que me faltaba para poder establecer el calendario
+@app.get("/calendar-events/", response_model=List[schemas.RegistroHorasTrabajadasSchema])
+def get_calendar_events(db: Session = Depends(database.get_db)):
+    return crud.get_registros_horas_trabajadas(db)
