@@ -28,22 +28,26 @@ class TrabajadorSchema(TrabajadorSchemaReq):
 
     class Config:
         from_attributes = True
-# Schema para crear un registro (sin el cálculo de horas trabajadas)
 class RegistroHorasTrabajadasCreateSchema(BaseModel):
-    id_trabajador: int
-    fecha: date
-    hora_inicio: time  # Agregamos la hora de inicio
-    hora_fin: time      # Agregamos la hora final
-# Schema para lectura, que incluye el cálculo de horas trabajadas
-class RegistroHorasTrabajadasSchema(BaseModel):
-    id_registro: int
     id_trabajador: int
     fecha: date
     hora_inicio: time
     hora_fin: time
-    horas_trabajadas: float  # Ahora esto se calculará en el backend
+    id_maquina: Optional[int] = None  # Campo opcional para asociar una máquina
+    id_cliente: int  # Campo obligatorio para asociar un cliente
+
+# Esquema para la lectura de registros (actualizado)
+class RegistroHorasTrabajadasSchema(BaseModel):
+    id_registro: int
+    id_trabajador: int
+    id_cliente: int 
+    fecha: date
+    hora_inicio: time
+    hora_fin: time
+    horas_trabajadas: float
     cantidad_turnos_trabajados: float
-    es_domingo: bool  # Nuevo campo que indica si la fecha es domingo
+    es_domingo: bool
+    id_maquina: Optional[int] = None
 
     class Config:
         orm_mode = True
@@ -63,10 +67,33 @@ class MantenimientoSchema(BaseModel):
 class MaquinaSchema(BaseModel):
     id_maquina: int
     descripcion_maquina: str
-    uso_para_mantenimiento: str
+    consumo_promedio: Optional[float] = None
+    costo_mantenimiento: Optional[float] = None
+    fecha_instalacion: Optional[date] = None
+    ultima_fecha_mantenimiento: Optional[date] = None
+    tipo_maquina: Optional[str] = None
+    tiempo_entre_mantencion: Optional[int] = None  # Intervalo en días
+
+    class Config:
+        from_attributes = True  # Para usar objetos SQLAlchemy directamente
+
+        
+# Esquema para la creación de una máquina
+class MaquinaCreateSchema(BaseModel):
+    descripcion_maquina: str
+    consumo_promedio: Optional[float] = None
+    costo_mantenimiento: Optional[float] = None
+    fecha_instalacion: Optional[date] = None
+    ultima_fecha_mantenimiento: Optional[date] = None
+    tipo_maquina: Optional[str] = None
+    tiempo_entre_mantencion: Optional[int] = None  # Intervalo en días
+
+class MaquinaSchema(MaquinaCreateSchema):
+    id_maquina: int
 
     class Config:
         from_attributes = True
+
 
 class SueldoSchema(BaseModel):
     id_sueldo: int
@@ -80,3 +107,12 @@ class RegistroIds(BaseModel):
 class SueldoMensualResponse(BaseModel):
     sueldo_mensual: int
 
+class ClienteSchema(BaseModel):
+    id_cliente: int
+    nombre_empresa: str
+    direccion: Optional[str] = None
+    telefono: Optional[str] = None
+    email: Optional[str] = None
+
+    class Config:
+        orm_mode = True

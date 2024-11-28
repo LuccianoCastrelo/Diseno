@@ -2,19 +2,21 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { useTranslation } from 'react-i18next'; // Importar el hook de traducción
+import { useTranslation } from "react-i18next";
 
 import "./style.css"; // Custom CSS for transitions
 
 const Workers = () => {
-  const { t } = useTranslation(); // Hook para traducción
+  const { t } = useTranslation();
 
   const [workers, setWorkers] = useState([]);
+  const [machines, setMachines] = useState([]);
+  const [companies, setCompanies] = useState([]); // Estado para las empresas
   const [selectedWorker, setSelectedWorker] = useState(null);
-  const [registro, setRegistro] = useState({ fecha: "", horaInicio: "", horaFin: "" });
+  const [registro, setRegistro] = useState({ fecha: "", horaInicio: "", horaFin: "", idMaquina: "", idEmpresa: "" });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Fetch workers on component mount
+  // Fetch workers, machines, and companies on component mount
   useEffect(() => {
     const fetchWorkers = async () => {
       try {
@@ -25,7 +27,27 @@ const Workers = () => {
       }
     };
 
+    const fetchMachines = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/machines/");
+        setMachines(response.data);
+      } catch (error) {
+        console.error("Error fetching machines:", error);
+      }
+    };
+
+    const fetchCompanies = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/empresas/");
+        setCompanies(response.data);
+      } catch (error) {
+        console.error("Error fetching companies:", error);
+      }
+    };
+
     fetchWorkers();
+    fetchMachines();
+    fetchCompanies();
   }, []);
 
   // Open modal for adding a time log
@@ -37,7 +59,7 @@ const Workers = () => {
   // Close modal
   const closeModal = () => {
     setSelectedWorker(null);
-    setRegistro({ fecha: "", horaInicio: "", horaFin: "" });
+    setRegistro({ fecha: "", horaInicio: "", horaFin: "", idMaquina: "", idEmpresa: "" });
     setIsModalOpen(false);
   };
 
@@ -50,19 +72,20 @@ const Workers = () => {
   // Handle form submission to create a time log
   const handleFormSubmit = async () => {
     try {
-        const payload = {
-            id_trabajador: selectedWorker.id_trabajador,
-            fecha: registro.fecha,
-            hora_inicio: registro.horaInicio,  // Enviar hora de inicio
-            hora_fin: registro.horaFin         // Enviar hora de fin
-        };
+      const payload = {
+        id_trabajador: selectedWorker.id_trabajador,
+        fecha: registro.fecha,
+        hora_inicio: registro.horaInicio,
+        hora_fin: registro.horaFin,
+        id_maquina: parseInt(registro.idMaquina, 10),
+        id_empresa: parseInt(registro.idEmpresa, 10), // Asociar la empresa seleccionada
+      };
 
-        // Enviar la petición al backend
-        await axios.post("http://localhost:8000/registrohoras/", payload);
-        closeModal();
-        alert(t("messages.logAdded"));
+      await axios.post("http://localhost:8000/registrohoras/", payload);
+      closeModal();
+      alert(t("messages.logAdded"));
     } catch (error) {
-        console.error(t("messages.errorAddingLog"), error);
+      console.error(t("messages.errorAddingLog"), error);
     }
   };
 
@@ -147,6 +170,38 @@ const Workers = () => {
                     value={registro.horaFin}
                     onChange={handleInputChange}
                   />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">{t("form.machine")}</label>
+                  <select
+                    className="form-control"
+                    name="idMaquina"
+                    value={registro.idMaquina}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">{t("form.selectMachine")}</option>
+                    {machines.map((machine) => (
+                      <option key={machine.id_maquina} value={machine.id_maquina}>
+                        {machine.descripcion_maquina}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">{t("form.company")}</label>
+                  <select
+                    className="form-control"
+                    name="idEmpresa"
+                    value={registro.idEmpresa}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">{t("form.selectCompany")}</option>
+                    {companies.map((company) => (
+                      <option key={company.id_empresa} value={company.id_empresa}>
+                        {company.nombre_empresa}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
               <div className="modal-footer">

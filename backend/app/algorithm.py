@@ -9,9 +9,9 @@ def calcular_turnos(horas_trabajadas):
     if horas_trabajadas > 11:
         turnos = 2
     elif 7.5 <= horas_trabajadas <= 11:
-        turnos = 1
+        turnos = 1.5
     else:
-        turnos = 0.5  # Menos de 7.5 horas se considera medio turno
+        turnos = 1 # Menos de 7.5 horas se considera un turno
     
     return turnos
 

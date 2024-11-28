@@ -17,7 +17,9 @@
     "clients": "Clients",
     "shifts": "Shifts",
     "permanentWorkers": "Permanent Workers",
-    "eventualWorkers": "Eventual Workers"
+    "eventualWorkers": "Eventual Workers",
+    "totalMachines": "Total Machines",
+    "totalFuelConsumed": "Total Calculado Fuel"
   },
   "buttons": {
     "signIn": "Sign In",
@@ -27,20 +29,33 @@
     "cancel": "Cancel",
     "saveChanges": "Save Changes",
     "addLog": "Add Log",
-    "save": "Save"
+    "save": "Save",
+    "addRecord": "Add Record",
+    "addTimeLog": "Add Time Log",
+    "addMachine": "Add Machine"
   },
   "table": {
     "workers": "Workers",
     "name": "Name",
     "rut": "RUT",
-    "actions": "Actions"
+    "actions": "Actions",
+    "machines": "Machines",
+    "description": "Description",
+    "usage": "Usage",
+    "fuelConsumed": "Fuel Consumed",
+    "nextMaintenanceDate": "Next Maintenance Date",
+    "type":"Type",
+    "installationDate":"Installation Date"
   },
   "modals": {
     "editWorker": "Edit Worker",
     "deleteWorker": "Delete Worker",
     "deleteConfirmation": "Are you sure you want to delete the worker: {{workerName}}?",
     "addWorker": "Add Worker",
-    "addLogTitle": "Add Time Log"
+    "editMachine": "Edit Machine",
+    "addMachine": "Add Machine",
+    "addLogTitle": "Add Time Log and Machine"
+
   },
   "form": {
     "name": "Name",
@@ -50,13 +65,31 @@
     "baseSalary": "Base Salary",
     "date": "Date",
     "startTime": "Start Time",
-    "endTime": "End Time"
+    "endTime": "End Time",
+    "description": "Description",
+    "usage": "Usage",
+    "machine": "Machine",
+    "selectMachine": "Select a machine",
+    "averageConsumption": "Average Consumption",
+    "maintenanceCost": "Maintenance Cost",
+    "installationDate": "Installation Date",
+    "lastMaintenance": "Last Maintenance Date",
+    "maintenanceInterval": "Maintenance Interval (in days)"
+
   },
   "messages": {
     "logAdded": "Time log added successfully.",
-    "errorAddingLog": "Error adding time log:"
-  },
+    "errorAddingLog": "Error adding time log:",
+    "errorFetchingMachines": "Error fetching machines:",
+    "machineAdded": "Machine added successfully.",
+    "machineUpdated": "Machine updated successfully.",
+    "machineDeleted": "Machine deleted successfully.",
+    "machineNotFound": "Machine not found.",
+    "noData": "No data available.",
+    "invalidData": "Invalid data. Please check the fields.",
+    "fetchingError": "Error fetching data."
 
+  },
   "workers": {
     "title": "Workers",
     "title2": "Salary",

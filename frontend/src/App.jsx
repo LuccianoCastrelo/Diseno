@@ -4,6 +4,7 @@ import Home from "./Componentes/Home.jsx";
 import Workers from "./Componentes/Workers.jsx";
 import Sidebar from "./Componentes/Sidebar.jsx";
 import Dashboard from "./Componentes/Dashboard.jsx"; 
+import Machines from "./Componentes/Machines.jsx";
 import "./Componentes/style.css";
 import logo from "./Componentes/logo.jpeg";
 import '@material/web/all.js';
@@ -68,6 +69,7 @@ export default function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/workers" element={<Workers />} />
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/machines" element={<Machines />}/>
               </Routes>
             </main>
           </div>

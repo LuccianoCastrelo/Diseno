@@ -84,6 +84,9 @@ def get_registro(db: Session, id_registro: int):
     return db.query(models.RegistroHorasTrabajadas).filter(models.RegistroHorasTrabajadas.id_registro == id_registro).first()
 
 def create_registro(db: Session, registro: schemas.RegistroHorasTrabajadasCreateSchema):
+    """
+    Crea un nuevo registro de horas trabajadas en la base de datos.
+    """
     # Calcular las horas trabajadas
     formato_hora = "%H:%M:%S"
     hora_inicio_dt = datetime.strptime(str(registro.hora_inicio), formato_hora)
@@ -91,7 +94,7 @@ def create_registro(db: Session, registro: schemas.RegistroHorasTrabajadasCreate
     delta_horas = (hora_fin_dt - hora_inicio_dt).seconds / 3600  # Convertimos a horas
 
     # Determinar si la fecha es domingo
-    es_domingo = registro.fecha.weekday() == 6  # Si el día de la semana es 6, es domingo
+    es_domingo = registro.fecha.weekday() == 6
 
     # Calcular turnos basados en las horas trabajadas
     turnos = calcular_turnos(delta_horas)
@@ -103,23 +106,28 @@ def create_registro(db: Session, registro: schemas.RegistroHorasTrabajadasCreate
         hora_inicio=registro.hora_inicio,
         hora_fin=registro.hora_fin,
         horas_trabajadas=delta_horas,
-        es_domingo=es_domingo,  # Guardamos si es domingo o no
-        cantidad_turnos_trabajados=turnos
+        cantidad_turnos_trabajados=turnos,
+        es_domingo=es_domingo,
+        id_maquina=registro.id_maquina,  # Asociar la máquina si se proporciona
+        id_cliente=registro.id_cliente   # Asociar el cliente
     )
     db.add(db_registro)
     db.commit()
     db.refresh(db_registro)
     return db_registro
 
-
 def update_registro(db: Session, id_registro: int, registro_data: schemas.RegistroHorasTrabajadasSchema):
     db_registro = get_registro(db, id_registro)
     if db_registro:
         db_registro.id_trabajador = registro_data.id_trabajador
-        db_registro.id_turno = registro_data.id_turno
         db_registro.fecha = registro_data.fecha
+        db_registro.hora_inicio = registro_data.hora_inicio
+        db_registro.hora_fin = registro_data.hora_fin
         db_registro.horas_trabajadas = registro_data.horas_trabajadas
         db_registro.cantidad_turnos_trabajados = registro_data.cantidad_turnos_trabajados
+        db_registro.es_domingo = registro_data.es_domingo
+        db_registro.id_maquina = registro_data.id_maquina
+        db_registro.id_cliente = registro_data.cliente.id_cliente  # Actualizar el cliente asociado
         db.commit()
         db.refresh(db_registro)
         return db_registro
@@ -280,3 +288,102 @@ def get_total_permanent_workers(db: Session):
 
 def get_total_eventual_workers(db: Session):
     return db.query(models.Trabajador).filter(models.Trabajador.tipo == "eventual").count()
+
+
+# --------- CRUD para Máquinas ---------
+def get_machine(db: Session, id_maquina: int):
+    return db.query(models.Maquina).filter(models.Maquina.id_maquina == id_maquina).first()
+
+def get_all_machines(db: Session, skip: int = 0, limit: int = 10):
+    return db.query(models.Maquina).offset(skip).limit(limit).all()
+
+
+def create_machine(db: Session, machine: schemas.MaquinaCreateSchema):
+    # Crear la nueva máquina
+    db_machine = models.Maquina(
+        descripcion_maquina=machine.descripcion_maquina,
+        consumo_promedio=machine.consumo_promedio,
+        costo_mantenimiento=machine.costo_mantenimiento,
+        fecha_instalacion=machine.fecha_instalacion,
+        ultima_fecha_mantenimiento=machine.ultima_fecha_mantenimiento,
+        tipo_maquina=machine.tipo_maquina,
+        tiempo_entre_mantencion=machine.tiempo_entre_mantencion
+    )
+    db.add(db_machine)
+    db.commit()
+    db.refresh(db_machine)
+    return db_machine
+
+
+def update_machine(db: Session, id_maquina: int, machine_data: schemas.MaquinaSchema):
+    db_machine = get_machine(db, id_maquina)
+    if db_machine:
+        db_machine.descripcion_maquina = machine_data.descripcion_maquina
+        db_machine.uso_para_mantenimiento = machine_data.uso_para_mantenimiento
+        db.commit()
+        db.refresh(db_machine)
+        return db_machine
+    return None
+
+def delete_machine(db: Session, id_maquina: int):
+    db_machine = get_machine(db, id_maquina)
+    if db_machine:
+        db.delete(db_machine)
+        db.commit()
+        return db_machine
+    return None
+
+# --------- Métricas para Máquinas ---------
+def get_total_machines(db: Session):
+    return db.query(models.Maquina).count()
+
+
+# Calcular el combustible total consumido por todas las máquinas
+def get_total_fuel_consumed(db: Session) -> float:
+    """
+    Calcula el combustible total consumido por todas las máquinas
+    basado en las horas trabajadas y el consumo promedio de cada máquina.
+    """
+    total_consumo = db.query(
+        func.sum(
+            RegistroHorasTrabajadas.horas_trabajadas * Maquina.consumo_promedio
+        )
+    ).join(Maquina, RegistroHorasTrabajadas.id_maquina == Maquina.id_maquina).scalar()
+
+    return total_consumo or 0.0
+
+# Calcular el combustible consumido por máquina
+def get_fuel_consumed_per_machine(db: Session) -> list:
+    """
+    Calcula el combustible consumido por cada máquina.
+    Devuelve una lista con la máquina y su consumo total.
+    """
+    consumos = db.query(
+        Maquina.id_maquina,
+        Maquina.descripcion_maquina,
+        func.sum(RegistroHorasTrabajadas.horas_trabajadas * Maquina.consumo_promedio).label("total_combustible")
+    ).join(Maquina, RegistroHorasTrabajadas.id_maquina == Maquina.id_maquina) \
+    .group_by(Maquina.id_maquina, Maquina.descripcion_maquina) \
+    .all()
+
+    return [
+        {"id_maquina": row.id_maquina, "descripcion_maquina": row.descripcion_maquina, "total_combustible": row.total_combustible or 0.0}
+        for row in consumos
+    ]
+
+def calculate_next_maintenance_date(db: Session, id_maquina: int):
+    """
+    Calcula la próxima fecha de mantención de una máquina.
+    """
+    # Obtener la máquina por ID
+    maquina = db.query(models.Maquina).filter(models.Maquina.id_maquina == id_maquina).first()
+    if not maquina:
+        return None  # Retornar None si la máquina no existe
+    
+    if not maquina.ultima_fecha_mantenimiento or not maquina.tiempo_entre_mantencion:
+        return None  # Si falta información, no se puede calcular
+
+    # Calcular la próxima fecha de mantención
+    next_maintenance_date = maquina.ultima_fecha_mantenimiento + timedelta(days=maquina.tiempo_entre_mantencion)
+    return {"id_maquina": maquina.id_maquina, "descripcion_maquina": maquina.descripcion_maquina, "proxima_fecha_mantenimiento": next_maintenance_date}
+
