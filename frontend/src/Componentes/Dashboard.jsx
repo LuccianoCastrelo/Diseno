@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Modal, Button, Form, Alert } from "react-bootstrap";
+import { Modal, Button, Form, Alert, Tabs, Tab } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useTranslation } from 'react-i18next'; // Importar el hook de traducción
+import CalendarTab from "./CalendarTab"; // Importar el componente de calendario
 
 const Dashboard = () => {
     const { t } = useTranslation(); // Usar el hook de traducción
     const [workers, setWorkers] = useState([]);
-    const [calculatedSalaries, setCalculatedSalaries] = useState({}); // Guarda el último sueldo calculado para cada trabajador
+    const [calculatedSalaries, setCalculatedSalaries] = useState({});
     const [showModal, setShowModal] = useState(false);
     const [selectedWorker, setSelectedWorker] = useState(null);
-    const [salaryType, setSalaryType] = useState(""); // "diario", "semanal", o "mensual"
+    const [salaryType, setSalaryType] = useState("");
     const [selectedDate, setSelectedDate] = useState(null);
-    const [errorMessage, setErrorMessage] = useState(""); // Mensaje de error para fechas sin registros
-    const [hourLogs, setHourLogs] = useState([]); // Almacena los registros de horas para el periodo seleccionado
+    const [errorMessage, setErrorMessage] = useState("");
+    const [hourLogs, setHourLogs] = useState([]);
+    const [key, setKey] = useState("calculoSueldos");
 
-    // Fetch workers on component mount
     useEffect(() => {
         const fetchWorkers = async () => {
             try {
@@ -29,7 +30,6 @@ const Dashboard = () => {
         fetchWorkers();
     }, [t]);
 
-    // Open modal and set selected worker
     const openModal = (worker) => {
         setSelectedWorker(worker);
         setSalaryType(""); // Reset salary type when reopening modal
@@ -39,7 +39,6 @@ const Dashboard = () => {
         setShowModal(true);
     };
 
-    // Fetch hour logs based on the selected date and salary type
     const fetchHourLogs = async () => {
         if (!selectedWorker || !selectedDate || !salaryType) return;
 
@@ -60,21 +59,19 @@ const Dashboard = () => {
 
         try {
             const response = await axios.get(`http://localhost:8000${endpoint}`, { params });
-            setHourLogs(response.data.registros || []); // Actualizar para acceder a `registros`
+            setHourLogs(response.data.registros || []); 
         } catch (error) {
             console.error(t("errors.fetchHourLogs"), error);
-            setHourLogs([]); // Clear hour logs if there's an error
+            setHourLogs([]); 
         }
     };
 
-    // Run fetchHourLogs when date or salary type changes
     useEffect(() => {
         if (selectedDate && salaryType) {
             fetchHourLogs();
         }
     }, [selectedDate, salaryType]);
 
-    // Handle calculate salary request
     const handleCalculateSalary = async () => {
         if (!salaryType || !selectedDate) {
             alert(t("errors.selectSalaryTypeDate"));
@@ -105,7 +102,7 @@ const Dashboard = () => {
                     ...prevState,
                     [selectedWorker.id_trabajador]: response.data[`${salaryType === 'diario' ? 'sueldo_diario' : salaryType === 'semanal' ? 'sueldo_semanal' : 'sueldo_mensual'}`]
                 }));
-                setShowModal(false); // Close the modal after calculating the salary
+                setShowModal(false); 
             }
         } catch (error) {
             console.error(t("errors.calculateSalary"), error);
@@ -116,48 +113,61 @@ const Dashboard = () => {
     return (
         <div className="container-fluid mt-4 vh-100 vw-100">
             <h1>{t("workers.title2")}</h1>
-            <div className="workers-table">
-                <table className="table caption-top bg-white rounded mt-2">
-                    <caption className="text-dark fs-4">{t("workers.caption")}</caption>
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">{t("workers.rut")}</th>
-                            <th scope="col">{t("workers.actions")}</th>
-                            <th scope="col">{t("workers.lastCalculatedSalary")}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {workers.length > 0 ? (
-                            workers.map((worker, index) => (
-                                <tr key={worker.id_trabajador}>
-                                    <th scope="row">{index + 1}</th>
-                                    <td>{worker.rut}</td>
-                                    <td>
-                                        <button
-                                            className="btn btn-primary"
-                                            onClick={() => openModal(worker)}
-                                        >
-                                            {t("workers.calculateSalary")}
-                                        </button>
-                                    </td>
-                                    <td>
-                                        {calculatedSalaries[worker.id_trabajador] !== undefined
-                                            ? `$${calculatedSalaries[worker.id_trabajador]}`
-                                            : t("workers.notCalculated")}
-                                    </td>
+            <Tabs
+                id="dashboard-tabs"
+                activeKey={key}
+                onSelect={(k) => setKey(k)}
+                className="mb-3"
+            >
+                <Tab eventKey="calculoSueldos" title="Cálculo de Sueldos">
+                    <div className="workers-table">
+                        <table className="table caption-top bg-white rounded mt-2">
+                            <caption className="text-dark fs-4">{t("workers.caption")}</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">{t("workers.rut")}</th>
+                                    <th scope="col">{t("workers.actions")}</th>
+                                    <th scope="col">{t("workers.lastCalculatedSalary")}</th>
                                 </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan="4" className="text-center">
-                                    {t("workers.noWorkersFound")}
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
+                            </thead>
+                            <tbody>
+                                {workers.length > 0 ? (
+                                    workers.map((worker, index) => (
+                                        <tr key={worker.id_trabajador}>
+                                            <th scope="row">{index + 1}</th>
+                                            <td>{worker.rut}</td>
+                                            <td>
+                                                <button
+                                                    className="btn btn-primary"
+                                                    onClick={() => openModal(worker)}
+                                                >
+                                                    {t("workers.calculateSalary")}
+                                                </button>
+                                            </td>
+                                            <td>
+                                                {calculatedSalaries[worker.id_trabajador] !== undefined
+                                                    ? `$${calculatedSalaries[worker.id_trabajador]}`
+                                                    : t("workers.notCalculated")}
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="4" className="text-center">
+                                            {t("workers.noWorkersFound")}
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </Tab>
+
+                <Tab eventKey="calendario" title="Calendario">
+                    <CalendarTab />
+                </Tab>
+            </Tabs>
 
             {/* Modal for selecting the salary type and period */}
             <Modal show={showModal} onHide={() => setShowModal(false)}>
@@ -220,3 +230,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
