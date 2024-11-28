@@ -196,7 +196,35 @@ def delete_maquina(id_maquina: int, db: Session = Depends(database.get_db)):
     crud.delete_maquina(db, id_maquina=id_maquina)
     return db_maquina
 
+#crear cliente
+@app.post("/clientes/", response_model=schemas.ClienteSchema)
+def create_cliente(cliente: schemas.ClienteSchema, db:Session= Depends(database.get_db)):
+    return crud.create_cliente(db=db, cliente=cliente)
 
+#obtener cliente
+@app.get("/cliente/{nombre_cliente}", response_model=schemas.ClienteSchema)
+def read_cliente(nombre_cliente: str, db: Session = Depends(database.get_db)):
+    db_cliente = crud.get_cliente(db, nombre_cliente=nombre_cliente)
+    if db_cliente is None:
+        raise HTTPException(status_code=404, detail="Client not found")
+    return db_cliente
+
+#actualizar cliente
+@app.put("/cliente/{nombre_cliente}", response_model=schemas.ClienteSchema)
+def update_cliente(nombre_cliente: str, cliente: schemas.ClienteSchema, db:Session=Depends(database.get_db)):
+    db_cliente = crud.update_cliente(db=db, nombre_cliente=nombre_cliente, cliente=cliente)
+    if db_cliente is None:
+        raise HTTPException(status_code=404, detail="Client not found")
+    return db_cliente
+
+#borrar cliente
+@app.delete("/cliente/{nombre_cliente}", response_model=schemas.ClienteSchema)
+def delete_cliente(nombre_cliente: str, db: Session = Depends(database.get_db)):
+    db_cliente = crud.delete_cliente(db=db, nombre_cliente=nombre_cliente)
+    if db_cliente is None:
+        raise HTTPException(status_code=404, detail="Client not found")
+    crud.delete_cliente(db, nombre_cliente=nombre_cliente)
+    return db_cliente
     
 
 #--------GET SUELDOS BY FECHAS-------------

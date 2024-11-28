@@ -208,6 +208,35 @@ def delete_maquina(db: Session, id_maquina: int):
 def get_maquina(db: Session, id_maquina: int):
     return db.query(models.Maquina).filter(models.Maquina.id_maquina == id_maquina).first()
 
+def create_cliente(db: Session, cliente: schemas.ClienteSchema):
+    db_cliente = models.Cliente(
+        nombre_cliente=cliente.nombre_cliente  # Usa el nombre correcto del campo en el modelo
+    )
+    db.add(db_cliente)
+    db.commit()
+    db.refresh(db_cliente)
+    return db_cliente
+
+def get_cliente(db: Session, nombre_cliente: str):
+    return db.query(models.Cliente).filter(models.Cliente.nombre_cliente == nombre_cliente).first()
+
+def update_cliente(db: Session, nombre_cliente: str, cliente: schemas.ClienteSchema):
+    db_cliente = db.query(models.Cliente).filter(models.Cliente.nombre_cliente == nombre_cliente).first()
+    if db_cliente:
+        db_cliente.nombre_cliente = cliente.nombre_cliente
+        db.commit()
+        db.refresh(db_cliente)
+        return db_cliente
+    return None
+
+def delete_cliente(db: Session, nombre_cliente: str):
+    db_cliente = get_cliente(db, nombre_cliente=nombre_cliente)
+    if db_cliente:
+        db.delete(db_cliente)
+        db.commit()
+        return db_cliente
+    return None
+
 #----------------GET SUELDOS BY FECHAS-----------------
 def obtener_sueldo_mensual(db: Session, id_trabajador: int, mes: str):
     trabajador = db.query(Trabajador).filter(Trabajador.id_trabajador == id_trabajador).first()
