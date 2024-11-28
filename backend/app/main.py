@@ -196,37 +196,62 @@ def delete_maquina(id_maquina: int, db: Session = Depends(database.get_db)):
     crud.delete_maquina(db, id_maquina=id_maquina)
     return db_maquina
 
-#crear cliente
+
+# Crear cliente
 @app.post("/clientes/", response_model=schemas.ClienteSchema)
-def create_cliente(cliente: schemas.ClienteSchema, db:Session= Depends(database.get_db)):
-    return crud.create_cliente(db=db, cliente=cliente)
+def create_cliente(cliente: schemas.ClienteCreateSchema, db: Session = Depends(database.get_db)):
+    # Comprueba si ya existe un cliente con el mismo nombre
+    existing_cliente = db.query(models.Cliente).filter(models.Cliente.nombre_empresa == cliente.nombre_empresa).first()
+    if existing_cliente:
+        raise HTTPException(status_code=400, detail="Cliente con el mismo nombre ya existe.")
+    
+    # Crea el cliente
+    nuevo_cliente = crud.create_cliente(db=db, cliente=cliente)
+    return nuevo_cliente
 
-#obtener cliente
-@app.get("/cliente/{nombre_cliente}", response_model=schemas.ClienteSchema)
-def read_cliente(nombre_cliente: str, db: Session = Depends(database.get_db)):
-    db_cliente = crud.get_cliente(db, nombre_cliente=nombre_cliente)
+@app.get("/clientes/", response_model=List[schemas.ClienteSchema], tags=["Clientes"])
+def read_all_clients(db: Session = Depends(database.get_db)):
+    """
+    Devuelve una lista de todos los clientes.
+    """
+    return crud.get_all_clients(db)
+
+# Obtener cliente por nombre de empresa
+@app.get("/cliente/{nombre_empresa}", response_model=schemas.ClienteSchema)
+def read_cliente(nombre_empresa: str, db: Session = Depends(database.get_db)):
+    db_cliente = crud.get_cliente(db, nombre_empresa=nombre_empresa)
     if db_cliente is None:
-        raise HTTPException(status_code=404, detail="Client not found")
+        raise HTTPException(status_code=404, detail="Cliente no encontrado")
     return db_cliente
 
-#actualizar cliente
-@app.put("/cliente/{nombre_cliente}", response_model=schemas.ClienteSchema)
-def update_cliente(nombre_cliente: str, cliente: schemas.ClienteSchema, db:Session=Depends(database.get_db)):
-    db_cliente = crud.update_cliente(db=db, nombre_cliente=nombre_cliente, cliente=cliente)
+# Actualizar cliente
+@app.put("/cliente/{id_cliente}", response_model=schemas.ClienteSchema)
+def update_cliente(id_cliente: int, cliente: schemas.ClienteSchema, db: Session = Depends(database.get_db)):
+    db_cliente = crud.update_cliente(db=db, id_cliente=id_cliente, cliente=cliente)
     if db_cliente is None:
-        raise HTTPException(status_code=404, detail="Client not found")
+        raise HTTPException(status_code=404, detail="Cliente no encontrado")
     return db_cliente
 
-#borrar cliente
-@app.delete("/cliente/{nombre_cliente}", response_model=schemas.ClienteSchema)
-def delete_cliente(nombre_cliente: str, db: Session = Depends(database.get_db)):
-    db_cliente = crud.delete_cliente(db=db, nombre_cliente=nombre_cliente)
+# Borrar cliente
+@app.delete("/cliente/{id_cliente}", response_model=schemas.ClienteSchema)
+def delete_cliente(id_cliente: int, db: Session = Depends(database.get_db)):
+    db_cliente = crud.delete_cliente(db=db, id_cliente=id_cliente)
     if db_cliente is None:
-        raise HTTPException(status_code=404, detail="Client not found")
-    crud.delete_cliente(db, nombre_cliente=nombre_cliente)
+        raise HTTPException(status_code=404, detail="Cliente no encontrado")
     return db_cliente
     
+@app.get("/metrics/total_clients")
+def get_total_clients(db: Session = Depends(database.get_db)):
+    """
+    Devuelve el número total de clientes registrados.
+    """
+    total_clients = db.query(models.Cliente).count()
+    return {"total_clients": total_clients}
 
+@app.get("/metrics/clients_hours_turns/")
+def get_clients_hours_and_turns(db: Session = Depends(database.get_db)):
+    stats = crud.get_clients_hours_and_turns(db)
+    return stats
 #--------GET SUELDOS BY FECHAS-------------
 @app.get("/trabajadores/{id_trabajador}/calcular_sueldo_diario")
 def calcular_sueldo_diario(id_trabajador: int, fecha: str, db: Session = Depends(database.get_db)):

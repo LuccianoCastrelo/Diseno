@@ -108,6 +108,16 @@ class RegistroIds(BaseModel):
 class SueldoMensualResponse(BaseModel):
     sueldo_mensual: int
 
+# Esquema para la creación de clientes (sin id_cliente)
+class ClienteCreateSchema(BaseModel):
+    nombre_empresa: str
+    direccion: Optional[str] = None
+    telefono: Optional[str] = None
+    email: Optional[str] = None
+
+    class Config:
+        orm_mode = True
+        
 class ClienteSchema(BaseModel):
     id_cliente: int
     nombre_empresa: str

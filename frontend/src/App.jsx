@@ -10,6 +10,7 @@ import logo from "./Componentes/logo.jpeg";
 import '@material/web/all.js';
 import { useTranslation } from 'react-i18next';
 import './i18n.js';
+import Cliente from "./Componentes/Cliente.jsx";
 
 export default function App() {
   const { t, i18n } = useTranslation();
@@ -70,6 +71,7 @@ export default function App() {
                 <Route path="/workers" element={<Workers />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/machines" element={<Machines />}/>
+                <Route path="/clients" element={<Cliente />}/>
               </Routes>
             </main>
           </div>
