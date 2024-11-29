@@ -274,8 +274,15 @@ def get_clients_hours_and_turns(db: Session):
         .all()
     )
 
-    # Formatea los resultados en un diccionario para fácil acceso
-    return {result.id_cliente: {"total_hours": result.total_hours or 0, "total_turns": result.total_turns or 0} for result in results}
+    # Formatea los resultados en un diccionario con valores redondeados a 2 decimales
+    return {
+        result.id_cliente: {
+            "total_hours": round(result.total_hours, 2) if result.total_hours else 0.00,
+            "total_turns": round(result.total_turns, 2) if result.total_turns else 0.00,
+        }
+        for result in results
+    }
+
 #----------------GET SUELDOS BY FECHAS-----------------
 def obtener_sueldo_mensual(db: Session, id_trabajador: int, mes: str):
     trabajador = db.query(Trabajador).filter(Trabajador.id_trabajador == id_trabajador).first()
@@ -490,4 +497,12 @@ def calculate_next_maintenance_date(db: Session, id_maquina: int):
     return {"id_maquina": maquina.id_maquina, "descripcion_maquina": maquina.descripcion_maquina, "proxima_fecha_mantenimiento": next_maintenance_date}
 
 def get_registros_horas_trabajadas(db: Session):
-    return db.query(models.RegistroHorasTrabajadas).all()
+    registros = db.query(models.RegistroHorasTrabajadas).all()
+
+    # Redondear los valores numéricos a 2 decimales
+    for registro in registros:
+        if registro.horas_trabajadas is not None:
+            registro.horas_trabajadas = round(registro.horas_trabajadas, 2)
+    
+    return registros
+
