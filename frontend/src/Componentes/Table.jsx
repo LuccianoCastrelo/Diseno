@@ -160,12 +160,15 @@ const Table = () => {
           </div>
           <div className="form-group">
             <label>{t("form.type")}</label>
-            <input
-              type="text"
+            <select
               className="form-control"
               value={editingWorker.tipo}
               onChange={(e) => setEditingWorker({ ...editingWorker, tipo: e.target.value })}
-            />
+            >
+              <option value="">{t("form.selectType")}</option>
+              <option value="eventual">{t("form.eventual")}</option>
+              <option value="permanente">{t("form.permanent")}</option>
+            </select>
           </div>
           <div className="form-group">
             <label>{t("form.paymentPerShift")}</label>
@@ -232,13 +235,17 @@ const Table = () => {
           </div>
           <div className="form-group">
             <label>{t("form.type")}</label>
-            <input
-              type="text"
+            <select
               className="form-control"
               value={newWorker.tipo}
               onChange={(e) => setNewWorker({ ...newWorker, tipo: e.target.value })}
-            />
+            >
+              <option value="">{t("form.selectType")}</option>
+              <option value="eventual">{t("form.eventual")}</option>
+              <option value="permanente">{t("form.permanent")}</option>
+            </select>
           </div>
+
           <div className="form-group">
             <label>{t("form.paymentPerShift")}</label>
             <input

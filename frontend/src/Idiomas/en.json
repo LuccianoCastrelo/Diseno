@@ -59,7 +59,7 @@
   "modals": {
     "editWorker": "Edit Worker",
     "deleteWorker": "Delete Worker",
-    "deleteConfirmation": "Are you sure you want to delete the worker: {{workerName}}?",
+    "deleteConfirmation": "Are you sure you want to delete the worker?",
     "addWorker": "Add Worker",
     "editMachine": "Edit Machine",
     "addMachine": "Add Machine",
@@ -91,7 +91,10 @@
     "address": "Address",
     "phone": "Phone",
     "email": "Email",
-    "selectCompany": "Select a company"
+    "selectCompany": "Select a company",
+    "selectType": "Select a type",
+    "eventual": "Eventual",
+    "permanent": "Permanent"
   },
   "messages": {
     "logAdded": "Time log added successfully.",

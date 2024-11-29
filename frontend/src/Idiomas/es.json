@@ -59,7 +59,7 @@
   "modals": {
     "editWorker": "Editar Trabajador",
     "deleteWorker": "Eliminar Trabajador",
-    "deleteConfirmation": "¿Estás seguro de que quieres eliminar al trabajador: {{workerName}}?",
+    "deleteConfirmation": "¿Estás seguro de que quieres eliminar al trabajador?",
     "addWorker": "Agregar Trabajador",
     "editMachine": "Editar Máquina",
     "addMachine": "Agregar Máquina",
@@ -91,7 +91,10 @@
     "address": "Dirección",
     "phone": "Teléfono",
     "email": "Correo Electrónico",
-    "selectCompany": "Selecciona una empresa"
+    "selectCompany": "Selecciona una empresa",
+    "selectType": "Seleccionar tipo",
+    "eventual": "Eventual",
+    "permanent": "Permanente"
   },
   "messages": {
     "logAdded": "Registro agregado correctamente.",

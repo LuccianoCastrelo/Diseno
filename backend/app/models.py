@@ -81,5 +81,9 @@ class Cliente(Base):
     telefono = Column(String, nullable=True)
     email = Column(String, nullable=True)
 
-    # Relación con registros de horas trabajadas
-    registros = relationship("RegistroHorasTrabajadas", back_populates="cliente")
+    # Relación con registros de horas trabajadas (habilitar cascada)
+    registros = relationship(
+        "RegistroHorasTrabajadas",
+        back_populates="cliente",
+        cascade="all, delete"
+    )

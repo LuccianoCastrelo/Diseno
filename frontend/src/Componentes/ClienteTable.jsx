@@ -148,7 +148,7 @@ const ClienteTable = () => {
         </Modal.Header>
         <Modal.Body>
           <div className="form-group">
-            <label>{t("form.companyName")}</label>
+            <label>{t("form.company")}</label>
             <input
               type="text"
               className="form-control"
@@ -219,7 +219,7 @@ const ClienteTable = () => {
         </Modal.Header>
         <Modal.Body>
           <div className="form-group">
-            <label>{t("form.companyName")}</label>
+            <label>{t("form.company")}</label>
             <input
               type="text"
               className="form-control"
