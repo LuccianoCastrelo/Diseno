@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import "./style.css";
 
 const ClienteTable = () => {
   const { t } = useTranslation();

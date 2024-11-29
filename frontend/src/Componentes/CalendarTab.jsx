@@ -24,14 +24,15 @@ const CalendarTab = () => {
     }, []);
 
     return (
-        <div>
+        <div className="calendar-container">
             <h2>Calendario de Horas Trabajadas</h2>
             <Calendar
                 localizer={localizer}
                 events={events}
                 startAccessor="start"
                 endAccessor="end"
-                style={{ height: 420 }}
+                style={{ height: 420}}
+                className="custom-calendar"
             />
         </div>
     );
