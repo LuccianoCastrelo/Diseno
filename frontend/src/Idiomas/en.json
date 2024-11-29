@@ -87,7 +87,7 @@
     "installationDate": "Installation Date",
     "lastMaintenance": "Last Maintenance Date",
     "maintenanceInterval": "Maintenance Interval (in days)",
-    "companyName": "Company Name",
+    "company": "Company Name",
     "address": "Address",
     "phone": "Phone",
     "email": "Email",

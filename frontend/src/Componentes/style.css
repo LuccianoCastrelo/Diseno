@@ -207,7 +207,7 @@ html, body {
 }
 
 main.flex-grow-1 {
-  margin-left: 20px;
+  margin-left: 25px;
   margin-right: 10px;   /* Elimina el margen izquierdo si existe */
 }
 
