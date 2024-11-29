@@ -379,7 +379,8 @@ def get_total_trabajadores(db: Session):
     return db.query(models.Trabajador).count()
 
 def get_total_horas_trabajadas(db: Session):
-    return db.query(func.sum(models.RegistroHorasTrabajadas.horas_trabajadas)).scalar()
+    total_horas = db.query(func.sum(models.RegistroHorasTrabajadas.horas_trabajadas)).scalar()
+    return round(total_horas, 2) if total_horas else 0.00
 
 def get_total_turnos(db: Session):
     return db.query(func.sum(models.RegistroHorasTrabajadas.cantidad_turnos_trabajados)).scalar()

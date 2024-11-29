@@ -170,7 +170,7 @@ const MachinesTable = ({ onMetricsUpdate }) => {
                 <td>{machine.tipo_maquina || t("messages.noData")}</td>
                 <td>{machine.fecha_instalacion || t("messages.noData")}</td>
                 <td>{machine.next_maintenance_date || t("messages.noData")}</td>
-                <td>{fuelConsumption[machine.id_maquina] || t("messages.noData")} kWh</td>
+                <td>{fuelConsumption[machine.id_maquina] || t("messages.noData")} Lts</td>
                 <td>
                   <button className="btn btn-primary me-2" onClick={() => openModal(machine)}>
                     {t("buttons.edit")}
