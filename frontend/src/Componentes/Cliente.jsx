@@ -3,6 +3,7 @@ import Card from "./Card";
 import ClienteTable from "./ClienteTable";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import "./style.css";
 
 const Cliente = () => {
   const { t } = useTranslation();

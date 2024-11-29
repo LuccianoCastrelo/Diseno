@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useTranslation } from 'react-i18next'; // Importar el hook de traducción
 import CalendarTab from "./CalendarTab"; // Importar el componente de calendario
+import "./style.css";
 
 const Dashboard = () => {
     const { t } = useTranslation(); // Usar el hook de traducción
@@ -117,7 +118,7 @@ const Dashboard = () => {
                 id="dashboard-tabs"
                 activeKey={key}
                 onSelect={(k) => setKey(k)}
-                className="mb-3"
+                className="mb-3 custom-tabs"
             >
                 <Tab eventKey="calculoSueldos" title="Cálculo de Sueldos">
                     <div className="workers-table">

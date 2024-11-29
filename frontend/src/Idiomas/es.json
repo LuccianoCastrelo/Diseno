@@ -1,6 +1,6 @@
 {
   "menu": {
-    "dashboard": "Panel",
+    "dashboard": "Salario",
     "home": "Inicio",
     "workers": "Trabajadores",
     "clients": "Clientes",
@@ -19,7 +19,8 @@
     "permanentWorkers": "Trabajadores Permanentes",
     "eventualWorkers": "Trabajadores Eventuales",
     "totalMachines": "Total de Máquinas",
-    "totalFuelConsumed": "Combustible Total Consumido"
+    "totalFuelConsumed": "Combustible Total Consumido",
+    "totalClients": "Total de Clientes"
   },
   "buttons": {
     "signIn": "Iniciar Sesión",
@@ -43,7 +44,7 @@
     "machines": "Máquinas",
     "description": "Descripción",
     "usage": "Uso",
-    "fuelConsumed": "Combustible Consumido",
+    "fuelConsumption": "Combustible Consumido",
     "nextMaintenanceDate": "Próxima Fecha de Mantenimiento",
     "type": "Tipo",
     "installationDate": "Fecha de Instalación",

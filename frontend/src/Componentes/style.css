@@ -178,9 +178,11 @@ html, body {
 .table th,
 .table td {
   vertical-align: middle; /* Centrar verticalmente los contenidos */
-  word-break: break-word; /* Permitir corte de palabras largas */
+  word-break: keep-all; /* Permitir corte de palabras largas */
   text-align: center; /* Alineación centrada horizontalmente */
   padding: 12px 8px; /* Espaciado entre texto y bordes */
+  table-layout: fixed;
+  margin: auto;
 }
 
 /* Ajustar proporciones de las columnas */
@@ -204,6 +206,10 @@ html, body {
   margin: 0 4px; /* Espaciado entre botones */
 }
 
+main.flex-grow-1 {
+  margin-left: 20px;
+  margin-right: 10px;   /* Elimina el margen izquierdo si existe */
+}
 
 /*------------------------------------------------------------------------------------------------*/
 /* Estilos para la X de cierre en el encabezado del modal */
@@ -255,6 +261,179 @@ html, body {
   background-color: #f7c8c0; /* Un poco más oscuro al hacer hover */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Mayor sombra */
   transform: translateY(-3px); /* Levanta el botón ligeramente */
+}
+
+/*------------------------------------------------------------------------------------------------*/
+/*Diseño del calendario*/
+
+/*Botones*/
+/* Estilo para mover las pestañas hacia la derecha o centrarlas */
+.custom-tabs {
+  justify-content: flex-end; /* Mueve las pestañas hacia la derecha */
+  display: flex; /* Asegúrate de que el contenedor sea flex para aplicar la justificación */
+  padding-right: 20px; /* Ajusta el valor para mover un poco hacia la izquierda o derecha */
+}
+
+/* Estilo para los tabs personalizados */
+.custom-tabs .nav-tabs {
+  border-bottom: none; /* Eliminar la línea inferior */
+}
+
+.custom-tabs .nav-item {
+  margin-right: 10px; /* Añadir separación entre las pestañas */
+}
+
+/* Estilo de la pestaña inactiva */
+.custom-tabs .nav-link {
+  background-color: #fef3e1; /* Fondo claro para las pestañas inactivas */
+  color: #234250; /* Color del texto en pestañas inactivas */
+  border: 1px solid #d4d4d4; /* Bordes para las pestañas */
+  border-radius: 10px; /* Bordes redondeados */
+  transition: all 0.3s ease-in-out; /* Transición suave para los efectos */
+}
+
+/* Efecto hover en las pestañas */
+.custom-tabs .nav-link:hover {
+  background-color: #f7c8c0; /* Fondo más oscuro al pasar el mouse por encima */
+  color: #234250; /* Mantener el color del texto */
+}
+
+
+
+/*Calendario*/
+/* Personalización del calendario react-big-calendar */
+.custom-calendar {
+  background-color: #badbd6; /* Fondo que se adapta al resto de la página */
+  color: #234250; /* Color del texto */
+  border-radius: 10px; /* Bordes redondeados para dar un efecto más consistente */
+  padding: 15px; /* Espacio interno para que no esté pegado al borde */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave para darle algo de profundidad */
+}
+
+/* Botones de navegación del calendario (Previo, Siguiente) */
+.custom-calendar .rbc-toolbar button {
+  background-color: #f7c8c0; /* Fondo azul para los botones */
+  color: white; /* Texto blanco para los botones */
+  border: none; /* Sin bordes adicionales */
+  font-size: 0.8rem;
+  padding: 5px 10px; /* Tamaño de los botones */
+  border-radius: 5px; /* Bordes redondeados */
+  transition: background-color 0.3s ease; /* Transición suave */
+  cursor: pointer; /* Mostrar puntero para indicar que es clicable */
+}
+
+.custom-calendar .rbc-toolbar button:hover {
+  background-color: #fef3e1; /* Un tono más oscuro al pasar el ratón */
+}
+
+/* Estilo para el título del mes, semana, día */
+.custom-calendar .rbc-toolbar-label {
+  font-size: 1.2rem; /* Aumentar el tamaño de la fuente */
+  font-weight: bold; /* Negrita para destacar */
+  color: #234250; /* Color de texto consistente con el tema */
+}
+
+/* Estilo para la vista de mes, semana, día, agenda */
+.custom-calendar .rbc-btn-group {
+  display: flex;
+  gap: 5px; /* Espaciado entre los botones */
+}
+
+.custom-calendar .rbc-btn-group button {
+  background-color: #fef3e1; /* Fondo claro para los botones de vista */
+  color: #234250; /* Texto oscuro */
+  border: 1px solid #d4d4d4; /* Bordes suaves */
+  border-radius: 8px; /* Bordes redondeados */
+  padding: 5px 15px; /* Espacio interno para hacer los botones más grandes */
+  transition: all 0.3s ease-in-out; /* Transición suave */
+}
+
+.custom-calendar .rbc-btn-group button:hover {
+  background-color: #e5d4ba; /* Cambiar a un color más oscuro al hacer hover */
+}
+
+.custom-calendar .rbc-btn-group button.rbc-active {
+  background-color: #fef3e1; /* Azul para el botón activo */
+  color: #000000; 
+  border: 1px solid #fef3e1da; /* Bordes más oscuros */
+}
+
+/* Estilo para los días y las celdas */
+.custom-calendar .rbc-month-view {
+  background-color: #badbd6; /* Fondo igual que el resto del sitio */
+}
+
+.custom-calendar .rbc-month-view .rbc-header {
+  background-color: #f7e7d1; /* Color del encabezado de cada día (Mon, Tue, etc.) */
+  color: #234250; /* Color del texto de los encabezados */
+  font-weight: bold; /* Negrita para el encabezado */
+  text-align: center; /* Centrar el texto */
+  padding: 10px 0; /* Añadir espacio para los encabezados */
+}
+
+/* Estilo para los eventos */
+.custom-calendar .rbc-event {
+  background-color: #fef3e1; /* Fondo azul para los eventos */
+  color: rgb(0, 0, 0); /* Texto blanco */
+  border-radius: 5px; /* Bordes redondeados */
+  padding: 5px; /* Espaciado interno */
+  font-size: 0.9rem; /* Tamaño de fuente ajustado */
+}
+
+/* Personalización de la vista semanal y diaria */
+.custom-calendar .rbc-time-view {
+  border: 1px solid #d4d4d4; /* Añadir un borde a la vista */
+  border-radius: 8px; /* Bordes redondeados para el contenedor de la vista */
+}
+
+/* Estilo para las horas en la vista semanal/diaria */
+.custom-calendar .rbc-time-header,
+.custom-calendar .rbc-time-content {
+  color: #234250; /* Color del texto */
+  background-color: #e5e5e5; /* Fondo claro para diferenciar las horas */
+  
+}
+
+
+/* Contenedor del calendario */
+.calendar-container {
+  max-width: 1200px; /* Define un ancho máximo para el calendario */
+  margin: 0 auto; /* Centra el calendario horizontalmente */
+  padding: 20px; /* Añade un pequeño espacio alrededor del calendario */
+  background-color: #fef3e1; /* Color de fondo para destacarlo */
+  border-radius: 10px; /* Bordes redondeados para una apariencia más amigable */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  margin-left: 250px;
+}
+
+/* Personalización del calendario react-big-calendar */
+.custom-calendar {
+  color: #234250; /* Color de texto */
+}
+
+.custom-calendar .rbc-selected {
+  background-color: #f7c8c0 !important; /* Cambia este color al que desees */
+  color: #234250 !important; /* Cambia el color del texto si es necesario */
+  border: none; /* Eliminar bordes, si no los deseas */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Añadir una sombra sutil para destacar el evento */
+}
+
+.rbc-button-link{ 
+  font-size: 1em; /* Ajusta el tamaño de la fuente de los botones de navegación */
+}
+
+.custom-calendar .rbc-header{
+  font-size: 1rem; /* Reduce el tamaño de la fuente de los encabezados y fechas */
+}
+
+.custom-calendar .rbc-date-cell {
+  font-size: 1.5rem;
+}
+
+
+/* Cambiar el fondo de toda la vista de Agenda */
+.rbc-agenda-view {
+  background-color: #ffffff;  /* Cambia esto al color de fondo que prefieras */
 }
 
 /*------------------------------------------------------------------------------------------------*/
