@@ -694,4 +694,58 @@ main.flex-grow-1 {
     border-radius: 10px; /* Bordes redondeados */
     object-fit: cover; /* Asegura que la imagen no se deforme */
   }
+  .calendar-container {
+    margin-left: 110px;
+    padding: 5px; /* Ajusta el padding para móviles */
+    font-size: 12px;
+  }
+
+  .custom-calendar .rbc-toolbar button {
+    border: none; /* Sin bordes adicionales */
+    font-size: 0.8rem;
+    padding: 5px 10px; /* Tamaño de los botones */
+    border-radius: 5px; /* Bordes redondeados */
+    transition: background-color 0.3s ease; /* Transición suave */
+    cursor: pointer; /* Mostrar puntero para indicar que es clicable */
+  }
+  /* Estilo para el título del mes, semana, día */
+  .custom-calendar .rbc-toolbar-label {
+    font-size: 0.85rem; /* Aumentar el tamaño de la fuente */
+  }
+
+  .machines-table th,
+  .machines-table td {
+    font-size: 0.75rem; /* Reduce font size for mobile screens */
+    padding: 5px; /* Adjust padding for smaller screens */
+    margin-right: 10px;
+    margin-left: 200px;
+  }
+
+  .machines-table .btn {
+    padding: 0.5rem; /* Reduce button padding */
+    font-size: 0.9rem; /* Adjust button font size */
+  }
+
+  .machine-card {
+    width: 100%; /* Full width for cards */
+    margin-bottom: 15px; /* Add spacing between cards */
+    margin-right: 10px;
+    margin-left: 200px;
+  }
+
+  .row.g-3.my-2{ 
+    margin-right: 15px; /* Añade un margen derecho al contenedor general */
+  }
+
+  /* Reducir tamaño de fuente en tablas */
+  .clients-table th,
+  .clients-table td {
+    font-size: 0.7rem; /* Tamaño de fuente más pequeño */
+    padding: 5px; /* Reducir el padding */
+    
+  }
+
+  .machine-card-icon {
+    display: none; /* Oculta los íconos */
+}
 }

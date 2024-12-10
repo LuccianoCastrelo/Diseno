@@ -7,7 +7,7 @@ const Card = ({ value, label, icon }) => (
         <h3 className="fs-2">{value}</h3>
         <p className="fs-5">{label}</p>
       </div>
-      <i className={`bi ${icon} p-3 fs-1`} />
+      <i className={`bi ${icon} p-3 fs-1 machine-card-icon`} />
     </div>
   </div>
 );

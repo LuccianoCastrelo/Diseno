@@ -41,7 +41,7 @@ const Machines = () => {
   }, [t]);
 
   return (
-    <div className="container-fluid main-content-wrapper ms-4">
+    <div className="container-fluid main-content-wrapper ms-5">
       <div className="row g-3 my-2">
         {isLoading ? (
           <div className="spinner-border text-primary" role="status">

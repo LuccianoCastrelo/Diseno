@@ -32,7 +32,7 @@ const Cliente = () => {
     fetchClientMetrics();
 
     const checkScreenSize = () => {
-      setIsSmallScreen(window.innerWidth <= 768); // Define si es pantalla pequeña
+      setIsSmallScreen(window.innerWidth <= 1024); // Define si es pantalla pequeña
     };
 
     checkScreenSize(); // Ejecuta al cargar el componente
@@ -46,7 +46,7 @@ const Cliente = () => {
 
   return (
     <div className={`container-fluid main-content-wrapper ${
-      isSmallScreen ? "ms-4" : ""}`}>
+      isSmallScreen ? "ms-5" : ""}`}>
       <div className="row g-3 my-2">
         {isLoading ? (
           <p>{t("loading")}</p>
