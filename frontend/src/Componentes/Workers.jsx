@@ -210,10 +210,10 @@ const Workers = () => {
                 </div>
               </div>
               <div className="modal-footer">
-                <button className="btn btn-secondary" onClick={closeModal}>
+                <button className="btn btn-secondary btn-small" onClick={closeModal}>
                   {t("buttons.cancel")}
                 </button>
-                <button className="btn btn-primary" onClick={handleFormSubmit}>
+                <button className="btn btn-primary btn-small" onClick={handleFormSubmit}>
                   {t("buttons.save")}
                 </button>
               </div>
