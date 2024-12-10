@@ -135,7 +135,12 @@
     "chooseMonth": "Elige un mes",
     "calculate": "Calcular",
     "list": "Lista",
-    "name": "Nombre"
+    "name": "Nombre",
+    "calendary": "Calendario"
+  },
+  "calendar": {
+    "title": "Calendario de Horas Trabajadas",
+    "hoursWorked": "Horas trabajadas"
   },
   "errors": {
     "fetchWorkers": "Error al obtener los trabajadores",
@@ -145,7 +150,8 @@
     "selectSalaryTypeDate": "Selecciona el tipo de sueldo y la fecha.",
     "fetchClients": "Error al obtener los clientes",
     "deleteClientError": "Error al eliminar el cliente",
-    "editClientError": "Error al editar el cliente"
+    "editClientError": "Error al editar el cliente",
+    "fetchCalendarEvents": "Error al cargar los eventos del calendario"
   },
   "loading": "Cargando Contenido..."
 }

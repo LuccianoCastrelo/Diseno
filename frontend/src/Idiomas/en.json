@@ -134,7 +134,12 @@
     "chooseMonth": "Choose a month",
     "calculate": "Calculate",
     "list": "List",
-    "name": "Name"
+    "name": "Name",
+    "calendary": "Calendary"
+  },
+  "calendar": {
+    "title": "Calendar of Worked Hours",
+    "hoursWorked": "Hours worked"
   },
   "errors": {
     "fetchWorkers": "Error fetching workers",
@@ -144,7 +149,8 @@
     "selectSalaryTypeDate": "Select the salary type and date.",
     "fetchClients": "Error fetching clients",
     "deleteClientError": "Error deleting client",
-    "editClientError": "Error editing client"
+    "editClientError": "Error editing client",
+    "fetchCalendarEvents": "Error loading calendar events"
   },
   "loading": "Loading Content..."
 }

@@ -127,6 +127,7 @@ html, body {
 /* Estilos para el contenido principal */
 .main-content-wrapper {
   margin-left: 250px; /* Ajuste para acomodar la barra lateral abierta */
+  max-width: calc(100% - 250px); /* Resta el ancho de la barra lateral */
   transition: margin-left 0.3s ease, width 0.3s ease;
   padding: 20px;
   box-sizing: border-box; /* Asegurar que el padding se incluya en el cálculo del ancho */
@@ -436,14 +437,29 @@ main.flex-grow-1 {
   background-color: #ffffff;  /* Cambia esto al color de fondo que prefieras */
 }
 
+.machines-table th,
+  .machines-table td {
+    padding: 5px; /* Adjust padding for smaller screens */
+    margin-right: 10px;
+  }
+
 /*------------------------------------------------------------------------------------------------*/
 
 /* Diseño responsive para pantallas pequeñas */
 @media (max-width: 767px) {
   .main-content-wrapper {
-    margin-left: 70px; /* Ajuste del margen en pantallas pequeñas */
-    width: calc(100% - 70px); /* Ajuste del ancho del contenido principal */
-    padding-top: 320px;
+    padding-top: 320px; /* Ajuste para el encabezado fijo */
+    margin-right: 20px;
+  }
+
+  /* Ajustar las filas y columnas de las tarjetas */
+  .container-fluid .row {
+     display: flex;
+     flex-wrap: wrap; /* Asegura que las tarjetas se acomoden en nuevas filas */
+     justify-content: center; /* Centra las tarjetas */
+     width: 200px; /* Asegura que las tarjetas ocupen todo el ancho */
+     margin-right: 20px;
+     gap: 10px; /* Espaciado entre las tarjetas */
   }
 
   .navbar-toggler {
@@ -461,6 +477,7 @@ main.flex-grow-1 {
   .workers-table {
     max-width: 75%;
     padding: 15px; /* Reducir el padding para ahorrar espacio en móviles */
+    margin-right: 10px;
   }
 
   .table th:nth-child(3), 
@@ -494,6 +511,153 @@ main.flex-grow-1 {
     height: 45px; /* Mantener proporción de la imagen */
     border-radius: 10px; /* Bordes redondeados */
     object-fit: cover; /* Asegura que la imagen no se deforme */
+  }
+  .workers-title {
+    font-size: 1.5rem; /* Ajusta según sea necesario */
+    text-align: center;
+    margin-top: 85px;
+  }
+
+  .custom-tabs .nav-link {
+    font-size: 0.8rem; /* Reduce el tamaño del texto */
+    padding: 4px 8px; /* Ajusta el padding para que sean más pequeños */
+    border-radius: 5px; /* Mantén bordes redondeados */
+  }
+
+  .custom-tabs {
+    gap: 5px; /* Espaciado entre botones */
+    justify-content: center; /* Opcional: centra los botones si es necesario */
+    margin-left: 70px;
+  }
+
+
+
+
+
+
+  .machines-table th,
+  .machines-table td {
+    font-size: 0.75rem; /* Reduce font size for mobile screens */
+    padding: 5px; /* Adjust padding for smaller screens */
+    margin-right: 10px;
+  }
+
+  .machines-table .btn {
+    padding: 0.5rem; /* Reduce button padding */
+    font-size: 0.9rem; /* Adjust button font size */
+  }
+
+  .machine-card {
+    width: 100%; /* Full width for cards */
+    margin-bottom: 15px; /* Add spacing between cards */
+    margin-right: 10px;
+  }
+
+  .row.g-3.my-2{ 
+    margin-right: 15px; /* Añade un margen derecho al contenedor general */
+  }
+
+
+  /* Tabla */
+  .machines-table {
+  margin-right: 20px;
+  overflow-x: auto; /* Hace la tabla responsive */
+  }
+
+  .machines-table th:nth-child(1), /* Número */
+  .machines-table th:nth-child(3), /* Tipo */
+  .machines-table th:nth-child(4), /* Día de instalación */
+  .machines-table th:nth-child(5) /* Día de mantenimiento */
+  {
+    display: none;
+  }
+
+  .machines-table td:nth-child(1),
+  .machines-table td:nth-child(3),
+  .machines-table td:nth-child(4),
+  .machines-table td:nth-child(5) {
+    display: none;
+  }
+
+
+  /* Reducir tamaño de fuente en tablas */
+  .clients-table th,
+  .clients-table td {
+    font-size: 0.9rem; /* Tamaño de fuente más pequeño */
+    padding: 5px; /* Reducir el padding */
+  }
+
+  /* Ocultar ciertas columnas */
+  .clients-table th:nth-child(1), /* Ocultar columna # */
+  .clients-table td:nth-child(1), /* Ocultar valores de columna # */
+  .clients-table th:nth-child(3), /* Ocultar columna de correos */
+  .clients-table td:nth-child(3),  /* Ocultar valores de columna de correos */
+  .clients-table th:nth-child(4), /* Ocultar columna de correos */
+  .clients-table td:nth-child(4), /* Ocultar valores de columna de correos */
+  .clients-table th:nth-child(5), /* Ocultar columna de correos */
+  .clients-table td:nth-child(5),
+  .clients-table th:nth-child(6), /* Ocultar columna de correos */
+  .clients-table td:nth-child(6),
+  .clients-table th:nth-child(7), /* Ocultar columna de correos */
+  .clients-table td:nth-child(7){ /* Ocultar valores de columna de correos */
+    display: none;
+  }
+
+  .calendar-container {
+    margin-left: 60px;
+    padding: 5px; /* Ajusta el padding para móviles */
+    font-size: 12px;
+  }
+  .rbc-button-link{ 
+    font-size: 1em; /* Ajusta el tamaño de la fuente de los botones de navegación */
+  }
+  
+  .custom-calendar .rbc-header{
+    font-size: 0.7rem; /* Reduce el tamaño de la fuente de los encabezados y fechas */
+  }
+  
+  .custom-calendar .rbc-date-cell {
+    font-size: 1rem;
+  }
+
+  .custom-calendar .rbc-toolbar button {
+    border: none; /* Sin bordes adicionales */
+    font-size: 0.6rem;
+    padding: 5px 10px; /* Tamaño de los botones */
+    border-radius: 5px; /* Bordes redondeados */
+    transition: background-color 0.3s ease; /* Transición suave */
+    cursor: pointer; /* Mostrar puntero para indicar que es clicable */
+  }
+   
+  /* Estilo para el título del mes, semana, día */
+  .custom-calendar .rbc-toolbar-label {
+    font-size: 1rem; /* Aumentar el tamaño de la fuente */
+  }
+
+  .custom-calendar .rbc-event {
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 5px; /* Espaciado interno */
+    font-size: 0.5rem; /* Tamaño de fuente ajustado */
+  }
+
+  .language-switcher {
+    position: fixed;
+    bottom: 10px; /* Ajusta la posición desde el borde inferior */
+    right: 10px; /* Ajusta la posición desde el borde derecho */
+    z-index: 1000; /* Asegura que los botones estén visibles sobre otros elementos */
+    display: flex;
+    gap: 7px; /* Espaciado entre los botones */
+    justify-content: center; /* Centra los botones */
+  }
+
+  .language-switcher .language-button {
+    padding: 0.4rem 0.8rem; /* Reduce el tamaño de los botones */
+    font-size: 0.9rem; /* Ajusta el tamaño del texto */
+  }
+
+  /* Ajusta el contenedor principal para evitar que los botones se sobrepongan */
+  .container-fluid {
+    padding-bottom: 60px; /* Deja espacio extra al final para los botones */
   }
 }
 
@@ -530,4 +694,58 @@ main.flex-grow-1 {
     border-radius: 10px; /* Bordes redondeados */
     object-fit: cover; /* Asegura que la imagen no se deforme */
   }
+  .calendar-container {
+    margin-left: 110px;
+    padding: 5px; /* Ajusta el padding para móviles */
+    font-size: 12px;
+  }
+
+  .custom-calendar .rbc-toolbar button {
+    border: none; /* Sin bordes adicionales */
+    font-size: 0.8rem;
+    padding: 5px 10px; /* Tamaño de los botones */
+    border-radius: 5px; /* Bordes redondeados */
+    transition: background-color 0.3s ease; /* Transición suave */
+    cursor: pointer; /* Mostrar puntero para indicar que es clicable */
+  }
+  /* Estilo para el título del mes, semana, día */
+  .custom-calendar .rbc-toolbar-label {
+    font-size: 0.85rem; /* Aumentar el tamaño de la fuente */
+  }
+
+  .machines-table th,
+  .machines-table td {
+    font-size: 0.75rem; /* Reduce font size for mobile screens */
+    padding: 5px; /* Adjust padding for smaller screens */
+    margin-right: 10px;
+    margin-left: 200px;
+  }
+
+  .machines-table .btn {
+    padding: 0.5rem; /* Reduce button padding */
+    font-size: 0.9rem; /* Adjust button font size */
+  }
+
+  .machine-card {
+    width: 100%; /* Full width for cards */
+    margin-bottom: 15px; /* Add spacing between cards */
+    margin-right: 10px;
+    margin-left: 200px;
+  }
+
+  .row.g-3.my-2{ 
+    margin-right: 15px; /* Añade un margen derecho al contenedor general */
+  }
+
+  /* Reducir tamaño de fuente en tablas */
+  .clients-table th,
+  .clients-table td {
+    font-size: 0.7rem; /* Tamaño de fuente más pequeño */
+    padding: 5px; /* Reducir el padding */
+    
+  }
+
+  .machine-card-icon {
+    display: none; /* Oculta los íconos */
+}
 }

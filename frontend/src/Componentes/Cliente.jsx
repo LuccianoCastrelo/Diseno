@@ -11,6 +11,7 @@ const Cliente = () => {
     { value: "Loading...", label: t("stats.totalClients"), icon: "bi-people" },
   ]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   useEffect(() => {
     const fetchClientMetrics = async () => {
@@ -29,10 +30,23 @@ const Cliente = () => {
     };
 
     fetchClientMetrics();
+
+    const checkScreenSize = () => {
+      setIsSmallScreen(window.innerWidth <= 1024); // Define si es pantalla pequeña
+    };
+
+    checkScreenSize(); // Ejecuta al cargar el componente
+    window.addEventListener("resize", checkScreenSize); // Escucha cambios en el tamaño de la ventana
+
+    return () => window.removeEventListener("resize", checkScreenSize); // Limpia el evento
+
+
+
   }, [t]);
 
   return (
-    <div className="container-fluid main-content-wrapper">
+    <div className={`container-fluid main-content-wrapper ${
+      isSmallScreen ? "ms-5" : ""}`}>
       <div className="row g-3 my-2">
         {isLoading ? (
           <p>{t("loading")}</p>
