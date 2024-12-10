@@ -3,6 +3,7 @@ import Card from "./Card";
 import axios from "axios";
 import MachinesTable from "./MachinesTable";
 import { useTranslation } from 'react-i18next';
+import "./style.css";
 
 const Machines = () => {
   const { t } = useTranslation();
@@ -40,7 +41,7 @@ const Machines = () => {
   }, [t]);
 
   return (
-    <div className="container-fluid main-content-wrapper">
+    <div className="container-fluid main-content-wrapper ms-4">
       <div className="row g-3 my-2">
         {isLoading ? (
           <div className="spinner-border text-primary" role="status">

@@ -3,6 +3,7 @@ import axios from "axios";
 import { Modal, Button, Spinner } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import * as yup from "yup";
+import "./style.css";
 
 const MachinesTable = ({ onMetricsUpdate }) => {
   const { t } = useTranslation();
@@ -149,7 +150,7 @@ const MachinesTable = ({ onMetricsUpdate }) => {
       {isLoading ? (
         <Spinner animation="border" />
       ) : (
-        <table className="table caption-top bg-white rounded mt-2">
+        <table className="machines-table caption-top bg-white  mt-2">
           <caption className="text-dark fs-4">{t("table.machines")}</caption>
           <thead>
             <tr>

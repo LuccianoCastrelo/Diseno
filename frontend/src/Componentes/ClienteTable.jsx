@@ -99,7 +99,7 @@ const ClienteTable = () => {
   };
 
   return (
-    <div>
+    <div className="clients-table">
       <Button variant="success" onClick={() => setShowAddModal(true)}>
         {t("buttons.addClient")}
       </Button>

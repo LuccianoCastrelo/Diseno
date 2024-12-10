@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
+import "./style.css";
 
 const Table2 = () => {
   const [workers, setWorkers] = useState([]);
