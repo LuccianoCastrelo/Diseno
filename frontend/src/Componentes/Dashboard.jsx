@@ -140,7 +140,7 @@ const Dashboard = () => {
                                             <td>{worker.rut}</td>
                                             <td>
                                                 <button
-                                                    className="btn btn-primary"
+                                                    className="btn btn-primary btn-small"
                                                     onClick={() => openModal(worker)}
                                                 >
                                                     {t("workers.calculateSalary")}

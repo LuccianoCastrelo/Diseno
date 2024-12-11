@@ -1,8 +1,8 @@
 import React from "react";
 
 const Card = ({ value, label, icon }) => (
-  <div className="col-12 col-md-3 p-1">
-    <div className="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+  <div className="col-12 col-md-3 p-1 ps-0">
+    <div className="p-3 bg-white shadow-sm d-flex  justify-content-around align-items-center rounded">
       <div>
         <h3 className="fs-2">{value}</h3>
         <p className="fs-5">{label}</p>

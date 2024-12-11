@@ -441,8 +441,14 @@ main.flex-grow-1 {
   .machines-table td {
     padding: 5px; /* Adjust padding for smaller screens */
     margin-right: 10px;
-  }
+}
 
+.machine-card-icon {
+  font-size: 1.5rem; /* Ajusta el tamaño del ícono */
+  margin-left: auto; /* Empuja el ícono hacia el lado derecho */
+  margin-right: auto; /* Centra el ícono */
+  display: block; /* Asegura que el ícono esté en su propio bloque */
+}
 /*------------------------------------------------------------------------------------------------*/
 
 /* Diseño responsive para pantallas pequeñas */
@@ -491,7 +497,10 @@ main.flex-grow-1 {
 
   .table td .btn {
     margin: 2px 0; /* Espaciado más pequeño en móviles */
-    width: 100%; /* Botones apilados en móviles */
+    width: 100%; 
+    font-size: 10px; /* Tamaño de fuente reducido */
+    padding: 4px 8px;
+    /* Botones apilados en móviles */
   }
 
   /* Encabezado de la barra lateral (incluyendo el logo) */
@@ -530,8 +539,29 @@ main.flex-grow-1 {
     margin-left: 70px;
   }
 
+  .workers-table th:nth-child(1), /* Ocultar columna # */
+  .workers-table td:nth-child(1){ /* Ocultar valores de columna # */
+    display: none;
+  }
 
+  .workers-table th:nth-child(3), /* Ocultar columna # */
+  .workers-table td:nth-child(3){ /* Ocultar valores de columna # */
+    display: table-cell;
+  }
 
+  .workers-table th,
+  .workers-table td {
+    font-size: 0.6rem;
+    padding: 5px; /* Reducir el padding para ahorrar espacio en móviles */
+    margin-right: 10px;
+  }
+  
+  .btn{
+    font-size: 10px; /* Tamaño de fuente reducido */
+    padding: 4px 8px; /* Menor padding interno */
+    width: auto; /* Ajusta el ancho automáticamente */
+    height: auto; /* Ajusta la altura automáticamente */
+}
 
 
 
@@ -551,6 +581,7 @@ main.flex-grow-1 {
     width: 100%; /* Full width for cards */
     margin-bottom: 15px; /* Add spacing between cards */
     margin-right: 10px;
+    
   }
 
   .row.g-3.my-2{ 
